@@ -1,0 +1,9 @@
+:root{
+    --header-color:#999;
+    --menu-color: #E61;
+    --content-color: #294;
+    --banners-color: #A4B;
+    --footer-color: #666;
+    --btn-color: rgba(45, 111, 252, 0.829);
+    --btn-hover-color: rgb(45, 170, 195);
+}

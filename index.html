@@ -1,1 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css\const.css">
+    <link rel="stylesheet" href="css\style.css">    
+    <title>Welcome to Instagram</title>
+</head>
+<body>
+    <header id="header">
+        <div class="logo">
+            <h1><a href="#"><img src="assets/img/logo.png" alt="logo"></a></h1>
+        </div>
+        <div class="btn_block">                
+            <form name="autBtn" id="autBtn">                               
+                <button data-modal-target="#modalLog" name="singIn" class="singInBtn" type="button">Войти</button>                
+                <button data-modal-target="#modalReg" name="register" class="regBtn" type="button">Регистрация</button>
+            </form>
+        </div>
+    </header>
+    <div class = "wrapper">
+        <nav class="main menu"></nav>
+        <section class="main content"></section>
+        <aside class="main banners"></aside> 
+    </div>
+    <div class="modal" id="modalLog">
+        <button data-close-button class="close-btn">&times;</button>
+        <div class="login_block">                
+            <form name="loginform" id="login_form">                 
+                <input name="login" type="email" class="field" placeholder="Эл. адрес" pattern="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?" title="Данная запись не являтся электронной почтой" required>
+                <input name="password" type="password" class="field" placeholder="Пароль" pattern = "(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{5,}" title="Пароль должен быть не менне 5 символов, а также содержать по крайней мере одно число, одну заглавную и строчную буквы латинского алфавита" required>                
+                <button name="submit" class="submit loginBtn" type="submit" formnovalidate disabled>Войти</button>           
+            </form>
+        </div>
+    </div>
+    <div class="modal" id="modalReg">
+        <button data-close-button class="close-btn">&times;</button>
+        <div class="register_block">                
+            <form name="registerform" id="register_form">
+                <input name="firstName" type="text" class="field" placeholder="Имя" required>
+                <input name="secondName" type="text" class="field" placeholder="Фамилия" required> 
+                <input name="login" type="email" class="field" placeholder="Эл. адрес" pattern="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?" title="Данная запись не являтся электронной почтой" required>
+                <input name="password"type="password" class="field" placeholder="Пароль" pattern = "(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{5,}" title="Пароль должен быть не менне 5 символов, а также содержать по крайней мере одно число, одну заглавную и строчную буквы латинского алфавита" required>
+                <input name="telefon" type="tel" class="field" placeholder="+375 XX XXXXXXX" required>            
+                <button name="submit" class="submit registerBtn" type="submit" formnovalidate disabled>Зарегистрироватся</button>
+            </form>
+        </div>
+    </div>
+    <div id="overlay"></div>
+    <footer id="footer">
 
+    </footer>
+
+<script type="module" src="js\script.js"></script>
+  
+</body>
+</html>
