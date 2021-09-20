@@ -5,7 +5,6 @@ export class Form {
   constructor(form) { 
     this.formElement = document.getElementById(form);
     this.activateButton();    
-    // this.setMaskForPhone(event);
     
     Storage.prototype.setObj = function(key, obj) {
       return this.setItem(key, JSON.stringify(obj))
@@ -86,6 +85,20 @@ export class Form {
     }   
   }
 
+  setErrorMsg(element, message){
+    const errors = document.querySelectorAll('.error');
+    for (let i = 0; i < errors.length; i++){
+      if (element.previousSibling.className == 'error'){
+        element.previousSibling.remove();
+      }
+    }      
+    const error = document.createElement('span');      
+    element.style.boxShadow = '0 0 4px 1px #F22';      
+    error.className = 'error';
+    error.innerHTML = message;
+    element.before(error);      
+  }
+
   isValid(){    
     const validArray = [];
 
@@ -93,10 +106,10 @@ export class Form {
       const element = this.formElement[i]; 
       const regExp = new RegExp(element.pattern);       
       if (element.validity.valueMissing){
-        setErrorMsg(element, element.validationMessage);
+        this.setErrorMsg(element, element.validationMessage);
         validArray.push(0);
       }else if (!regExp.test(element.value)){        
-        setErrorMsg(element, element.title);
+        this.setErrorMsg(element, element.title);
         validArray.push(0);
       }else {validArray.push(1)}        
     }  
@@ -104,20 +117,6 @@ export class Form {
     if (validArray.includes(0)){
       return false;
     }else {return true;}
-
-    function setErrorMsg(element, message){
-      const errors = document.querySelectorAll('.error');
-      for (let i = 0; i < errors.length; i++){
-        if (element.previousSibling.className == 'error'){
-          element.previousSibling.remove();
-        }
-      }      
-      const error = document.createElement('span');      
-      element.style.boxShadow = '0 0 4px 1px #F22';      
-      error.className = 'error';
-      error.innerHTML = message;
-      element.before(error);      
-    }
   }
 
   submit(){      
@@ -135,36 +134,51 @@ export class Form {
 }
 
 export class RegForm extends Form{
-  addUser(){    
-    let userArr = [];
+  
+    addUser(){    
     let localUserArr = localStorage.getObj('users');
-    let contUserArr = [];    
+    let userArr = [];    
     if (localUserArr === null){
       userArr.push(this.userObj);
       localStorage.setObj('users', userArr);
-    }else {
-      for (let user of localUserArr){
-        if (user.login === this.userObj.login){
-          contUserArr.push(1);
-        }else {
-          contUserArr.push(0);
-        }
-      }
-    }
-    if (contUserArr.includes(1)){
-      alert('Пользователь с такой почтой уже зарегистрирован!')
-      return false;
     }else {
       localUserArr.push(this.userObj);
       localStorage.setObj('users', localUserArr);
     }
   }
 
-  submit(){        
+  checkUser(){
+    let contUserArr = [];
+    let localUserArr = localStorage.getObj('users'); 
+
+    if (localUserArr === null){
+      return false;
+    } else {
+        for (let user of localUserArr){          
+          if (user.login === this.userObj.login){
+            contUserArr.push(1);
+          }else{
+            contUserArr.push(0);
+          }
+        }
+      }
+
+    if (contUserArr.includes(1)){
+      super.setErrorMsg(this.formElement.login, 'Пользователь с такой почтой уже зарегистрирован!');
+      return true;
+    }else{
+      return false;
+    }    
+  } 
+
+  submit(){
+
     if (!(super.submit())){
       return false;
-    }else{
-      this.addUser();
+    }else if (this.checkUser()){  
+      return false;
+    }else {
+      this.addUser()    
       return true;
     }    
   }

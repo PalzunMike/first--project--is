@@ -14,7 +14,12 @@ loginForm.addEventListenerOnSubmit((e) => {
 registerForm.addEventListenerOnSubmit((e) => {
     if (!registerForm.submit()){
         e.preventDefault();
-    }   
+    }else {
+      // debugger;
+      document.querySelector('.register_block').textContent = 'Пользователь успешно добавлен. Воспользуйтесь кнопкой входа, чтобы зайти на сайт.';
+      // debugger;
+      e.preventDefault();
+    }
 });
 
 registerForm.addEventListenerForMask((e) => {
