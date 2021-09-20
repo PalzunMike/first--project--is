@@ -8,16 +8,18 @@ const modal = new Popup;
 loginForm.addEventListenerOnSubmit((e) => {
     if (!loginForm.submit()){
         e.preventDefault();
-    }    
+    }else{
+      e.preventDefault();
+      window.location.href = "../index-logon.html";
+      debugger;
+    }   
 });
 
 registerForm.addEventListenerOnSubmit((e) => {
     if (!registerForm.submit()){
         e.preventDefault();
-    }else {
-      // debugger;
-      document.querySelector('.register_block').textContent = 'Пользователь успешно добавлен. Воспользуйтесь кнопкой входа, чтобы зайти на сайт.';
-      // debugger;
+    }else {      
+      document.querySelector('.register_block').textContent = 'Пользователь успешно добавлен. Воспользуйтесь кнопкой входа, чтобы зайти на сайт.';      
       e.preventDefault();
     }
 });
