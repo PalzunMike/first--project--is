@@ -6,7 +6,6 @@ const registerForm = new RegForm('register_form');
 const modal = new Popup;
 
 loginForm.addEventListenerOnSubmit((e) => {
-
     if (!loginForm.submit()){
         e.preventDefault();
     }    
@@ -16,4 +15,8 @@ registerForm.addEventListenerOnSubmit((e) => {
     if (!registerForm.submit()){
         e.preventDefault();
     }   
+});
+
+registerForm.addEventListenerForMask((e) => {
+    registerForm.setMaskForPhone(e, registerForm.formElement.telefon );
 });

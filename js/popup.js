@@ -10,9 +10,14 @@ export default class Popup{
     }
     
    openModal(modal){
-       for (let i=0; i < document.forms.length; i++){
-        document.forms[i].reset();
-       }    
+        const errors = document.querySelectorAll('.error');
+        for (let i = 0; i < errors.length; i++){
+            errors[i].nextSibling.style.boxShadow = 'none';
+            errors[i].remove();            
+        }        
+        for (let i = 0; i < document.forms.length; i++){        
+            document.forms[i].reset();
+        }    
     if (modal == null) return
     modal.classList.add('active');
     overlay.classList.add('active');

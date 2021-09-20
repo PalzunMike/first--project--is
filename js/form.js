@@ -4,7 +4,8 @@ export class Form {
 
   constructor(form) { 
     this.formElement = document.getElementById(form);
-    this.activateButton();
+    this.activateButton();    
+    // this.setMaskForPhone(event);
     
     Storage.prototype.setObj = function(key, obj) {
       return this.setItem(key, JSON.stringify(obj))
@@ -21,10 +22,59 @@ export class Form {
           this.formElement.elements.submit.disabled = false;
         } else {
           this.formElement.elements.submit.disabled = 'disabled';
-        }
+        }        
       })
     }  
   }
+
+  setMaskForPhone(event, element){ 
+
+      function setCursorPosition(pos, elem) {
+        elem.focus();
+        if (elem.setSelectionRange){
+          elem.setSelectionRange(pos, pos)
+        }else if (elem.createTextRange) {
+            var range = elem.createTextRange();
+            range.collapse(true);
+            range.moveEnd("character", pos);
+            range.moveStart("character", pos);
+            range.select()
+        }
+      }
+
+      function mask(event) {
+        
+        let matrix = "+375 (__) ___-__-__",
+            p = 0,
+            def = matrix.replace(/\D/g, ""),
+            val = this.value.replace(/\D/g, "");
+
+            if (def.length >= val.length){
+              val = def;
+            }
+
+            this.value = matrix.replace(/./g, function(a) {
+              return /[_\d]/.test(a) && p < val.length ? val.charAt(p++) : p >= val.length ? "" : a;
+            })            
+        
+            if (event.type == "blur") {
+              if (this.value.length == 2) {
+                this.value = ""
+              }
+            } else {
+                setCursorPosition(this.value.length, this)
+              }
+      } 
+      const input = element;
+      input.addEventListener("input", mask, false);
+      input.addEventListener("focus", mask, false);
+      input.addEventListener("blur", mask, false);
+    }
+
+    addEventListenerForMask(callback){
+      window.addEventListener('DOMContentLoaded', callback);
+  }  
+
 
   collectInfo(){    
     for (let i = 0; i < this.formElement.length; i++){      
@@ -77,8 +127,8 @@ export class Form {
       this.collectInfo();
       return true;
     }        
-  }  
-  
+  } 
+
   addEventListenerOnSubmit(callback){
     this.formElement.addEventListener('submit', callback);
   }
