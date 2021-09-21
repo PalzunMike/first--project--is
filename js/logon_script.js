@@ -10,6 +10,8 @@ let localUserArr = localStorage.getObj('users');
 
 
 for (let i = 0; i < localUserArr.length; i++){
+    let listUsers = document.querySelector('.list_users');
+    listUsers.insertAdjacentHTML('beforeend', `<li>${localUserArr[i].login}</li>`)
     console.log(localUserArr[i].login);
 }
 
