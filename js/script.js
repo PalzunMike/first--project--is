@@ -4,7 +4,7 @@ import Popup from './popup.js';
 const loginForm = new Form('login_form');
 const registerForm = new RegForm('register_form');
 const modal = new Popup;
-let localUsers = localStorage.getObj('users');
+// let localUsers = localStorage.getObj('users');
 
 loginForm.addEventListenerOnSubmit((e) => {
     if (!loginForm.submit()){
@@ -33,20 +33,28 @@ registerForm.addEventListenerForMask((e) => {
 
 
 function verificationUser(){
-    
+    let localUsers = localStorage.getObj('users');
+    let wrightLogin = false;
+    let wrightPass = true;
     for (let user of localUsers){          
         if (user.login === loginForm.formElement.login.value){
             if (user.password === loginForm.formElement.password.value){
                 return true;
-            }else {
-                loginForm.setErrorMsg(loginForm.formElement.password, 'Неверный логин');
-                return false;
+            }else {                
+                wrightLogin = true;
+                wrightPass = false;
             }
-        }else{
-            loginForm.setErrorMsg(loginForm.formElement.login, 'Пользователь не найден');
-            return false;
+        }else{            
+            wrightLogin = false;
         }
-    }    
+    } 
+    if (!wrightLogin){
+        loginForm.setErrorMsg(loginForm.formElement.login, 'Пользователь не найден');
+        return false;
+    }else if (!wrightPass){
+        loginForm.setErrorMsg(loginForm.formElement.password, 'Неверный пароль');        
+        return false;
+    }   
 }
 
 
