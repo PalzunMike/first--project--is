@@ -4,6 +4,7 @@
     --content-color: #294;
     --banners-color: #A4B;
     --footer-color: #666;
-    --btn-color: rgba(45, 111, 252, 0.829);
-    --btn-hover-color: rgb(45, 170, 195);
+    --btn-color: rgba(0, 80, 245, 0.6);
+    --btn-hover-color: rgba(0, 80, 245, 1);
+    --modal-color: rgb(182, 189, 137);
 }

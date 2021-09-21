@@ -34,12 +34,12 @@ body{
 }
 
 .menu{    
-    width: 15%;    
+    flex-basis: 15%;    
     background-color: var(--menu-color);
 }
 
 .content{    
-    width: 70%;    
+    flex-basis: 70%;    
     background-color: var(--content-color);
     display: flex;
     flex-direction: column;
@@ -50,11 +50,12 @@ body{
     display: flex;
     flex-direction: row;
     align-items: center; 
-    margin-left: 15px;   
+    margin-left: 25px;   
 }
 
 .user p{
     font-size: 1.2em;
+    line-height: .5em;
     font-weight: bold;
     color: #9DF;
 }
@@ -91,7 +92,7 @@ body{
 }
 
 .banners{          
-    width: 15%; 
+    flex-basis: 15%; 
     background-color: var(--banners-color);
 }
 
@@ -111,7 +112,7 @@ h1 a img{
     width: 75%;
 }
 
-.login_block, .register_block{
+.login_block, .register_block, .edit_block{
     width: 15%;
     min-width: 220px;
     position: absolute;
@@ -124,11 +125,18 @@ h1 a img{
     -o-transform: translate(-50%, -50%);
 }
 
-#login_form, #register_form { 
+.edit_block{
+    /* width: 30%; */
+    min-width: 400px;
+}
+
+#login_form, #register_form, #edit_form { 
     display: flex;    
     flex-direction: column; 
     justify-content: space-between;
     align-items: center;
+
+    /* outline: 1px solid red; */
 }
 
 .field{
@@ -150,7 +158,7 @@ h1 a img{
     border: 1px solid #777;
 }
 
-.submit, .singInBtn, .regBtn{
+.submit, .singInBtn, .regBtn, #editBtn{
     transition: all .5s;
     color: #fff;
     background-color: var(--btn-color);
@@ -183,7 +191,7 @@ h1 a img{
     opacity: .4;
 }
 
-.submit:hover:enabled, .singInBtn:hover, .regBtn:hover{
+.submit:hover:enabled, .singInBtn:hover, .regBtn:hover, #editBtn:hover{
     transition: all .5s;
     background-color: var(--btn-hover-color);    
     -webkit-transition: all .5s;
@@ -202,14 +210,14 @@ h1 a img{
 
 .modal{
     position: fixed;
-    top: 30%;
+    top: 50%;
     left: 50%;
     transform: translate(-50%, -50%) scale(0);
     transition: 300ms ease-in-out;
     width: 400px;
     height: 350px;
     z-index: 10;
-    background-color: #BBB;
+    background-color: var(--modal-color);
     border-radius: 9px;
     -webkit-transform: translate(-50%, -50%) scale(0);
     -moz-transform: translate(-50%, -50%) scale(0);
@@ -223,6 +231,12 @@ h1 a img{
     -moz-border-radius: 9px;
     -ms-border-radius: 9px;
     -o-border-radius: 9px;
+}
+
+#modalEdit{
+    position: fixed;
+    width: 500px;
+    height: 550px;
 }
 
 .modal.active{
@@ -273,5 +287,13 @@ h1 a img{
     }
     .main{
         width: 100%;
+    }
+
+    .menu .banners{
+        flex-grow: 1;
+    }
+    
+    .content{
+        flex-grow: 8;
     }
 } 

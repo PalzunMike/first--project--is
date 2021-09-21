@@ -27,7 +27,7 @@ registerForm.addEventListenerOnSubmit((e) => {
 });
 
 registerForm.addEventListenerForMask((e) => {
-    registerForm.setMaskForPhone(e, registerForm.formElement.telefon );
+    registerForm.setMaskForPhone(e, registerForm.formElement.phone);
 });
 
 
