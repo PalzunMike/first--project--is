@@ -127,7 +127,13 @@ h1 a img{
 
 .edit_block{
     /* width: 30%; */
-    min-width: 400px;
+    min-width: 400px; 
+
+    /* outline: 1px solid red; */
+}
+
+.edit_block img{
+    height: 100px;    
 }
 
 #login_form, #register_form, #edit_form { 
@@ -137,6 +143,10 @@ h1 a img{
     align-items: center;
 
     /* outline: 1px solid red; */
+}
+
+#edit_form{
+    align-items: flex-start;
 }
 
 .field{
@@ -156,6 +166,29 @@ h1 a img{
 
 .field:focus{
     border: 1px solid #777;
+}
+
+#edit_form label{    
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    width: 100%;
+    font-weight: bold;
+    /* margin: ; */
+    /* outline: 1px solid blue; */
+}
+
+#sex{
+    display: flex;
+    font-weight: bold;
+    margin: 15px 0;    
+    flex-direction: row;
+}
+
+#sex label{
+    flex-direction: row;
+    margin-left: 15px;
+    font-weight: normal;
 }
 
 .submit, .singInBtn, .regBtn, #editBtn{
@@ -179,6 +212,10 @@ h1 a img{
     -o-transition: all .5s;
 }
 
+#editBtn{
+    margin-top: 10px;
+}
+
 .singInBtn, .regBtn{
     height: 30px;
     width: 100px;
@@ -200,12 +237,14 @@ h1 a img{
     -o-transition: all .5s;
 }
 
-.error{    
+.error{
     color: cornsilk;
     font-size: .7rem;    
-    width: 130%;
+    width: 105%;
     min-width: 240px;
-    text-align: center;       
+    text-align: center;   
+    
+    /* outline: 1px solid red; */
 }
 
 .modal{
@@ -235,8 +274,8 @@ h1 a img{
 
 #modalEdit{
     position: fixed;
-    width: 500px;
-    height: 550px;
+    width: 600px;
+    height: 750px;
 }
 
 .modal.active{

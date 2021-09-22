@@ -15,7 +15,8 @@ export default class Popup{
             errors[i].nextSibling.style.boxShadow = 'none';
             errors[i].remove();            
         }        
-        for (let i = 0; i < document.forms.length; i++){        
+        for (let i = 0; i < document.forms.length; i++){
+            document.forms[i].submit.disabled = 'disabled';       
             document.forms[i].reset();
         }    
     if (modal == null) return

@@ -75,9 +75,9 @@ export class Form {
   }  
 
 
-  collectInfo(){    
+  collectInfo(){
     for (let i = 0; i < this.formElement.length; i++){      
-      if (this.formElement[i].tagName === 'INPUT'){
+      if (this.formElement[i].tagName === 'INPUT' && this.formElement[i].type !== 'radio'){
         let nameKey = this.formElement[i].name;
         let key = this.formElement[i].value;       
         this.userObj[nameKey] = key;    
@@ -99,9 +99,8 @@ export class Form {
     element.before(error);      
   }
 
-  isValid(){    
+  isValid(){  
     const validArray = [];
-
     for (let i = 0; i < this.formElement.length; i++){      
       const element = this.formElement[i]; 
       const regExp = new RegExp(element.pattern);       
@@ -135,9 +134,11 @@ export class Form {
 
 export class RegForm extends Form{
   
-    addUser(){    
+    addUser(){
     let localUserArr = localStorage.getObj('users');
-    let userArr = [];    
+    let userArr = [];
+    let dateReg = new Date().toISOString().slice(0, 10);    
+    this.userObj.dateRegister = dateReg;
     if (localUserArr === null){
       userArr.push(this.userObj);
       localStorage.setObj('users', userArr);

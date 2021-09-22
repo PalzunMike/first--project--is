@@ -38,30 +38,46 @@ function deleteUser(){
 function editUser(){
     let modal = document.getElementById('modalEdit');
     for (let i = 0; i < userLogin.length; i++){
-        let localUserArr = localStorage.getObj('users');
-        editBtn[i].addEventListener('click', () =>{  
+        
+        editBtn[i].addEventListener('click', () =>{            
             while (modal.children.length > 1) {
                 modal.removeChild(modal.lastChild);
             }         
             modal.insertAdjacentHTML('beforeend',`<div class = "edit_block">
+                                                <img src="assets/img/photo.png" alt="photo">
                                                 <form id = "edit_form">
-                                                <label>Адрес эл. почты (логин): <input id = "login" value = "${localUserArr[i].login}" class = "field"></label><br>
-                                                <label>Пароль: <input id = "password" value = "${localUserArr[i].password}" class = "field"></label><br>
-                                                <label>Имя: <input id = "firstName" value = "${localUserArr[i].firstName}" class = "field"></label><br>
-                                                <label>Фамилия: <input id = "secondName" value = "${localUserArr[i].secondName}" class = "field"></label><br>
-                                                <label>Телефон: <input id = "password" value = "${localUserArr[i].phone}" class = "field"></label><br>
-                                                <button type="button" id = "editBtn">Принять</button>
+                                                <label>Адрес эл. почты (логин): <input name="login" id = "login" value = "${localUserArr[i].login}" class = "field" pattern="[a-z0-9!#$%&'*+/=?^_\`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_\`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?" title="Данная запись не являтся электронной почтой" required ></label><br>
+                                                <label>Пароль: <input name="password" id = "password" value = "${localUserArr[i].password}" class = "field" pattern = "(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{5,}" title="Пароль должен быть не менне 5 символов, а также содержать по крайней мере одно число, одну заглавную и строчную буквы латинского алфавита" required></label><br>
+                                                <label>Имя: <input name="firstName" id = "firstName" value = "${localUserArr[i].firstName}" class = "field" required></label><br>
+                                                <label>Фамилия: <input name="secondName" id = "secondName" value = "${localUserArr[i].secondName}" class = "field" required></label><br>
+                                                <label>Телефон: <input name="phone" id ="password" value = "${localUserArr[i].phone}" class = "field"  pattern="^\\+375(\\s+)?\\(?(17|25|29|33|44)\\)?(\\s+)?[0-9]{3}-?[0-9]{2}-?[0-9]{2}$" title="Вы указали телефон в неверном формате" required></label><br>
+                                                <label>Дата рождения: <input name="dateOfBirthday" type="date" value = "${localUserArr[i].dateOfBirthday}" class="field"></label>
+                                                <div id="sex">Пол: <label><input name="sex" type="radio" id="radioMale" value="male">Мужской</label> <label><input name="sex" type="radio" id="radioFemale" value="female">Женский</label></div>
+                                                <label>Дата регистрации: <input name="dateRegister" type="date" value = "${localUserArr[i].dateRegister}" class="field" readonly></label>
+                                                <button name = "submit" type="submit" id ="editBtn" formnovalidate>Принять</button>
                                                 </form>
                                                 </div>`)
-            const editForm = new Form('edit_form');
-            const accept = document.getElementById('editBtn');
-            // accept.addEventListener('click', editForm.isValid());
-            // console.log(editForm);
+            if (localUserArr[i].sex === 'male'){
+                document.getElementById('radioMale').checked = true
+            }else if (localUserArr[i].sex === 'female'){
+                document.getElementById('radioFemale').checked = true
+            }
+            const editForm = new Form('edit_form');            
+            editForm.addEventListenerOnSubmit((e) => {
+                if (!editForm.submit()){                    
+                    e.preventDefault();
+                }else {                    
+                    editForm.collectInfo();
+                    editForm.userObj.sex = editForm.formElement.sex.value;
+                    localUserArr[i] = editForm.userObj;
+                    localStorage.setObj(`users`, localUserArr)
+                    document.querySelector('.edit_block').textContent = 'Пользователь успешно изменен!';      
+                    e.preventDefault();
+                }
+            });
         })
     }
 }
-
-
 deleteUser();
 editUser();
 
