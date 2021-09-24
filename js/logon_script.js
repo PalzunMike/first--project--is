@@ -1,15 +1,9 @@
-import {Form, RegForm} from './form.js';
+import { Form } from './form.js';
 import Popup from './popup.js';
+import { localStorageGetInfo, localStorageSetInfo } from './localStorage.js';
+ 
 
-Storage.prototype.setObj = function(key, obj) {
-    return this.setItem(key, JSON.stringify(obj))
-} 
-
-Storage.prototype.getObj = function(key) {
-    return JSON.parse(this.getItem(key))
-} 
-
-let localUserArr = localStorage.getObj('users');
+let localUserArr = localStorageGetInfo('users');
 
 for (let i = 0; i < localUserArr.length; i++){
     let listUsers = document.querySelector('.content');
@@ -30,7 +24,7 @@ function deleteUser(){
         removeBtn[i].addEventListener('click', () => {            
             users[i].remove();
             localUserArr.splice([i], 1);
-            localStorage.setObj('users', localUserArr);
+            localStorageSetInfo('users', localUserArr);
         })        
     }
 }
