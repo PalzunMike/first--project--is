@@ -1,3 +1,5 @@
+import { Form } from './form.js';
+
 export default class Popup {
     openModalButtons = document.querySelectorAll('[data-modal-target]');
     closeModalButtons = document.querySelectorAll('[data-close-button]');
@@ -10,15 +12,7 @@ export default class Popup {
     }
 
     openModal(modal) {
-        const errors = document.querySelectorAll('.error');
-        for (let i = 0; i < errors.length; i++) {
-            errors[i].nextSibling.style.boxShadow = 'none';
-            errors[i].remove();
-        }
-        for (let i = 0; i < document.forms.length; i++) {
-            document.forms[i].submit.disabled = 'disabled';
-            document.forms[i].reset();
-        }
+        Form.clearErrors();
         if (modal === null) return
         modal.classList.add('active');
         overlay.classList.add('active');

@@ -48,7 +48,7 @@ function editUser(){
                                                 <label>Дата рождения: <input name="dateOfBirthday" type="date" value = "${localUserArr[i].dateOfBirthday}" class="field"></label>
                                                 <div id="sex">Пол: <label><input name="sex" type="radio" id="radioMale" value="male">Мужской</label> <label><input name="sex" type="radio" id="radioFemale" value="female">Женский</label></div>
                                                 <label>Дата регистрации: <input name="dateRegister" type="date" value = "${localUserArr[i].dateRegister}" class="field" readonly></label>
-                                                <button name = "submit" type="submit" id ="editBtn" formnovalidate>Принять</button>
+                                                <button name = "submit" type="submit" class ="submit" id ="editBtn" formnovalidate>Принять</button>
                                                 </form>
                                                 </div>`)
             if (localUserArr[i].sex === 'male'){

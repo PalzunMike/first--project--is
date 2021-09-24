@@ -9,16 +9,30 @@ export class Form {
     this.activateButton();
   }
 
+  static clearErrors() {
+    const errors = document.querySelectorAll('.error');
+
+    for (let i = 0; i < errors.length; i++) {
+      errors[i].nextSibling.style.boxShadow = 'none';
+      errors[i].remove();
+    }
+    for (let i = 0; i < document.forms.length; i++) {
+      document.forms[i].submit.disabled = 'disabled';
+      document.forms[i].reset();
+    }
+  }
+
   activateButton() {
-    for (let i = 0; i < this.formElement.length; i++) {
-      this.formElement[i].addEventListener('input', () => {
-        if (this.formElement[i].tagName === 'INPUT' && this.formElement[i].value.length > 0) {
+    this.formElement.addEventListener('input', () => {
+      for (let element of this.formElement) {
+        if (element.value.length > 0 && element.value !== "+375 (__) ___-__-__" ){
           this.formElement.elements.submit.disabled = false;
+          return false;
         } else {
           this.formElement.elements.submit.disabled = 'disabled';
         }
-      })
-    }
+      }
+    })
   }
 
   setMaskForPhone(event, element) {
@@ -28,7 +42,7 @@ export class Form {
       if (elem.setSelectionRange) {
         elem.setSelectionRange(pos, pos)
       } else if (elem.createTextRange) {
-        var range = elem.createTextRange();
+        let range = elem.createTextRange();
         range.collapse(true);
         range.moveEnd("character", pos);
         range.moveStart("character", pos);
