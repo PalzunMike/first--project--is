@@ -7,6 +7,12 @@ export class Form {
   constructor(form) {
     this.formElement = document.getElementById(form);
     this.activateButton();
+    window.addEventListener('load', (e) => {
+      if (this.formElement.phone) {
+        this.setMaskForPhone(e);
+      }
+    })
+
   }
 
   static clearErrors() {
@@ -25,7 +31,7 @@ export class Form {
   activateButton() {
     this.formElement.addEventListener('input', () => {
       for (let element of this.formElement) {
-        if (element.value.length > 0 && element.value !== "+375 (__) ___-__-__" ){
+        if (element.value.length > 0 && element.value !== "+375 (__) ___-__-__") {
           this.formElement.elements.submit.disabled = false;
           return false;
         } else {
@@ -35,7 +41,7 @@ export class Form {
     })
   }
 
-  setMaskForPhone(event, element) {
+  setMaskForPhone(event) {
 
     function setCursorPosition(pos, elem) {
       elem.focus();
@@ -49,6 +55,7 @@ export class Form {
         range.select()
       }
     }
+
 
     function mask(event) {
 
@@ -73,14 +80,11 @@ export class Form {
         setCursorPosition(this.value.length, this)
       }
     }
-    const input = element;
+
+    const input = this.formElement.phone;
     input.addEventListener("input", mask, false);
     input.addEventListener("focus", mask, false);
     input.addEventListener("blur", mask, false);
-  }
-
-  addEventListenerForMask(callback) {
-    window.addEventListener('DOMContentLoaded', callback);
   }
 
 
@@ -144,40 +148,38 @@ export class Form {
 export class RegForm extends Form {
 
   addUser() {
-    const localUserArr = localStorageGetInfo('users');
-    const userArr = [];
-    const dateReg = new Date().toISOString().slice(0, 10);
-    this.userObj.dateRegister = dateReg;
-    if (localUserArr === null) {
-      userArr.push(this.userObj);
-      localStorageSetInfo('users', userArr);
+    let tempUserObj = {};
+    let localUserObj = localStorageGetInfo('users');
+    if (localUserObj === null) {
+      tempUserObj[this.userObj.login] = this.userObj;
+      localStorageSetInfo(`users`, tempUserObj);
     } else {
-      localUserArr.push(this.userObj);
-      localStorageSetInfo('users', localUserArr);
+      localUserObj[this.userObj.login] = this.userObj;
+      localStorageSetInfo(`users`, localUserObj);
     }
   }
 
   checkUser() {
+    let localUserObj = localStorageGetInfo('users');
     let contUserArr = [];
-    let localUserArr = localStorageGetInfo('users');
 
-    if (localUserArr === null) {
+    if (localUserObj === null) {
       return false;
     } else {
-      for (let user of localUserArr) {
-        if (user.login === this.userObj.login) {
+      for (let user in localUserObj) {
+        if (user === this.userObj.login) {
           contUserArr.push(1);
         } else {
           contUserArr.push(0);
         }
       }
     }
-
+    
     if (contUserArr.includes(1)) {
       super.setErrorMsg(this.formElement.login, 'Пользователь с такой почтой уже зарегистрирован!');
       return true;
     } else {
-      return false;
+      return false
     }
   }
 
@@ -185,11 +187,13 @@ export class RegForm extends Form {
 
     if (!(super.submit())) {
       return false;
-    } else if (this.checkUser()) {
-      return false;
     } else {
-      this.addUser()
-      return true;
+      if (this.checkUser()) {
+        return false;
+      } else {
+        this.addUser()
+        return true;
+      }
     }
   }
 }

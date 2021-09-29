@@ -4,16 +4,12 @@ import Popup from './popup.js';
 
 const loginForm = new Form('login_form');
 const registerForm = new RegForm('register_form');
-const modal = new Popup;
+const modal = new Popup();
 
 loginForm.addEventListenerOnSubmit((e) => {
-    if (!loginForm.submit()) {
-        e.preventDefault();
-    } else {
-        e.preventDefault();
-        if (verificationUser()) {
-            window.location.href = "../index-logon.html";
-        }
+    e.preventDefault();
+    if (loginForm.submit() && verificationUser()) {
+        window.location.href = "../index-logon.html";
     }
 });
 
@@ -26,35 +22,21 @@ registerForm.addEventListenerOnSubmit((e) => {
     }
 });
 
-registerForm.addEventListenerForMask((e) => {
-    registerForm.setMaskForPhone(e, registerForm.formElement.phone);
-});
-
-
-
-function verificationUser() {
-    let localUsers = localStorageGetInfo('users');
-    let wrightLogin = false;
-    let wrightPass = true;
-    for (let user of localUsers) {
-        if (user.login === loginForm.formElement.login.value) {
-            if (user.password === loginForm.formElement.password.value) {
+function verificationUser(){
+    let localUserObj = localStorageGetInfo('users');
+    for (let user in localUserObj){ 
+        if (user === loginForm.formElement.login.value){
+            if (localUserObj[user].password === loginForm.formElement.password.value){
                 return true;
-            } else {
-                wrightLogin = true;
-                wrightPass = false;
+            }else {
+                loginForm.setErrorMsg(loginForm.formElement.password, 'Неверный логин');
+                return false;
             }
-        } else {
-            wrightLogin = false;
+        }else{
+            loginForm.setErrorMsg(loginForm.formElement.login, 'Пользователь не найден');
+            return false;
         }
-    }
-    if (!wrightLogin) {
-        loginForm.setErrorMsg(loginForm.formElement.login, 'Пользователь не найден');
-        return false;
-    } else if (!wrightPass) {
-        loginForm.setErrorMsg(loginForm.formElement.password, 'Неверный пароль');
-        return false;
-    }
+    }    
 }
 
 

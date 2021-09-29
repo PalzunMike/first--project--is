@@ -1,11 +1,17 @@
 import { Form } from './form.js';
 
+
 export default class Popup {
     openModalButtons = document.querySelectorAll('[data-modal-target]');
     closeModalButtons = document.querySelectorAll('[data-close-button]');
     overlay = document.getElementById('overlay');
+    
 
-    constructor() {
+    constructor() {      
+        if (Popup.instance instanceof Popup){            
+            return Popup.instance;
+        }
+        Popup.instance = this;
         this.addEventListenerOpen();
         this.addEventListenerClose();
         this.addEventListenerOverlay();
