@@ -16,21 +16,14 @@ for (let user in localUserObj) {
     listUsers.append(userEl);
 }
 
-const modal = new Popup;
+const modal = new Popup();
+const formEl = document.querySelector('.edit_block');
+const modalEl = document.getElementById('modalEdit');
+
 const users = document.querySelectorAll('.user');
-
-listUsers.addEventListener('click', (event) => {
-    const target = event.target.closest('div'); 
-    const loginUser = target.dataset.login;
-    const btnAction = event.target.dataset.buttonAction;
-    if (btnAction === 'remove'){
-        deleteUser(loginUser);
-    }
-});
-
-function deleteUser(login) {    
+function deleteUser(login) {
     for (let i = 0; i < users.length; i++) {
-        if (users[i].dataset.login === login){
+        if (users[i].dataset.login === login) {
             users[i].remove();
             delete localUserObj[login];
             localStorageSetInfo('users', localUserObj);
@@ -38,70 +31,58 @@ function deleteUser(login) {
     }
 }
 
-// function clear(element, num) {
-//     while (element.children.length > num) {
-//         element.removeChild(element.lastChild);
-//     }
-// }
-
-// function editUser() {
-//     let modal = document.getElementById('modalEdit');
-//     let formEl = document.querySelector('.edit_block');
-
-//     for (let i = 0; i < users.length; i++) {
-        
-//         editBtn[i].addEventListener('click', () => {
-//             clear(modal, 1);
-//             modal.append(formEl);                   
-
-//             for (let index of editForm.formElement) {
-//                 let inputName = index.name;
-//                 index.value = localUserArr[i][inputName];
-//             } 
-
-//             editForm.addEventListenerOnSubmit((e) =>{
-//                 console.log(localUserArr[i]);
-
-//                 e.preventDefault();
-//             })
-//         })
-//     }
-
-//     // editForm.addEventListenerOnSubmit((e) => {
-//     //     if (!editForm.submit()) {
-//     //         e.preventDefault();
-//     //     } else {
-//     //         editForm.collectInfo();
-//     //         // editForm.userObj.sex = editForm.formElement.sex.value;
-//     //         // debugger;
-//     //         // console.log(localUserArr);
-//     //         for (let i = 0; i < localUserArr.length; i++){
-//     //             let index = localUserArr[i].indexOf(editForm.formElement.login.value);
-//     //             console.log(index);
-//     //         }
-            
-//     //         // console.log(i);
-
-//     //         console.log(editForm.formElement.sex);
-
-//     //         localUserArr[index] = editForm.userObj;
-//     //         localStorageSetInfo(`users`, localUserArr)
-//     //         clear(modal, 1);
-//     //         let message = document.createElement('div');
-//     //         message.textContent = 'Пользователь успешно изменен!';
-//     //         modal.append(message);
-//     //         e.preventDefault();
-//     //     }
-//     // });    
-
+function editUser(login) {
     
-// }
+    console.log(editForm);
 
-// deleteUser();
-// editUser();
+    for (let index of editForm.formElement) {
+        if (index.type !== 'radio') {
+            let inputName = index.name;
+            index.value = localUserObj[login][inputName];
+        }
+    }
+    if (localUserObj[login].sex === 'male'){
+        document.getElementById('radioMale').checked = true
+    }else if (localUserObj[login].sex === 'female'){
+        document.getElementById('radioFemale').checked = true
+    }
 
+    editForm.addEventListenerOnSubmit((e) => {
+        e.preventDefault();
+        if (editForm.submit()) {
+            editForm.userObj.sex = editForm.formElement.sex.value;
+            // console.log(localUserObj[login]);
+            // console.log(editForm.userObj);
+            localUserObj[login] = editForm.userObj;
+            console.log(editForm.formElement);
+            
+            localStorageSetInfo('users', localUserObj);
 
+            clear(modalEl, 1);
+            let message = document.createElement('div');
+            message.id = 'succesEdit';
+            message.textContent = 'Пользователь успешно изменен!';
+            modalEl.append(message);
+        }
+    })
+}
 
+function clear(element, num) {
+    while (element.children.length > num) {
+        element.removeChild(element.lastChild);
+    }
+}
 
+listUsers.addEventListener('click', (event) => {
+    const target = event.target.closest('div');
+    const loginUser = target.dataset.login;
+    const btnAction = event.target.dataset.buttonAction;
 
-
+    if (btnAction === 'remove') {
+        deleteUser(loginUser);
+    } else if (btnAction === 'edit') {
+        clear(modalEl, 1);
+        modalEl.append(formEl);
+        editUser(loginUser);
+    }
+});

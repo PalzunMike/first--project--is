@@ -90,13 +90,15 @@ export class Form {
 
   collectInfo() {
     for (let i = 0; i < this.formElement.length; i++) {
-      if (this.formElement[i].tagName === 'INPUT' && this.formElement[i].type !== 'radio') {
+      if (this.formElement[i].tagName === 'INPUT') {
         let nameKey = this.formElement[i].name;
         let key = this.formElement[i].value;
         this.userObj[nameKey] = key;
       }
     }
   }
+
+  // && this.formElement[i].type !== 'radio'
 
   setErrorMsg(element, message) {
     const errors = document.querySelectorAll('.error');
@@ -150,7 +152,7 @@ export class RegForm extends Form {
   addUser() {
     let tempUserObj = {};
     let localUserObj = localStorageGetInfo('users');
-    let dateReg = new Date().toISOString().slice(0, 10);    
+    let dateReg = new Date().toISOString().slice(0, 10);
     this.userObj.dateRegister = dateReg;
     if (localUserObj === null) {
       tempUserObj[this.userObj.login] = this.userObj;
