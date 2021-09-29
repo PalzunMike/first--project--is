@@ -150,6 +150,8 @@ export class RegForm extends Form {
   addUser() {
     let tempUserObj = {};
     let localUserObj = localStorageGetInfo('users');
+    let dateReg = new Date().toISOString().slice(0, 10);    
+    this.userObj.dateRegister = dateReg;
     if (localUserObj === null) {
       tempUserObj[this.userObj.login] = this.userObj;
       localStorageSetInfo(`users`, tempUserObj);
@@ -174,7 +176,7 @@ export class RegForm extends Form {
         }
       }
     }
-    
+
     if (contUserArr.includes(1)) {
       super.setErrorMsg(this.formElement.login, 'Пользователь с такой почтой уже зарегистрирован!');
       return true;

@@ -22,21 +22,21 @@ registerForm.addEventListenerOnSubmit((e) => {
     }
 });
 
-function verificationUser(){
+function verificationUser() {
     let localUserObj = localStorageGetInfo('users');
-    for (let user in localUserObj){ 
-        if (user === loginForm.formElement.login.value){
-            if (localUserObj[user].password === loginForm.formElement.password.value){
-                return true;
-            }else {
-                loginForm.setErrorMsg(loginForm.formElement.password, 'Неверный логин');
-                return false;
-            }
-        }else{
-            loginForm.setErrorMsg(loginForm.formElement.login, 'Пользователь не найден');
+    const userArrLogin = Object.keys(localUserObj);
+
+    if (userArrLogin.includes(loginForm.formElement.login.value)) {
+        if (localUserObj[loginForm.formElement.login.value].password === loginForm.formElement.password.value) {
+            return true;
+        } else {
+            loginForm.setErrorMsg(loginForm.formElement.password, 'Неверный пароль');
             return false;
         }
-    }    
+    } else {
+        loginForm.setErrorMsg(loginForm.formElement.login, 'Пользователь не найден');
+        return false;
+    }
 }
 
 

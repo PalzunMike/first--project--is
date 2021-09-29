@@ -3,34 +3,38 @@ import Popup from './popup.js';
 import { localStorageGetInfo, localStorageSetInfo } from './localStorage.js';
 
 let editForm = new Form('edit_form');
-
+const localUserObj = localStorageGetInfo('users');
 const listUsers = document.querySelector('.content');
 const template = document.querySelector('#user_template');
 const userLogin = template.content.querySelector('.user_login');
 const userBlock = template.content.querySelector('.user');
 
-for (let i = 0; i < localStorage.length; i++) {
-    userLogin.textContent = localStorage.key(i);
-    userBlock.dataset.login = localStorage.key(i);
-    let user = template.content.cloneNode(true);
-    listUsers.append(user);
+for (let user in localUserObj) {
+    userLogin.textContent = user;
+    userBlock.dataset.login = user;
+    let userEl = template.content.cloneNode(true);
+    listUsers.append(userEl);
 }
 
 const modal = new Popup;
-
-const editBtn = document.querySelectorAll('.edit');
-const removeBtn = document.querySelectorAll('.remove');
 const users = document.querySelectorAll('.user');
 
+listUsers.addEventListener('click', (event) => {
+    const target = event.target.closest('div'); 
+    const loginUser = target.dataset.login;
+    const btnAction = event.target.dataset.buttonAction;
+    if (btnAction === 'remove'){
+        deleteUser(loginUser);
+    }
+});
 
-function deleteUser(login) {
-
+function deleteUser(login) {    
     for (let i = 0; i < users.length; i++) {
-        removeBtn[i].addEventListener('click', () => {
+        if (users[i].dataset.login === login){
             users[i].remove();
-            localUserArr.splice([i], 1);
-            localStorageSetInfo('users', localUserArr);
-        })
+            delete localUserObj[login];
+            localStorageSetInfo('users', localUserObj);
+        }
     }
 }
 
@@ -93,7 +97,7 @@ function deleteUser(login) {
     
 // }
 
-deleteUser();
+// deleteUser();
 // editUser();
 
 
