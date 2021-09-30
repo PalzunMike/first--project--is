@@ -5,14 +5,14 @@ export default class Popup {
     openModalButtons = document.querySelectorAll('[data-modal-target]');
     closeModalButtons = document.querySelectorAll('[data-close-button]');
     overlay = document.getElementById('overlay');
-    
 
-    constructor() {      
-        if (Popup.instance instanceof Popup){            
+
+    constructor() {
+        if (Popup.instance instanceof Popup) {
             return Popup.instance;
         }
         Popup.instance = this;
-        this.addEventListenerOpen();
+        // this.addEventListenerOpen();
         this.addEventListenerClose();
         this.addEventListenerOverlay();
     }
@@ -30,21 +30,20 @@ export default class Popup {
         overlay.classList.remove('active');
     }
 
-    addEventListenerOpen() {
-        this.openModalButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                const modal = document.querySelector(button.dataset.modalTarget);
-                this.openModal(modal);
-            })
-        })
-    }
+    // addEventListenerOpen() {
+    //     this.openModalButtons.forEach(button => {
+    //         button.addEventListener('click', () => {
+    //             const modal = document.querySelector(button.dataset.modalTarget);
+    //             this.openModal(modal);
+    //         })
+    //     })
+    // }
 
     addEventListenerClose() {
-        this.closeModalButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                const modal = button.closest('.modal')
-                this.closeModal(modal);
-            })
+        const closeBtn = document.querySelector('.close-btn');
+        closeBtn.addEventListener('click', () => {
+            const modal = closeBtn.closest('.modal')
+            this.closeModal(modal);
         })
     }
 

@@ -33,28 +33,32 @@ function deleteUser(login) {
 
 function editUser(login) {
     
-    console.log(editForm);
-
+    console.log(login);
+    
+    //Наполняем форму из local storage соответвующими значениями;
     for (let index of editForm.formElement) {
         if (index.type !== 'radio') {
             let inputName = index.name;
             index.value = localUserObj[login][inputName];
         }
     }
+
+    //Проверяем признак sex в local storage, и ставим checked на соответвующий radio button;
     if (localUserObj[login].sex === 'male'){
         document.getElementById('radioMale').checked = true
     }else if (localUserObj[login].sex === 'female'){
         document.getElementById('radioFemale').checked = true
     }
 
+    //При submit формы меняем объект localUserObj и перезаписываем его в local Storage;
     editForm.addEventListenerOnSubmit((e) => {
         e.preventDefault();
         if (editForm.submit()) {
             editForm.userObj.sex = editForm.formElement.sex.value;
-            // console.log(localUserObj[login]);
-            // console.log(editForm.userObj);
+            
             localUserObj[login] = editForm.userObj;
-            console.log(editForm.formElement);
+
+            console.log(login);
             
             localStorageSetInfo('users', localUserObj);
 
@@ -81,8 +85,14 @@ listUsers.addEventListener('click', (event) => {
     if (btnAction === 'remove') {
         deleteUser(loginUser);
     } else if (btnAction === 'edit') {
+
+        const editOpenBtn = document.querySelector('.edit');
+        const modalWindow = document.querySelector(editOpenBtn.dataset.modalTarget);        
+        modal.openModal(modalWindow);
+
         clear(modalEl, 1);
         modalEl.append(formEl);
         editUser(loginUser);
     }
 });
+

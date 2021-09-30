@@ -6,6 +6,21 @@ const loginForm = new Form('login_form');
 const registerForm = new RegForm('register_form');
 const modal = new Popup();
 
+const loginOpenBtn = document.querySelector('.singInBtn');
+const registerOpenBtn = document.querySelector('.regBtn');
+
+const modalLoginWindow = document.querySelector(loginOpenBtn.dataset.modalTarget);
+const modalPasswordWindow = document.querySelector(registerOpenBtn.dataset.modalTarget);
+
+loginOpenBtn.addEventListener('click', () => {
+    modal.openModal(modalLoginWindow);
+});
+
+registerOpenBtn.addEventListener('click', () => {
+    modal.openModal(modalPasswordWindow)
+});
+
+
 loginForm.addEventListenerOnSubmit((e) => {
     e.preventDefault();
     if (loginForm.submit() && verificationUser()) {
@@ -14,11 +29,9 @@ loginForm.addEventListenerOnSubmit((e) => {
 });
 
 registerForm.addEventListenerOnSubmit((e) => {
-    if (!registerForm.submit()) {
-        e.preventDefault();
-    } else {
+    e.preventDefault();
+    if (registerForm.submit()) {
         document.querySelector('.register_block').textContent = 'Пользователь успешно добавлен. Воспользуйтесь кнопкой входа, чтобы зайти на сайт.';
-        e.preventDefault();
     }
 });
 
