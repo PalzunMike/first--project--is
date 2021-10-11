@@ -22,13 +22,21 @@
     </header>
     <div class = "wrapper">
         <nav class="main menu"></nav>
-        <section class="main content"></section>
+        <section class="main content">
+            <template id="user_template">
+                <div class="user" data-login="">
+                    <p class="user_login"></p>
+                    <button data-modal-target="#modalEdit" class ="edit btn"><img data-button-action = "edit" src="assets/img/edit.png"/></button>
+                    <button class ="remove btn"><img data-button-action = "remove" src="assets/img/remove.png"/></button>
+                </div>
+            </template>
+        </section>
         <aside class="main banners"></aside> 
     </div>
     <div class="modal" id="modalLog">
         <button data-close-button class="close-btn">&times;</button>
         <div class="login_block">                
-            <form name="loginform" id="login_form">                 
+            <form id="login_form">                 
                 <input name="login" type="email" class="field" placeholder="Эл. адрес" pattern="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?" title="Данная запись не являтся электронной почтой" required>
                 <input name="password" type="password" class="field" placeholder="Пароль" pattern = "(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{5,}" title="Пароль должен быть не менне 5 символов, а также содержать по крайней мере одно число, одну заглавную и строчную буквы латинского алфавита" required>                
                 <button name="submit" class="submit loginBtn" type="submit" formnovalidate disabled>Войти</button>           
@@ -38,13 +46,34 @@
     <div class="modal" id="modalReg">
         <button data-close-button class="close-btn">&times;</button>
         <div class="register_block">                
-            <form name="registerform" id="register_form">
+            <form id="register_form">
                 <input name="firstName" type="text" class="field" placeholder="Имя" required>
                 <input name="secondName" type="text" class="field" placeholder="Фамилия" required> 
                 <input name="login" type="email" class="field" placeholder="Эл. адрес" pattern="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?" title="Данная запись не являтся электронной почтой" required>
                 <input name="password"type="password" class="field" placeholder="Пароль" pattern = "(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{5,}" title="Пароль должен быть не менне 5 символов, а также содержать по крайней мере одно число, одну заглавную и строчную буквы латинского алфавита" required>
                 <input name="phone" type="tel" class="field" value="+375 (__) ___-__-__"  title="Вы указали телефон в неверном формате" pattern="^\+375(\s+)?\(?(17|25|29|33|44)\)?(\s+)?[0-9]{3}-?[0-9]{2}-?[0-9]{2}$" required>            
                 <button name="submit" class="submit registerBtn" type="submit" formnovalidate disabled>Зарегистрироватся</button>
+            </form>
+        </div>
+    </div>
+    <div class="modal" id="modalEdit">
+        <button data-close-button class="close-btn">&times;</button>
+        <div class="edit_block">
+            <img src="assets/img/photo.png" alt="photo">
+            <form id="edit_form">
+                <label>Адрес эл. почты (логин): <input name="login" id="login" class="field" pattern="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?" title="Данная запись не являтся электронной почтой" required></label>
+                <label>Пароль: <input name="password" id="password" class="field" pattern = "(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{5,}" title="Пароль должен быть не менне 5 символов, а также содержать по крайней мере одно число, одну заглавную и строчную буквы латинского алфавита" required></label>
+                <label>Имя: <input name="firstName" id="firstName" class="field" required></label>
+                <label>Фамилия: <input name="secondName" id="secondName" class="field" required></label>
+                <label>Телефон: <input name="phone" id="phone" class="field" pattern="^\+375(\s+)?\(?(17|25|29|33|44)\)?(\s+)?[0-9]{3}-?[0-9]{2}-?[0-9]{2}$" title="Вы указали телефон в неверном формате" required></label>
+                <label>Дата рождения: <input name="dateOfBirthday" type="date" class="field"></label>
+                <label id="sex">Пол: 
+                    <label><input name="sex" type="radio" id="radioMale" value="male"/>Мужской</label>
+                    <label><input name="sex" type="radio" id="radioFemale" value="female"/>Женский</label>
+                </label>
+                
+                <label>Дата регистрации: <input name="dateRegister" type="date" class="field" readonly></label>
+                <button name="submit" type="submit" class="submit" id="editBtn" formnovalidate>Принять</button>
             </form>
         </div>
     </div>

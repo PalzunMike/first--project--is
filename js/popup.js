@@ -1,4 +1,4 @@
-import { Form } from './form.js';
+import Form  from './Form.js';
 
 
 export default class Popup {
@@ -8,13 +8,16 @@ export default class Popup {
 
 
     constructor() {
+        this.singleTone();
+        this.addEventListenerClose();
+        this.addEventListenerOverlay();
+    }
+
+    singleTone(){
         if (Popup.instance instanceof Popup) {
             return Popup.instance;
         }
         Popup.instance = this;
-        // this.addEventListenerOpen();
-        this.addEventListenerClose();
-        this.addEventListenerOverlay();
     }
 
     openModal(modal) {
@@ -28,16 +31,7 @@ export default class Popup {
         if (modal === null) return
         modal.classList.remove('active');
         overlay.classList.remove('active');
-    }
-
-    // addEventListenerOpen() {
-    //     this.openModalButtons.forEach(button => {
-    //         button.addEventListener('click', () => {
-    //             const modal = document.querySelector(button.dataset.modalTarget);
-    //             this.openModal(modal);
-    //         })
-    //     })
-    // }
+    }    
 
     addEventListenerClose() {
         const closeBtn = document.querySelector('.close-btn');
@@ -54,5 +48,10 @@ export default class Popup {
                 this.closeModal(modal);
             });
         })
+    }
+    clear(num) {
+        while (this.children.length > num) {
+            this.removeChild(element.lastChild);
+        }
     }
 }
