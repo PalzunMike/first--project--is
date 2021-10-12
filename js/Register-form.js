@@ -1,29 +1,29 @@
-import  Form  from './Form.js';
+import Form from './Form.js';
 
 export default class RegisterForm extends Form {
 
   addUser() {
     let tempUserObj = {};
-    let localUserObj = localStorageGetInfo('users');
+    const localStorageUserObj = this.storage.getObjectOnStorage('users');
     let dateReg = new Date().toISOString().slice(0, 10);
     this.userObj.dateRegister = dateReg;
-    if (localUserObj === null) {
+    if (localStorageUserObj === null) {
       tempUserObj[this.userObj.login] = this.userObj;
-      localStorageSetInfo(`users`, tempUserObj);
+      this.storage.setObjectOnStorage(`users`, tempUserObj);
     } else {
-      localUserObj[this.userObj.login] = this.userObj;
-      localStorageSetInfo(`users`, localUserObj);
+      localStorageUserObj[this.userObj.login] = this.userObj;
+      this.storage.setObjectOnStorage(`users`, localStorageUserObj);
     }
   }
 
   checkUser() {
-    let localUserObj = localStorageGetInfo('users');
+    const localStorageUserObj = this.storage.getObjectOnStorage('users');
     let contUserArr = [];
 
-    if (localUserObj === null) {
+    if (localStorageUserObj === null) {
       return false;
     } else {
-      for (let user in localUserObj) {
+      for (let user in localStorageUserObj) {
         if (user === this.userObj.login) {
           contUserArr.push(1);
         } else {
@@ -39,16 +39,16 @@ export default class RegisterForm extends Form {
       return false
     }
   }
-  
+
   submit() {
 
-    if (!(super.submit())) {
+    if (!(this.isValid())) {
       return false;
     } else {
       if (this.checkUser()) {
         return false;
       } else {
-        this.addUser()
+        this.addUser();
         return true;
       }
     }

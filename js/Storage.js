@@ -1,4 +1,4 @@
-export default class Storage {
+class Storage {
 
     constructor() {
         // this.key = key;
@@ -13,5 +13,7 @@ export default class Storage {
         return JSON.parse(localStorage.getItem(key));
     }
 }
+
+export const storage = new Storage();
 
 

@@ -1,10 +1,15 @@
+import { storage } from "./Storage.js";
 export default class Form {
 
   userObj = {};
 
   constructor(form) {
     this.formElement = document.getElementById(form);
+    this.storage = storage;
+    // this.objectInStorage = storage.getObjectOnStorage('users');
+
     this.activateButton();
+
     window.addEventListener('load', (e) => {
       if (this.formElement.phone) {
         this.setMaskForPhone(e);
@@ -94,6 +99,7 @@ export default class Form {
         this.userObj[nameKey] = key;
       }
     }
+    this.userObj.userActive = false;
   }
 
   setErrorMsg(element, message) {
@@ -108,7 +114,7 @@ export default class Form {
     error.className = 'error';
     error.innerHTML = message;
     element.before(error);
-  }  
+  }
 
   isValid() {
     const validArray = [];
@@ -126,8 +132,11 @@ export default class Form {
 
     if (validArray.includes(0)) {
       return false;
-    } else { return true; }
-  }  
+    } else {
+      this.collectInfo();
+      return true;
+    }
+  }
 
   addEventListenerOnSubmit(callback) {
     this.formElement.addEventListener('submit', callback);

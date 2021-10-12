@@ -19,17 +19,15 @@
                 <button data-modal-target="#modalReg" name="register" class="regBtn" type="button">Регистрация</button>
             </form>
         </div>
+        <div class="welcome_block hide">
+            <p>Добро пожаловать,<span class="welcome_message">Ivan Bondar</span></p>
+            <button class="quit_btn">Выйти</button>
+        </div>
     </header>
     <div class = "wrapper">
         <nav class="main menu"></nav>
         <section class="main content">
-            <template id="user_template">
-                <div class="user" data-login="">
-                    <p class="user_login"></p>
-                    <button data-modal-target="#modalEdit" class ="edit btn"><img data-button-action = "edit" src="assets/img/edit.png"/></button>
-                    <button class ="remove btn"><img data-button-action = "remove" src="assets/img/remove.png"/></button>
-                </div>
-            </template>
+            
         </section>
         <aside class="main banners"></aside> 
     </div>
@@ -81,6 +79,13 @@
     <footer id="footer">
 
     </footer>
+    <template id="user_template">
+        <div class="user" data-login="">
+            <p class="user_login"></p>
+            <button data-modal-target="#modalEdit" class ="edit btn"><img data-button-action = "edit" src="assets/img/edit.png"/></button>
+            <button class ="remove btn"><img data-button-action = "remove" src="assets/img/remove.png"/></button>
+        </div>
+    </template>
 
 <script type="module" src="js\script.js"></script>
   

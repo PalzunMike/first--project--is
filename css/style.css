@@ -112,6 +112,18 @@ h1 a img{
     width: 75%;
 }
 
+.welcome_block{
+    margin: 30px 50px;
+    display: flex;
+    font-size: 1em;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-end;
+    width: 35%;
+    color: white;
+    /* outline: 1px solid red; */
+}
+
 .login_block, .register_block, .edit_block{
     width: 15%;
     min-width: 220px;
@@ -196,7 +208,7 @@ h1 a img{
     width: 15px;
 }
 
-.submit, .singInBtn, .regBtn, #editBtn{
+.submit, .singInBtn, .regBtn, #editBtn, .quit_btn{
     transition: all .5s;
     color: #fff;
     background-color: var(--btn-color);
@@ -221,7 +233,7 @@ h1 a img{
     margin-top: 10px;
 }
 
-.singInBtn, .regBtn{
+.singInBtn, .regBtn, .quit_btn{
     height: 30px;
     width: 100px;
     min-width: 40px;
@@ -233,7 +245,7 @@ h1 a img{
     opacity: .4;
 }
 
-.submit:hover:enabled, .singInBtn:hover, .regBtn:hover, #editBtn:hover{
+.submit:hover:enabled, .singInBtn:hover, .regBtn:hover, #editBtn:hover, .quit_btn:hover{
     transition: all .5s;
     background-color: var(--btn-hover-color);    
     -webkit-transition: all .5s;
@@ -340,6 +352,10 @@ h1 a img{
 #overlay.active{
     opacity: 1;
     pointer-events: all;
+}
+
+.hide{
+    display: none;
 }
 
 @media screen and (max-width: 600px){

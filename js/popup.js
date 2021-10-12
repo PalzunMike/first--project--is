@@ -1,11 +1,10 @@
-import Form  from './Form.js';
+import Form from './Form.js';
+class Popup {
+    element;
 
-
-export default class Popup {
     openModalButtons = document.querySelectorAll('[data-modal-target]');
     closeModalButtons = document.querySelectorAll('[data-close-button]');
     overlay = document.getElementById('overlay');
-
 
     constructor() {
         this.singleTone();
@@ -13,7 +12,7 @@ export default class Popup {
         this.addEventListenerOverlay();
     }
 
-    singleTone(){
+    singleTone() {
         if (Popup.instance instanceof Popup) {
             return Popup.instance;
         }
@@ -22,6 +21,7 @@ export default class Popup {
 
     openModal(modal) {
         Form.clearErrors();
+        this.element = modal;
         if (modal === null) return
         modal.classList.add('active');
         overlay.classList.add('active');
@@ -31,7 +31,7 @@ export default class Popup {
         if (modal === null) return
         modal.classList.remove('active');
         overlay.classList.remove('active');
-    }    
+    }
 
     addEventListenerClose() {
         const closeBtn = document.querySelector('.close-btn');
@@ -50,8 +50,10 @@ export default class Popup {
         })
     }
     clear(num) {
-        while (this.children.length > num) {
-            this.removeChild(element.lastChild);
+        while (this.element.children.length > num) {
+            this.element.removeChild(this.element.lastChild);
         }
     }
 }
+
+export const popup = new Popup();

@@ -2,11 +2,14 @@ import Form from './Form.js';
 
 export default class EnterForm extends Form {
 
-    verificationUser(object) {        
-        const userArrLogin = Object.keys(object);
+    verificationUser() {
+        const localStorageUserObj = this.storage.getObjectOnStorage('users');
+        const userArrLogin = Object.keys(localStorageUserObj);
 
         if (userArrLogin.includes(this.formElement.login.value)) {
-            if (object[this.formElement.login.value].password === this.formElement.password.value) {
+            if (localStorageUserObj[this.formElement.login.value].password === this.formElement.password.value) {
+                localStorageUserObj[this.formElement.login.value].userActive = true;
+                this.storage.setObjectOnStorage(`users`, localStorageUserObj);
                 return true;
             } else {
                 this.setErrorMsg(this.formElement.password, 'Неверный пароль');
@@ -19,11 +22,8 @@ export default class EnterForm extends Form {
     }
 
     submit() {
-        if (!(this.isValid())) {
+        if (!this.isValid() || !this.verificationUser()) {
             return false;
-        } else {
-            this.collectInfo();
-            return true;
-        }
+        } else { return true; }
     }
 }

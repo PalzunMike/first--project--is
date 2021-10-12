@@ -1,16 +1,16 @@
 import Page from './adminPage.js'
-import Storage from './Storage.js'
+import {storage} from './Storage.js'
 import EnterForm from './Enter-form.js';
 import RegisterForm from './Register-form.js';
 import EditForm from './Edit-form.js';
-import Popup from './Popup.js';
+import {popup} from './Popup.js';
 
 
 const page = new Page();
 
-const localUserObj = page.storage.getObjectOnStorage('users');
+const localUserObj = storage.getObjectOnStorage('users');
 
-const popup = new Popup();
+// const popup = new Popup();
 const enterForm = new EnterForm('login_form');
 const registerForm = new RegisterForm('register_form');
 const editForm = new EditForm('edit_form');
@@ -18,8 +18,10 @@ const editForm = new EditForm('edit_form');
 
 const enterOpenBtn = document.querySelector('.singInBtn');
 const registerOpenBtn = document.querySelector('.regBtn');
+
 const modalEnterWindow = document.querySelector(enterOpenBtn.dataset.modalTarget);
 const modalPasswordWindow = document.querySelector(registerOpenBtn.dataset.modalTarget);
+
 
 enterOpenBtn.addEventListener('click', () => {
     popup.openModal(modalEnterWindow);
@@ -32,8 +34,8 @@ registerOpenBtn.addEventListener('click', () => {
 
 enterForm.addEventListenerOnSubmit((e) => {
     e.preventDefault();
-    if (enterForm.submit() && enterForm.verificationUser(localUserObj)) {
-        window.location.href = "../index-logon.html";
+    if (enterForm.submit()) {
+        page.renderUsers();
     }
 });
 
@@ -44,44 +46,34 @@ registerForm.addEventListenerOnSubmit((e) => {
     }
 });
 
+const quitBtn = document.querySelector('.quit_btn');
 
-// const listUsers = document.querySelector('.content');
-// const template = document.querySelector('#user_template');
-// const userLogin = template.content.querySelector('.user_login');
-// const userBlock = template.content.querySelector('.user');
+quitBtn.addEventListener('click', page.quitUser);
+
+const formEl= document.querySelector('.edit_block');
+const modalEditwindow = document.getElementById('modalEdit');
+const listUsers = document.querySelector('.content');
 
 
+listUsers.addEventListener('click', (event) => {
+    const users = document.querySelectorAll('.user');
+    const target = event.target.closest('div');
+    const loginUser = target.dataset.login;
+    const btnAction = event.target.dataset.buttonAction;
 
-// for (let user in localUserObj) {
-//     userLogin.textContent = user;
-//     userBlock.dataset.login = user;
-//     let userEl = template.content.cloneNode(true);
-//     listUsers.append(userEl);
-// }
+    if (btnAction === 'remove') {
+        editForm.deleteUser(loginUser, users);
+    } else if (btnAction === 'edit') {
 
-// const formEl = document.querySelector('.edit_block');
-// const modalEl = document.getElementById('modalEdit');
+        const editOpenBtn = document.querySelector('.edit');
+        const modalEditWindow = document.querySelector(editOpenBtn.dataset.modalTarget);
+        popup.openModal(modalEditWindow);
 
-// const users = document.querySelectorAll('.user');
-
-// listUsers.addEventListener('click', (event) => {
-//     const target = event.target.closest('div');
-//     const loginUser = target.dataset.login;
-//     const btnAction = event.target.dataset.buttonAction;
-
-//     if (btnAction === 'remove') {
-//         deleteUser(loginUser);
-//     } else if (btnAction === 'edit') {
-
-//         const editOpenBtn = document.querySelector('.edit');
-//         const modalWindow = document.querySelector(editOpenBtn.dataset.modalTarget);
-//         modal.openModal(modalWindow);
-
-//         clear(modalEl, 1);
-//         modalEl.append(formEl);
-//         editUser(loginUser);
-//     }
-// });
+        popup.clear(1);
+        modalEditWindow.append(formEl);
+        editForm.editUser(loginUser);
+    }
+});
 
 
 
