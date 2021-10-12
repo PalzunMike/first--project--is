@@ -1,5 +1,5 @@
 import RegisterForm from './Register-form.js';
-import {popup} from './Popup.js'
+import { popup } from './Popup.js'
 
 export default class EditForm extends RegisterForm {
 

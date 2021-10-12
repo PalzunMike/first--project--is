@@ -37,7 +37,7 @@ export default class Page {
         const welcomeBlock = document.querySelector('.welcome_block');
         welcomeBlock.classList.remove('hide');
 
-        
+
     }
 
     quitUser() {
