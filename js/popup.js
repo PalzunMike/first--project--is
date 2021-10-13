@@ -34,11 +34,16 @@ class Popup {
     }
 
     addEventListenerClose() {
-        const closeBtn = document.querySelector('.close-btn');
-        closeBtn.addEventListener('click', () => {
-            const modal = closeBtn.closest('.modal')
-            this.closeModal(modal);
+        const modalWindows = document.querySelectorAll('.modal');
+        modalWindows.forEach(modals => {
+            modals.addEventListener('click', (e) => {
+                if (e.target.dataset.closeButton === '') {
+                    const modal = e.target.closest('.modal')
+                    this.closeModal(modal);
+                }
+            })
         })
+
     }
 
     addEventListenerOverlay() {

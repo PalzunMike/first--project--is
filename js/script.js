@@ -1,5 +1,4 @@
 import Page from './adminPage.js'
-import { storage } from './Storage.js'
 import EnterForm from './Enter-form.js';
 import RegisterForm from './Register-form.js';
 import EditForm from './Edit-form.js';
@@ -7,10 +6,6 @@ import { popup } from './Popup.js';
 
 
 const page = new Page();
-
-const localUserObj = storage.getObjectOnStorage('users');
-
-// const popup = new Popup();
 const enterForm = new EnterForm('login_form');
 const registerForm = new RegisterForm('register_form');
 const editForm = new EditForm('edit_form');
@@ -51,7 +46,6 @@ const quitBtn = document.querySelector('.quit_btn');
 quitBtn.addEventListener('click', page.quitUser);
 
 const formEl = document.querySelector('.edit_block');
-const modalEditwindow = document.getElementById('modalEdit');
 const listUsers = document.querySelector('.content');
 
 

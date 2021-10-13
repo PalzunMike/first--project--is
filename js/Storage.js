@@ -1,10 +1,5 @@
 class Storage {
 
-    constructor() {
-        // this.key = key;
-        // this.object = object;
-    }
-
     setObjectOnStorage(key, object) {
         localStorage.setItem(key, JSON.stringify(object))
     }
