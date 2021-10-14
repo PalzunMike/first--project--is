@@ -2,6 +2,36 @@ import Form from './Form.js';
 
 export default class EnterForm extends Form {
 
+    templateURL = './templates/enter-form-template.html';
+
+    constructor(...args) {
+        super(...args);
+
+        this.getTemplate();
+
+        // this.init();
+        
+       
+
+
+        // this.parentElement.addEventListener('load', () => {
+        //     debugger;
+        //     this.activateButton();
+            
+        // });
+
+        // this.parentElement.addEventListener('load', console.log(this.template));
+
+        // this.activateButton();       
+    }
+
+    async init(){
+        // debugger;
+        await this.getTemplate();
+        this.activateButton();
+        // this.addEventListenerOnSubmit();
+    }
+
     verificationUser() {
         const localStorageUserObj = this.storage.getObjectOnStorage('users');
         const userArrLogin = Object.keys(localStorageUserObj);
@@ -24,6 +54,7 @@ export default class EnterForm extends Form {
     submit() {
         if (!this.isValid() || !this.verificationUser()) {
             return false;
-        } else { return true; }
+        }
+        return true;
     }
 }

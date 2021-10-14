@@ -2,6 +2,16 @@ import Form from './Form.js';
 
 export default class RegisterForm extends Form {
 
+  templateURL = './templates/register-form-template.html';
+
+  constructor(...args) {
+    super(...args);
+    this.getTemplate();
+    this.activateButton();
+
+    // this.parentElement.addEventListener('load', console.log(this.template))
+  }
+
   addUser() {
     let tempUserObj = {};
     const localStorageUserObj = this.storage.getObjectOnStorage('users');
@@ -52,5 +62,6 @@ export default class RegisterForm extends Form {
         return true;
       }
     }
+    return true;
   }
 }

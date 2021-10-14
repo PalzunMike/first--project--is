@@ -1,0 +1,10 @@
+<div class="register_block">                
+    <form id="register_form">
+        <input name="firstName" type="text" class="field" placeholder="Имя" required>
+        <input name="secondName" type="text" class="field" placeholder="Фамилия" required> 
+        <input name="login" type="email" class="field" placeholder="Эл. адрес" pattern="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?" title="Данная запись не являтся электронной почтой" required>
+        <input name="password"type="password" class="field" placeholder="Пароль" pattern = "(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{5,}" title="Пароль должен быть не менне 5 символов, а также содержать по крайней мере одно число, одну заглавную и строчную буквы латинского алфавита" required>
+        <input name="phone" type="tel" class="field" value="+375 (__) ___-__-__"  title="Вы указали телефон в неверном формате" pattern="^\+375(\s+)?\(?(17|25|29|33|44)\)?(\s+)?[0-9]{3}-?[0-9]{2}-?[0-9]{2}$" required>            
+        <button name="submit" class="submit registerBtn" type="submit" formnovalidate disabled>Зарегистрироватся</button>
+    </form>
+</div>

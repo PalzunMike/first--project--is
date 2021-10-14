@@ -2,19 +2,65 @@ import { storage } from "./Storage.js";
 export default class Form {
 
   userObj = {};
+  template;
+  templateInited;
 
-  constructor(form) {
-    this.formElement = document.getElementById(form);
+  constructor(form, parentElement) {
+    this.form = form;
+    this.formElement;
     this.storage = storage;
-    // this.objectInStorage = storage.getObjectOnStorage('users');
+    this.parentElement = parentElement;
 
-    this.activateButton();
+    // this.event = this.event  
+    // console.log(parentElement);
+    // this.renderForm(parentElement);
+    // this.activateButton();
+    // window.addEventListener('load', (e) => {
+    //   if (this.formElement.phone) {// TODO:    
+    //     this.setMaskForPhone(e);
+    //   }
+    // })
 
-    window.addEventListener('load', (e) => {
-      if (this.formElement.phone) {
-        this.setMaskForPhone(e);
-      }
-    })
+  }
+
+  async getTemplate() {
+    // debugger;
+    this.templateInited = new Promise(async (resolve, reject) => {
+      const responce = await fetch(this.templateURL);
+      const template = await responce.text();
+      this.template = template;
+      // this.renderForm(this.parentElement);
+
+      debugger;
+      resolve();
+    });
+
+
+    // this.templateInited = Promise.resolve();
+  }
+
+  // async getTemplate() {
+  //   debugger;
+  //     fetch(this.templateURL)
+  //     .then (responce => responce.text());
+  //     this.template = rensponce;
+
+  //     // responce.onload = () => resolve (this.template);
+  //     // responce.onerror = () => reject(new Error(`Ошибка загрузки темплейта ${this.templateURL}`));
+  //     // this.renderForm(this.parentElement);
+
+  // }
+
+  async renderForm(modal) {
+    debugger;
+    await this.templateInited;
+    console.log(this.template);
+    modal.insertAdjacentHTML('beforeend', this.template);
+    const templateHTML = new DOMParser().parseFromString(this.template, "text/html");
+    
+    this.formElement = templateHTML.getElementById(this.form);
+
+    console.log(this.formElement);
 
   }
 
@@ -32,6 +78,7 @@ export default class Form {
   }
 
   activateButton() {
+    debugger;
     this.formElement.addEventListener('input', () => {
       for (let element of this.formElement) {
         if (element.value.length > 0 && element.value !== "+375 (__) ___-__-__") {
@@ -138,7 +185,10 @@ export default class Form {
     }
   }
 
-  addEventListenerOnSubmit(callback) {
+  async addEventListenerOnSubmit(callback) {
+    // debugger;
+    await this.templateInited;
+    debugger;
     this.formElement.addEventListener('submit', callback);
   }
 }

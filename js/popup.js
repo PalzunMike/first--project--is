@@ -20,8 +20,9 @@ class Popup {
     }
 
     openModal(modal) {
-        Form.clearErrors();
+        // Form.clearErrors();
         this.element = modal;
+        // this.clear(1);
         if (modal === null) return
         modal.classList.add('active');
         overlay.classList.add('active');
@@ -35,7 +36,7 @@ class Popup {
 
     addEventListenerClose() {
         const modalWindows = document.querySelectorAll('.modal');
-        modalWindows.forEach(modals => {
+        modalWindows.forEach(modals => {//TODO:
             modals.addEventListener('click', (e) => {
                 if (e.target.dataset.closeButton === '') {
                     const modal = e.target.closest('.modal')

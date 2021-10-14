@@ -8,7 +8,6 @@ export default class Page {
 
     renderUsers() {
         const modalActive = document.querySelector('.active');
-
         popup.closeModal(modalActive);
 
         const localStorageUserObj = storage.getObjectOnStorage('users');
@@ -41,7 +40,6 @@ export default class Page {
     }
 
     quitUser() {
-        // debugger;
         const localStorageUserObj = storage.getObjectOnStorage('users');
 
         for (let user in localStorageUserObj) {

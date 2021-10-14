@@ -3,6 +3,13 @@ import { popup } from './Popup.js'
 
 export default class EditForm extends RegisterForm {
 
+    templateURL = './templates/edit-form-template.html';   
+
+    constructor(...args){
+        super(...args); 
+        this.getTemplate();       
+    } 
+
     deleteUser(login, users) {
         const localStorageUserObj = this.storage.getObjectOnStorage('users');
         for (let i = 0; i < users.length; i++) {
@@ -26,14 +33,14 @@ export default class EditForm extends RegisterForm {
             }
         }
 
-        //Проверяем признак sex в local storage, и ставим checked на соответвующий radio button;
+        //Проверяем признак sex в local storage, и ставим checked на соответвующий radio button;        
         if (localStorageUserObj[login].sex === 'male') {
             document.getElementById('radioMale').checked = true
         } else if (localStorageUserObj[login].sex === 'female') {
             document.getElementById('radioFemale').checked = true
         }
 
-        //При submit формы меняем объект localUserObj и перезаписываем его в local Storage;
+        //При submit формы меняем объект localStorageUserObj и перезаписываем его в local Storage;
         this.addEventListenerOnSubmit((e) => {
             e.preventDefault();
             if (this.isValid()) {

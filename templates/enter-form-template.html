@@ -1,0 +1,12 @@
+<div class="login_block">
+    <form id="login_form">
+        <input name="login" type="email" class="field" placeholder="Эл. адрес"
+            pattern="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?"
+            title="Данная запись не являтся электронной почтой" required>
+        <input name="password" type="password" class="field" placeholder="Пароль"
+            pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{5,}"
+            title="Пароль должен быть не менне 5 символов, а также содержать по крайней мере одно число, одну заглавную и строчную буквы латинского алфавита"
+            required>
+        <button name="submit" class="submit loginBtn" type="submit" formnovalidate >Войти</button>
+    </form>
+</div>
