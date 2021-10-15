@@ -7,9 +7,10 @@ export default class RegisterForm extends Form {
   constructor(...args) {
     super(...args);
     this.getTemplate();
-    this.activateButton();
+    this.activateButton();    
+    this.setMaskForPhone();
 
-    // this.parentElement.addEventListener('load', console.log(this.template))
+    
   }
 
   addUser() {

@@ -20,9 +20,9 @@ class Popup {
     }
 
     openModal(modal) {
-        // Form.clearErrors();
+        Form.clearErrors();
         this.element = modal;
-        // this.clear(1);
+        this.clear(1);
         if (modal === null) return
         modal.classList.add('active');
         overlay.classList.add('active');
@@ -30,21 +30,19 @@ class Popup {
 
     closeModal(modal) {
         if (modal === null) return
+        modal.removeAttribute('id');
         modal.classList.remove('active');
         overlay.classList.remove('active');
     }
 
     addEventListenerClose() {
-        const modalWindows = document.querySelectorAll('.modal');
-        modalWindows.forEach(modals => {//TODO:
-            modals.addEventListener('click', (e) => {
-                if (e.target.dataset.closeButton === '') {
-                    const modal = e.target.closest('.modal')
-                    this.closeModal(modal);
-                }
-            })
+        const modalWindows = document.querySelector('.modal');
+        modal.addEventListener('click', (e) => {
+            if (e.target.dataset.closeButton === '') {
+                const modal = e.target.closest('.modal')
+                this.closeModal(modal);
+            }
         })
-
     }
 
     addEventListenerOverlay() {

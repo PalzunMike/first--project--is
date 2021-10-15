@@ -10,12 +10,8 @@ export default class Form {
     this.formElement;
     this.storage = storage;
     this.parentElement = parentElement;
-
-    // this.event = this.event  
-    // console.log(parentElement);
-    // this.renderForm(parentElement);
-    // this.activateButton();
-    // window.addEventListener('load', (e) => {
+    // console.log(this.formElement);
+    // this.formElement.addEventListener('load', (e) => {
     //   if (this.formElement.phone) {// TODO:    
     //     this.setMaskForPhone(e);
     //   }
@@ -24,44 +20,18 @@ export default class Form {
   }
 
   async getTemplate() {
-    // debugger;
     this.templateInited = new Promise(async (resolve, reject) => {
       const responce = await fetch(this.templateURL);
       const template = await responce.text();
       this.template = template;
-      // this.renderForm(this.parentElement);
-
-      debugger;
+      this.renderForm(this.parentElement);
       resolve();
     });
-
-
-    // this.templateInited = Promise.resolve();
   }
 
-  // async getTemplate() {
-  //   debugger;
-  //     fetch(this.templateURL)
-  //     .then (responce => responce.text());
-  //     this.template = rensponce;
-
-  //     // responce.onload = () => resolve (this.template);
-  //     // responce.onerror = () => reject(new Error(`Ошибка загрузки темплейта ${this.templateURL}`));
-  //     // this.renderForm(this.parentElement);
-
-  // }
-
-  async renderForm(modal) {
-    debugger;
-    await this.templateInited;
-    console.log(this.template);
-    modal.insertAdjacentHTML('beforeend', this.template);
-    const templateHTML = new DOMParser().parseFromString(this.template, "text/html");
-    
-    this.formElement = templateHTML.getElementById(this.form);
-
-    console.log(this.formElement);
-
+   renderForm(modal) {
+    modal.insertAdjacentHTML('beforeend', this.template); 
+    this.formElement = document.getElementById(this.form);
   }
 
   static clearErrors() {
@@ -77,8 +47,8 @@ export default class Form {
     }
   }
 
-  activateButton() {
-    debugger;
+  async activateButton() {
+    await this.templateInited;
     this.formElement.addEventListener('input', () => {
       for (let element of this.formElement) {
         if (element.value.length > 0 && element.value !== "+375 (__) ___-__-__") {
@@ -91,7 +61,14 @@ export default class Form {
     })
   }
 
-  setMaskForPhone(event) {
+  async setMaskForPhone() {
+    await this.templateInited;
+
+    this.formElement.addEventListener('load', (e) => {
+      if (this.formElement.phone) {  
+        mask(e);
+      }
+    })
 
     function setCursorPosition(pos, elem) {
       elem.focus();
@@ -105,7 +82,6 @@ export default class Form {
         range.select()
       }
     }
-
 
     function mask(event) {
 
@@ -186,9 +162,7 @@ export default class Form {
   }
 
   async addEventListenerOnSubmit(callback) {
-    // debugger;
     await this.templateInited;
-    debugger;
     this.formElement.addEventListener('submit', callback);
   }
 }

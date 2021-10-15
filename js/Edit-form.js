@@ -1,13 +1,15 @@
-import RegisterForm from './Register-form.js';
+import Form from './Form.js';
 import { popup } from './Popup.js'
 
-export default class EditForm extends RegisterForm {
+export default class EditForm extends Form {
 
     templateURL = './templates/edit-form-template.html';   
 
     constructor(...args){
         super(...args); 
-        this.getTemplate();       
+        this.getTemplate();
+        this.activateButton(); 
+        this.setMaskForPhone();     
     } 
 
     deleteUser(login, users) {
@@ -21,10 +23,11 @@ export default class EditForm extends RegisterForm {
         }
     }
 
-    editUser(login) {
+    async editUser(login) {
+        await this.templateInited;
         const localStorageUserObj = this.storage.getObjectOnStorage('users');
         const modalEditWindow = document.getElementById('modalEdit');
-
+        
         //Наполняем форму из local storage соответвующими значениями;
         for (let index of this.formElement) {
             if (index.type !== 'radio') {
