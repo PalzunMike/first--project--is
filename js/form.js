@@ -10,13 +10,6 @@ export default class Form {
     this.formElement;
     this.storage = storage;
     this.parentElement = parentElement;
-    // console.log(this.formElement);
-    // this.formElement.addEventListener('load', (e) => {
-    //   if (this.formElement.phone) {// TODO:    
-    //     this.setMaskForPhone(e);
-    //   }
-    // })
-
   }
 
   async getTemplate() {

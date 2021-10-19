@@ -7,16 +7,8 @@ export default class EnterForm extends Form {
     constructor(...args) {
         super(...args);
         this.getTemplate();
-        this.activateButton();              
+        this.activateButton();
     }
-
-    // async init(){
-    //     debugger;
-    //     await this.getTemplate();
-    //     // this.renderForm(this.parentElement);
-    //     // this.activateButton();
-    //     // this.addEventListenerOnSubmit();
-    // }
 
     verificationUser() {
         const localStorageUserObj = this.storage.getObjectOnStorage('users');

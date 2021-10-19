@@ -1,12 +1,9 @@
 import { storage } from './Storage.js'
-import EnterForm from './Enter-form.js';
-import RegisterForm from './Register-form.js';
-import EditForm from './Edit-form.js';
 import { popup } from './Popup.js';
 
-export default class Page {
+class Page {
 
-    renderUsers() {
+    renderAdminPage() {
         const modalActive = document.querySelector('.active');
         popup.closeModal(modalActive);
 
@@ -35,18 +32,9 @@ export default class Page {
         }
         const welcomeBlock = document.querySelector('.welcome_block');
         welcomeBlock.classList.remove('hide');
-
-
     }
 
-    quitUser() {
-        const localStorageUserObj = storage.getObjectOnStorage('users');
-
-        for (let user in localStorageUserObj) {
-            localStorageUserObj[user].userActive = false;
-            storage.setObjectOnStorage(`users`, localStorageUserObj);
-        }
-
+    renderHomePage() {
         const listUsers = document.querySelector('.content');
 
         while (listUsers.children.length > 0) {
@@ -61,6 +49,16 @@ export default class Page {
 
         const welcomeBlock = document.querySelector('.welcome_block');
         welcomeBlock.classList.add('hide');
+    }
 
+    quitUser() {
+        const localStorageUserObj = storage.getObjectOnStorage('users');
+
+        for (let user in localStorageUserObj) {
+            localStorageUserObj[user].userActive = false;
+            storage.setObjectOnStorage(`users`, localStorageUserObj);
+        }
     }
 }
+
+export const page = new Page();

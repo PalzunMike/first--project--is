@@ -1,11 +1,11 @@
-import Page from './adminPage.js'
 import EnterForm from './Enter-form.js';
 import RegisterForm from './Register-form.js';
 import EditForm from './Edit-form.js';
 import { popup } from './Popup.js';
+import { router } from './Router.js'
+import { page } from './adminPage.js'
 
 const modal = document.querySelector('.modal');
-const page = new Page();
 const btnBlock = document.querySelector('.btn_block');
 
 btnBlock.addEventListener('click', async (e) => {
@@ -16,7 +16,7 @@ btnBlock.addEventListener('click', async (e) => {
         enterForm.addEventListenerOnSubmit((event) => {
             event.preventDefault();
             if (enterForm.submit()) {
-                page.renderUsers();
+                router.navigate('/#admin');
             }
         });
 
@@ -34,10 +34,12 @@ btnBlock.addEventListener('click', async (e) => {
 });
 
 const quitBtn = document.querySelector('.quit_btn');
-quitBtn.addEventListener('click', page.quitUser);
+quitBtn.addEventListener('click', () => {
+    router.navigate('/');
+    page.quitUser();
+});
 
 const listUsers = document.querySelector('.content');
-// const formEditBlock = document.querySelector('.edit_block');
 
 listUsers.addEventListener('click', (event) => {
     const users = document.querySelectorAll('.user');
