@@ -6,7 +6,7 @@ export default class EnterForm extends Form {
 
     constructor(...args) {
         super(...args);
-        this.getTemplate();
+        this.getTemplate(this.templateURL);
         this.activateButton();
     }
 

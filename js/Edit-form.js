@@ -7,7 +7,7 @@ export default class EditForm extends Form {
 
     constructor(...args){
         super(...args); 
-        this.getTemplate();
+        this.getTemplate(this.templateURL);
         this.activateButton(); 
         this.setMaskForPhone();     
     } 

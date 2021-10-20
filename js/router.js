@@ -1,4 +1,4 @@
-import { page } from "./adminPage.js";
+import { page } from "./ControllerPage.js";
 class Router {
 
     routes = {

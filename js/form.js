@@ -1,4 +1,5 @@
 import { storage } from "./Storage.js";
+import { template } from "./TemplateEngine.js";
 export default class Form {
 
   userObj = {};
@@ -12,18 +13,16 @@ export default class Form {
     this.parentElement = parentElement;
   }
 
-  async getTemplate() {
+  async getTemplate(templateURL) {
     this.templateInited = new Promise(async (resolve, reject) => {
-      const responce = await fetch(this.templateURL);
-      const template = await responce.text();
-      this.template = template;
+      this.template = await template.setTemplate(templateURL);
       this.renderForm(this.parentElement);
       resolve();
     });
   }
 
-   renderForm(modal) {
-    modal.insertAdjacentHTML('beforeend', this.template); 
+  renderForm(modal) {
+    modal.insertAdjacentHTML('beforeend', this.template);
     this.formElement = document.getElementById(this.form);
   }
 
@@ -58,7 +57,7 @@ export default class Form {
     await this.templateInited;
 
     this.formElement.addEventListener('load', (e) => {
-      if (this.formElement.phone) {  
+      if (this.formElement.phone) {
         mask(e);
       }
     })

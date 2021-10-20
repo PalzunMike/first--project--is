@@ -3,7 +3,7 @@ import RegisterForm from './Register-form.js';
 import EditForm from './Edit-form.js';
 import { popup } from './Popup.js';
 import { router } from './Router.js'
-import { page } from './adminPage.js'
+import { page } from './ControllerPage.js'
 
 const modal = document.querySelector('.modal');
 const btnBlock = document.querySelector('.btn_block');
