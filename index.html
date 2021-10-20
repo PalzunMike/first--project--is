@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css\const.css">
+    <link rel="stylesheet" href="css\about.css">
     <link rel="stylesheet" href="css\style.css">
     <title>Welcome to Instagram</title>
 </head>
@@ -27,7 +28,12 @@
         </div>
     </header>
     <div class="wrapper">
-        <nav class="main menu"></nav>
+        <nav class="main menu">
+            <ul class="main_menu">
+                <!-- <li><a href="">Главная</a></li> -->
+                <li><a href="/#about_me">Обо мне</a></li>
+            </ul>
+        </nav>
         <section class="main content">
 
         </section>
@@ -38,7 +44,10 @@
     </div>
     <div id="overlay"></div>
     <footer id="footer">
-    </footer>
+        <div id="creator">
+            <p>Разработка сайта <a id="about_me" href="/#about_me">Michael Palzun</a></p>
+        </div>
+    </footer>   
     <template id="user_template">
         <div class="user" data-login="">
             <p class="user_login"></p>

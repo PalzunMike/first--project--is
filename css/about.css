@@ -1,0 +1,229 @@
+
+/*-------------------------HEADER-----------------------------*/
+/* body{
+	margin: 0;
+}
+header{
+	position: relative;
+	width: 900px;
+	margin: 0 auto;
+}
+
+.container_for_header{
+	width: 100%;
+	background-color: #f04949;
+	position: fixed;
+	max-width: 900px;
+	min-width: 900px;
+	margin: 0 auto;	
+	line-height: .8em;
+	z-index: 100;
+}
+
+.foto_profile{
+	
+	width: 90px;
+	min-width: 90px;
+	float: left;
+	position: absolute;
+}
+
+.foto_profile img{
+	
+	width: 50px;
+	height: 50px;
+	border: 3px solid #FFF;
+	border-radius: 100%;
+	margin: 6% 15%;
+}
+
+.menu_header{
+
+	width: 93%;
+	margin-left: 7%;
+	display: inline-block;
+}
+
+.menu_item{
+	display: inline-block;
+	position: relative;
+	font-size: 17px;
+	width: 24.6%;	
+	min-width: 190px;
+	overflow: hidden;
+	line-height: 3.8em;
+	text-align: center;
+}
+
+.menu_item a{
+	font-family: 'Ubuntu', sans-serif;
+	vertical-align: middle;
+	position: relative;
+	text-decoration: none;
+	color: #FFF;
+	padding: 8px 30px 8px 50px;
+	border-radius: 30px;
+	text-transform: uppercase;
+	overflow: hidden;
+}
+.menu_item a::before{
+	content: '';
+	position: absolute;
+	height: 18px;
+	width: 20px;
+	background-image: url('img/Sprite_profile.png');
+	background-repeat: no-repeat;
+	top: 50%;
+	left: 13%;
+	margin: -8px 0 0 0;
+}
+.menu_item_skills a::before{
+	background-position: -20px 0;
+}
+.menu_item_works a::before{
+	background-position: -42px 0;
+}
+.menu_item_resume a::before{
+	background-position: -62px 0;
+}
+
+.menu_item a:hover{
+	background-color: #203748;
+} */
+
+/*-----------------------------------------------Main----------------------------------------------*/
+
+.container_for_main{
+	width: 95%;
+	margin:0px auto;
+	min-width: 700px;
+
+	/* outline: 1px solid red; */
+	
+}
+
+/* .container_for_main::-webkit-scrollbar { width: 8px;}
+.container_for_main::-webkit-scrollbar-button {  background-color: #172936; height: 10px;}
+.container_for_main::-webkit-scrollbar-track-piece { background-color: #172936;}
+.container_for_main::-webkit-scrollbar-thumb { background-color: #d3d3d3; border-radius: 8px;} */
+
+.content_foto_profile img{
+	width: 180px;
+	height: 180px;
+	min-width: 180px;
+	border-radius: 100%;
+	margin: 25px 0 0 130px;
+	position: absolute;
+}
+
+.info_profile{
+	margin-left: 360px;
+}
+.name_profile{
+	font-family: 'Josefin Sans', sans-serif;
+	font-size: 35px;
+	color: #43b652;
+	padding-top: 40px;
+	margin: 0;
+}
+.title_info, .title_skills, .title_summary, .title_education{
+	font-family: 'Ubuntu', sans-serif;
+	font-size: 22px;
+	color: #FFF;
+	margin: 20px 0 0 20px;
+	letter-spacing: 1px;
+}
+.title_skills, .title_summary, .title_education{
+	text-align: center;
+	margin-top: 40px;
+}
+.contact_info, .text_summary, .text_education{
+	font-family: 'Ubuntu', sans-serif;
+	font-size: 17px;
+	color: #FFF;
+	padding: 5px 0;
+	margin-left:20px;
+	word-wrap: break-word;
+	line-height: 2em;
+}
+
+.text_summary, .text_education{
+	width: 700px;
+	margin:15px auto;
+}
+
+.text_education li{
+	margin-left: 40px;
+}
+
+.text_education li a{
+	font-family: 'Ubuntu', sans-serif;
+	font-size: 17px;
+	color: #30a5dc;
+}
+
+/*-----------------------------------SKILLS------------------------------------------------------------*/
+.item_skills{
+	position: relative;
+	width: 600px;
+	margin: 10px auto;
+}
+.shell_scale{
+	position: relative;
+	width: 500px;
+	height: 8px;
+	background-color: #fff;
+	border-radius: 8px;
+	margin: 1px 0;
+}
+.fill_scale{
+
+	position: absolute;
+	height: 8px;
+	border-radius: 8px;
+}
+
+.fill_html {width: 90%; background-color: #30a5dc;}
+.fill_css {width: 90%; background-color: #ee742b;}
+.fill_js {width: 75%; background-color: #f04949;}
+.fill_react {width: 10%; background-color: #39d084;}
+
+.circle_skills{
+	width: 65px;
+	height: 65px;
+	border-radius: 100%;
+	border: 4px solid transparent;
+}
+
+.circle_html{background-color: #30a5dc;}
+.circle_css{background-color: #ee742b;}
+.circle_js{background-color: #f04949;}
+.circle_react{background-color: #39d084;}
+
+.name_skills{
+
+	color: #fff;
+	font-family: 'Ubuntu',sans-serif;
+	text-transform: uppercase; 
+	text-align: center;
+	line-height: 2.1em;
+}
+.circle_skills:hover{
+	border: 5px solid #fff;
+}
+.text_skills{
+	width: 500px;
+	margin: 0;
+	color: #fff;
+	font-family: 'Ubuntu',sans-serif;
+	text-transform: uppercase;
+	text-align: justify;
+}
+.text_skills span{
+	float: right;
+}
+.scale{
+	position: absolute;
+	top: 15px;
+	left: 85px;
+}

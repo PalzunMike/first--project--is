@@ -4,9 +4,10 @@ class Router {
     routes = {
         '/': page.renderHomePage,
         '/index.html': page.renderHomePage,
-        '/#admin': page.renderAdminPage
-    }
-
+        '/#': page.renderHomePage,
+        '/#admin': page.renderAdminPage,
+        '/#about_me' : page.renderAboutMePage
+    }    
     root = '/'
 
     constructor() {
