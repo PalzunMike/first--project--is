@@ -7,11 +7,11 @@ class Page {
     renderAdminPage() {
         const modalActive = document.querySelector('.active');
         popup.closeModal(modalActive);
-        // console.log(this);
 
         const listUsers = document.querySelector('.content');
         page.clearElement(listUsers);
-        const localStorageUserObj = storage.getObjectOnStorage('users');        
+
+        const localStorageUserObj = storage.getObjectOnStorage('users');
         const template = document.querySelector('#user_template');
         const userLogin = template.content.querySelector('.user_login');
         const userBlock = template.content.querySelector('.user');
@@ -39,9 +39,6 @@ class Page {
 
     renderHomePage() {
         const listUsers = document.querySelector('.content');
-        
-        console.log(this);
-
         page.clearElement(listUsers);
 
         const welcomeMsg = document.querySelector('.welcome_message');
@@ -54,15 +51,14 @@ class Page {
         welcomeBlock.classList.add('hide');
     }
 
-    async renderAboutMePage(){
-        const content = document.querySelector('.content');         
-
+    async renderAboutMePage() {
+        const content = document.querySelector('.content');
         const templatePage = await template.setTemplate('./templates/about-me-template.html');
-        page.clearElement(content); 
+        page.clearElement(content);
         content.insertAdjacentHTML('beforeend', templatePage);
     }
 
-    clearElement(element){
+    clearElement(element) {
         while (element.children.length > 0) {
             element.removeChild(element.lastChild);
         };

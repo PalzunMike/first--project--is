@@ -137,7 +137,6 @@ h1 a img{
     align-items: flex-end;
     width: 35%;
     color: white;
-    /* outline: 1px solid red; */
 }
 
 .login_block, .register_block, .edit_block{
@@ -154,10 +153,7 @@ h1 a img{
 }
 
 .edit_block{
-    /* width: 30%; */
-    min-width: 400px; 
-
-    /* outline: 1px solid red; */
+    min-width: 400px;
 }
 
 .edit_block img{
@@ -169,8 +165,6 @@ h1 a img{
     flex-direction: column; 
     justify-content: space-between;
     align-items: center;
-
-    /* outline: 1px solid red; */
 }
 
 #edit_form{
@@ -202,8 +196,6 @@ h1 a img{
     flex-direction: column;
     width: 100%;
     font-weight: bold;
-    /* margin: ; */
-    /* outline: 1px solid blue; */
 }
 
 #sex{
@@ -275,9 +267,7 @@ h1 a img{
     font-size: .7rem;    
     width: 105%;
     min-width: 240px;
-    text-align: center;   
-    
-    /* outline: 1px solid red; */
+    text-align: center;
 }
 
 .modal{
@@ -382,11 +372,10 @@ h1 a img{
     line-height: 1.5em;
     right: 0;
     top: 35px;
-    font-size: .8em;
-    
+    font-size: .8em;    
 }
 
-#about_me{
+#about_me, #about_me:active{
     text-decoration: none;
     color: var(--header-color);
     font-weight: bold;

@@ -3,14 +3,14 @@ import { popup } from './Popup.js'
 
 export default class EditForm extends Form {
 
-    templateURL = './templates/edit-form-template.html';   
+    templateURL = './templates/edit-form-template.html';
 
-    constructor(...args){
-        super(...args); 
+    constructor(...args) {
+        super(...args);
         this.getTemplate(this.templateURL);
-        this.activateButton(); 
-        this.setMaskForPhone();     
-    } 
+        this.activateButton();
+        this.setMaskForPhone();
+    }
 
     deleteUser(login, users) {
         const localStorageUserObj = this.storage.getObjectOnStorage('users');
@@ -27,7 +27,7 @@ export default class EditForm extends Form {
         await this.templateInited;
         const localStorageUserObj = this.storage.getObjectOnStorage('users');
         const modalEditWindow = document.getElementById('modalEdit');
-        
+
         //Наполняем форму из local storage соответвующими значениями;
         for (let index of this.formElement) {
             if (index.type !== 'radio') {
@@ -50,8 +50,6 @@ export default class EditForm extends Form {
                 this.userObj.sex = this.formElement.sex.value;
 
                 localStorageUserObj[login] = this.userObj;
-
-                // console.log(login);
 
                 this.storage.setObjectOnStorage('users', localStorageUserObj);
 

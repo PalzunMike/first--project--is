@@ -7,7 +7,7 @@ export default class RegisterForm extends Form {
   constructor(...args) {
     super(...args);
     this.getTemplate(this.templateURL);
-    this.activateButton();    
+    this.activateButton();
     this.setMaskForPhone();
   }
 

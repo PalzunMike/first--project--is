@@ -6,8 +6,8 @@ class Router {
         '/index.html': page.renderHomePage,
         '/#': page.renderHomePage,
         '/#admin': page.renderAdminPage,
-        '/#about_me' : page.renderAboutMePage
-    }    
+        '/#about_me': page.renderAboutMePage
+    }
     root = '/'
 
     constructor() {

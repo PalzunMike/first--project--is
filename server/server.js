@@ -11,19 +11,19 @@ app.use(express.json());
 app.use(fileUpload({}));
 
 app.post('/', async (req, res) => {
-    try{   
-        console.log(req.files);     
+    try {
+        console.log(req.files);
         // const post = await Post.create(req.body, req.files.picture);
         res.json(req.files);
-    } catch (e){
+    } catch (e) {
         res.status(500).json(e);
     }
-    
+
 })
 
 async function startApp() {
     try {
-        await mongoose.connect(DB_URL, {useUnifiedTopology: true, useNewUrlParser: true});
+        await mongoose.connect(DB_URL, { useUnifiedTopology: true, useNewUrlParser: true });
         app.listen(PORT, () => console.log('SERVER WORKING ON PORT ' + PORT));
     } catch (e) {
         console.log(e);
@@ -31,16 +31,3 @@ async function startApp() {
 }
 
 startApp();
-
-
-
-
-// const http = require('http');
-
-// const server = http.createServer();
-
-// server.on('request', (req, res) => {
-//     res.end('My name Michael');
-// })
-
-// server.listen(5000, () => console.log('Server start'));
