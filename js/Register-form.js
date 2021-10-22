@@ -1,4 +1,5 @@
 import Form from './Form.js';
+import { dataBase } from './DataBase.js';
 
 export default class RegisterForm extends Form {
 
@@ -12,6 +13,8 @@ export default class RegisterForm extends Form {
   }
 
   addUser() {
+    dataBase.addUser();
+
     let tempUserObj = {};
     const localStorageUserObj = this.storage.getObjectOnStorage('users');
     let dateReg = new Date().toISOString().slice(0, 10);

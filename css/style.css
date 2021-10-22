@@ -45,6 +45,7 @@ body{
 
 .main_menu{
     list-style: none;
+    padding-left: 3%;
     font-size: 1.2em;
 }
 
@@ -60,6 +61,11 @@ body{
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
+}
+
+.content h3{
+    color: thistle;
+    margin-left: 5%;
 }
 
 .user{
@@ -381,12 +387,21 @@ h1 a img{
     font-weight: bold;
 }
 
-@media screen and (max-width: 600px){
+@media screen and (max-width: 720px){
     .wrapper{
         flex-direction: column;
     }
     .main{
         width: 100%;
+    }
+
+    .menu{
+        min-height: 0;
+        height: 30px;
+    }
+
+    .banners{
+        display: none;
     }
 
     .menu .banners{

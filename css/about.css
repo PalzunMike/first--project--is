@@ -1,26 +1,36 @@
 .container_for_main{
 	width: 95%;
 	margin:0px auto;
-	min-width: 700px;
+	/* min-width: 400px; */
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 }
 
 /* .container_for_main::-webkit-scrollbar { width: 8px;}
 .container_for_main::-webkit-scrollbar-button {  background-color: #172936; height: 10px;}
 .container_for_main::-webkit-scrollbar-track-piece { background-color: #172936;}
 .container_for_main::-webkit-scrollbar-thumb { background-color: #d3d3d3; border-radius: 8px;} */
+.content_foto_profile{
+	margin: 0 5% ;
+}
 
 .content_foto_profile img{
-	width: 180px;
-	height: 180px;
-	min-width: 180px;
+	width: 150px;
+	height: 150px;
+	min-width: 150px;
 	border-radius: 100%;
-	margin: 25px 0 0 130px;
-	position: absolute;
+
 }
 
-.info_profile{
-	margin-left: 360px;
+.info_block{
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: flex-start;
 }
+
 .name_profile{
 	font-family: 'Josefin Sans', sans-serif;
 	font-size: 35px;
@@ -32,26 +42,22 @@
 	font-family: 'Ubuntu', sans-serif;
 	font-size: 22px;
 	color: #FFF;
-	margin: 20px 0 0 20px;
 	letter-spacing: 1px;
 }
-.title_skills, .title_summary, .title_education{
-	text-align: center;
-	margin-top: 40px;
+.title_skills, .title_summary, .title_education{	
+	margin-top: 20px;
 }
 .contact_info, .text_summary, .text_education{
 	font-family: 'Ubuntu', sans-serif;
 	font-size: 17px;
 	color: #FFF;
 	padding: 5px 0;
-	margin-left:20px;
 	word-wrap: break-word;
 	line-height: 2em;
 }
 
 .text_summary, .text_education{
-	width: 700px;
-	margin:15px auto;
+	width: 100%;
 }
 
 .text_education li{
@@ -65,21 +71,31 @@
 }
 
 /*-----------------------------------SKILLS------------------------------------------------------------*/
-.item_skills{
-	position: relative;
-	width: 600px;
-	margin: 10px auto;
+.wrapper_for_skills, .wrapper_for_education{
+	width: 100%;
 }
+
+.item_skills{
+	/* position: relative; */
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	width: 100%;
+
+	/* outline: 1px solid red; */
+}
+
+.scale{
+	width: 85%;
+}
+
 .shell_scale{
 	position: relative;
-	width: 500px;
 	height: 8px;
 	background-color: #fff;
 	border-radius: 8px;
-	margin: 1px 0;
 }
 .fill_scale{
-
 	position: absolute;
 	height: 8px;
 	border-radius: 8px;
@@ -95,6 +111,7 @@
 	height: 65px;
 	border-radius: 100%;
 	border: 4px solid transparent;
+	margin: 1% 3% 1% 1%;
 }
 
 .circle_html{background-color: #30a5dc;}
@@ -114,7 +131,6 @@
 	border: 5px solid #fff;
 }
 .text_skills{
-	width: 500px;
 	margin: 0;
 	color: #fff;
 	font-family: 'Ubuntu',sans-serif;
@@ -124,8 +140,7 @@
 .text_skills span{
 	float: right;
 }
-.scale{
-	position: absolute;
-	top: 15px;
-	left: 85px;
+
+@media screen and (max-width: 720px){
+	
 }

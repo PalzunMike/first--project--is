@@ -11,14 +11,22 @@ class Router {
     root = '/'
 
     constructor() {
-        window.onpopstate = () => {
-            this.routes[this.root + location.hash]();
-        }
+        window.addEventListener( 'popstate', () => {
+            if (location.hash === '#admin' && !page.loginUser) {
+                alert('Пройдите авторизацию');
+                return false;
+            } else {
+                this.routes[this.root + location.hash]();
+                console.log(page.loginUser);
+            }
+
+        });
+
         window.addEventListener('load', () => {
             if (location.hash) {
                 this.routes[this.root + location.hash]();
             }
-        })
+        });
     }
 
     navigate(pathname) {

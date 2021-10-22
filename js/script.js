@@ -16,7 +16,9 @@ btnBlock.addEventListener('click', async (e) => {
         enterForm.addEventListenerOnSubmit((event) => {
             event.preventDefault();
             if (enterForm.submit()) {
+               page.enterUser();
                 router.navigate('/#admin');
+                console.log(page.loginUser);
             }
         });
 
@@ -34,9 +36,9 @@ btnBlock.addEventListener('click', async (e) => {
 });
 
 const quitBtn = document.querySelector('.quit_btn');
-quitBtn.addEventListener('click', () => {
-    router.navigate('/');
+quitBtn.addEventListener('click', () => {    
     page.quitUser();
+    router.navigate('/');
 });
 
 const listUsers = document.querySelector('.content');

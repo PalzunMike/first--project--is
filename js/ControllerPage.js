@@ -2,7 +2,9 @@ import { storage } from './Storage.js'
 import { template } from "./TemplateEngine.js";
 import { popup } from './Popup.js';
 
-class Page {
+class Page { // TODO:
+
+    loginUser = false;
 
     renderAdminPage() {
         const modalActive = document.querySelector('.active');
@@ -29,7 +31,6 @@ class Page {
             if (localStorageUserObj[user].userActive === true) {
                 const firstName = localStorageUserObj[user].firstName;
                 const lastName = localStorageUserObj[user].secondName;
-
                 welcomeMsg.textContent = ` ${firstName} ${lastName}`;
             }
         }
@@ -38,18 +39,29 @@ class Page {
     }
 
     renderHomePage() {
+        // debugger;
         const listUsers = document.querySelector('.content');
         page.clearElement(listUsers);
 
-        const welcomeMsg = document.querySelector('.welcome_message');
-        welcomeMsg.textContent = ' ';
+        const cont = document.createElement('h3');
+        cont.textContent = 'Main Content'
+        listUsers.append(cont);
 
-        const autBlock = document.querySelector('.btn_block');
-        autBlock.classList.remove('hide');
+        // console.log(page.loginUser);
 
-        const welcomeBlock = document.querySelector('.welcome_block');
-        welcomeBlock.classList.add('hide');
+        if (page.loginUser === false) {
+            const welcomeMsg = document.querySelector('.welcome_message');
+            welcomeMsg.textContent = ' ';
+
+            const autBlock = document.querySelector('.btn_block');
+            autBlock.classList.remove('hide');
+
+            const welcomeBlock = document.querySelector('.welcome_block');
+            welcomeBlock.classList.add('hide');
+        }
     }
+
+
 
     async renderAboutMePage() {
         const content = document.querySelector('.content');
@@ -64,6 +76,10 @@ class Page {
         };
     }
 
+    enterUser() {
+        page.loginUser = true;
+    }
+
     quitUser() {
         const localStorageUserObj = storage.getObjectOnStorage('users');
 
@@ -71,6 +87,7 @@ class Page {
             localStorageUserObj[user].userActive = false;
             storage.setObjectOnStorage(`users`, localStorageUserObj);
         }
+        page.loginUser = false;
     }
 }
 
