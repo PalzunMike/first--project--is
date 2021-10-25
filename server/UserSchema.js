@@ -5,7 +5,7 @@ const User = new mongoose.Schema(
         dateOfBirthday: { type: Date, required: false },
         dateRegister: { type: Date, required: true },
         firstName: { type: String, required: true },
-        login: { type: String, required: true },
+        login: { type: String, required: true, unique: true },
         password: { type: String, required: true },
         phone: { type: String, required: true },
         secondName: { type: String, required: true },

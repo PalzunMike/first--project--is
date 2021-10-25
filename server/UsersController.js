@@ -4,11 +4,21 @@ class UsersController {
 
     async add(req, res) {
         try {
+            // console.log(req.body);
             const { dateOfBirthday, dateRegister, firstName, login, password, phone, secondName, sex, userActive } = req.body;
+
+            const candidate = await User.findOne({login});
+            if (candidate){
+                return res.status(400).json({message:'Пользователь с данным логином уже зарегистрирован'});
+            }
+
             const user = await User.create({ dateOfBirthday, dateRegister, firstName, login, password, phone, secondName, sex, userActive });
-            res.json(user);
+            await user.save();
+
+            res.status(201).json({message:'Пользователь добавлен'});
+
         } catch (e) {
-            res.status(500).json(e);
+            res.status(500).json({message:'Что-то пошло не там. Попробуйте снова'});
         }
     }
 

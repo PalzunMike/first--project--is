@@ -2,8 +2,10 @@ import EnterForm from './Enter-form.js';
 import RegisterForm from './Register-form.js';
 import EditForm from './Edit-form.js';
 import { popup } from './Popup.js';
-import { router } from './Router.js'
-import { page } from './ControllerPage.js'
+import { router } from './Router.js';
+import { page } from './ControllerPage.js';
+
+import { dataBase } from './DataBase.js';
 
 const modal = document.querySelector('.modal');
 const btnBlock = document.querySelector('.btn_block');
@@ -26,9 +28,10 @@ btnBlock.addEventListener('click', async (e) => {
         popup.openModal(modal);
         const registerForm = new RegisterForm('register_form', modal);
 
-        registerForm.addEventListenerOnSubmit((event) => {
+        registerForm.addEventListenerOnSubmit(async (event) => {
             event.preventDefault();
-            if (registerForm.submit()) {
+            const register = await registerForm.submit();
+            if (register) {
                 document.querySelector('.register_block').textContent = 'Пользователь успешно добавлен. Воспользуйтесь кнопкой входа, чтобы зайти на сайт.';
             }
         });
@@ -58,3 +61,11 @@ listUsers.addEventListener('click', (event) => {
         editForm.editUser(loginUser);
     }
 });
+
+const dataUsers = await dataBase.getAllUsers();
+
+// for (user of dataUsers){
+//     console.log(user);
+// }
+dataUsers.forEach(user => console.log(user));
+// console.log(dataUsers);
