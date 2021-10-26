@@ -3,9 +3,10 @@ import UsersController from "./UsersController.js";
 
 const router = new Router();
 
-router.post('/users', UsersController.add);
+router.post('/users/register', UsersController.register);
+router.post('/users/auth', UsersController.auth);
 router.get('/users', UsersController.getAll);
-router.get('/users/:login', UsersController.getOne);
+router.get('/users/:id', UsersController.getOne);
 router.put('/users', UsersController.update);
 router.delete('/users/:login', UsersController.delete);
 

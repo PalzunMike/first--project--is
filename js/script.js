@@ -15,12 +15,13 @@ btnBlock.addEventListener('click', async (e) => {
         popup.openModal(modal);
         const enterForm = new EnterForm('login_form', modal);
 
-        enterForm.addEventListenerOnSubmit((event) => {
+        enterForm.addEventListenerOnSubmit( async (event) => {
             event.preventDefault();
-            if (enterForm.submit()) {
+            const enter = await enterForm.submit();
+            if (enter) {
                page.enterUser();
                 router.navigate('/#admin');
-                console.log(page.loginUser);
+                // console.log(page.loginUser);
             }
         });
 

@@ -33,6 +33,9 @@ export default class Form {
       errors[i].nextSibling.style.boxShadow = 'none';
       errors[i].remove();
     }
+  }
+  
+  static clearInput() {
     for (let i = 0; i < document.forms.length; i++) {
       document.forms[i].submit.disabled = 'disabled';
       document.forms[i].reset();
@@ -114,7 +117,7 @@ export default class Form {
         this.userObj[nameKey] = key;
       }
     }
-    this.userObj.userActive = false;
+    // this.userObj.userActive = false;
   }
 
   setErrorMsg(element, message) {

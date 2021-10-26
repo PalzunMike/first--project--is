@@ -1,4 +1,6 @@
 import Form from './Form.js';
+import { dataBase } from './DataBase.js';
+// import database from 'mime-db';
 
 export default class EnterForm extends Form {
 
@@ -10,28 +12,29 @@ export default class EnterForm extends Form {
         this.activateButton();
     }
 
-    verificationUser() {
-        const localStorageUserObj = this.storage.getObjectOnStorage('users');
-        const userArrLogin = Object.keys(localStorageUserObj);
+    async authorizationUser() {
+        Form.clearErrors();
+        const auth = await dataBase.authUser(this.userObj);
 
-        if (userArrLogin.includes(this.formElement.login.value)) {
-            if (localStorageUserObj[this.formElement.login.value].password === this.formElement.password.value) {
-                localStorageUserObj[this.formElement.login.value].userActive = true;
-                this.storage.setObjectOnStorage(`users`, localStorageUserObj);
-                return true;
-            } else {
-                this.setErrorMsg(this.formElement.password, 'Неверный пароль');
-                return false;
-            }
-        } else {
-            this.setErrorMsg(this.formElement.login, 'Пользователь не найден');
+        if (auth.message === 'Пользователь не найден') {
+            this.setErrorMsg(this.formElement.login, auth.message);
+            return false;
+        } else if (auth.message) {
+            this.setErrorMsg(this.formElement.password, auth.message);
             return false;
         }
+        return true;
     }
 
-    submit() {
-        if (!this.isValid() || !this.verificationUser()) {
+    async submit() {
+
+        if (!this.isValid()) {
             return false;
+        } else {
+            const authorization = await this.authorizationUser();
+            if (!authorization) {
+                return false;
+            }
         }
         return true;
     }

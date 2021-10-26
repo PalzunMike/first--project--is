@@ -77,16 +77,14 @@ class Page { // TODO:
     }
 
     enterUser() {
-        page.loginUser = true;
+        const loginUser = localStorage.getItem('userData');
+        if (loginUser){
+            page.loginUser = true;
+        }        
     }
 
     quitUser() {
-        const localStorageUserObj = storage.getObjectOnStorage('users');
-
-        for (let user in localStorageUserObj) {
-            localStorageUserObj[user].userActive = false;
-            storage.setObjectOnStorage(`users`, localStorageUserObj);
-        }
+        localStorage.removeItem('userData');
         page.loginUser = false;
     }
 }

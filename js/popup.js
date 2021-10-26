@@ -21,6 +21,7 @@ class Popup {
 
     openModal(modal) {
         Form.clearErrors();
+        Form.clearInput();
         this.element = modal;
         this.clear(1);
         if (modal === null) return
