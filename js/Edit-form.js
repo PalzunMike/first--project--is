@@ -1,5 +1,6 @@
 import Form from './Form.js';
-import { popup } from './Popup.js'
+import { popup } from './Popup.js';
+import { dataBase } from './DataBase.js';
 
 export default class EditForm extends Form {
 
@@ -12,34 +13,35 @@ export default class EditForm extends Form {
         this.setMaskForPhone();
     }
 
-    deleteUser(login, users) {
-        const localStorageUserObj = this.storage.getObjectOnStorage('users');
-        for (let i = 0; i < users.length; i++) {
-            if (users[i].dataset.login === login) {
-                users[i].remove();
-                delete localStorageUserObj[login];
-                this.storage.setObjectOnStorage('users', localStorageUserObj);
-            }
+    deleteUser(userId, users) {
+        dataBase.deleteUser(userId);
+        for (let i = 0; i < users.length; i++){
+           if (users[i].dataset.id === userId){
+               users[i].remove();
+           }
         }
     }
 
-    async editUser(login) {
+    async editUser(userId) {
         await this.templateInited;
-        const localStorageUserObj = this.storage.getObjectOnStorage('users');
+
+        const userData = await dataBase.getOneUser(userId);
+        console.log(userData);
+        // const localStorageUserObj = this.storage.getObjectOnStorage('users');
         const modalEditWindow = document.getElementById('modalEdit');
 
         //Наполняем форму из local storage соответвующими значениями;
-        for (let index of this.formElement) {
+        for (let index of this.formElement) { //TODO: Разобраться с датами и паролем!!!!!
             if (index.type !== 'radio') {
                 let inputName = index.name;
-                index.value = localStorageUserObj[login][inputName];
+                index.value = userData[inputName];
             }
         }
 
-        //Проверяем признак sex в local storage, и ставим checked на соответвующий radio button;        
-        if (localStorageUserObj[login].sex === 'male') {
+        // //Проверяем признак sex в local storage, и ставим checked на соответвующий radio button;        
+        if (userData.sex === 'male') {
             document.getElementById('radioMale').checked = true
-        } else if (localStorageUserObj[login].sex === 'female') {
+        } else if (userData.sex === 'female') {
             document.getElementById('radioFemale').checked = true
         }
 
@@ -48,10 +50,15 @@ export default class EditForm extends Form {
             e.preventDefault();
             if (this.isValid()) {
                 this.userObj.sex = this.formElement.sex.value;
+                this.userObj._id = userId;
 
-                localStorageUserObj[login] = this.userObj;
+                console.log(this.userObj);
 
-                this.storage.setObjectOnStorage('users', localStorageUserObj);
+                dataBase.updateUser(this.userObj);
+
+                // localStorageUserObj[login] = this.userObj;
+
+                // this.storage.setObjectOnStorage('users', localStorageUserObj);
 
                 popup.clear(1);
                 let message = document.createElement('div');

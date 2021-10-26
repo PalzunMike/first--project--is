@@ -1,53 +1,51 @@
-import { storage } from './Storage.js'
+// import { storage } from './Storage.js'
 import { template } from "./TemplateEngine.js";
 import { popup } from './Popup.js';
+import { dataBase } from './DataBase.js'
 
 class Page { // TODO:
 
     loginUser = false;
 
-    renderAdminPage() {
+    async renderAdminPage() {
         const modalActive = document.querySelector('.active');
         popup.closeModal(modalActive);
 
         const listUsers = document.querySelector('.content');
         page.clearElement(listUsers);
 
-        const localStorageUserObj = storage.getObjectOnStorage('users');
+        const dataUsers = await dataBase.getAllUsers();
         const template = document.querySelector('#user_template');
         const userLogin = template.content.querySelector('.user_login');
         const userBlock = template.content.querySelector('.user');
         const autBlock = document.querySelector('.btn_block');
         autBlock.classList.add('hide');
 
-        for (let user in localStorageUserObj) {
-            const welcomeMsg = document.querySelector('.welcome_message');
-
-            userLogin.textContent = user;
-            userBlock.dataset.login = user;
+        for (let user of dataUsers) {
+            userLogin.textContent = user.login;
+            userBlock.dataset.id = user._id;
             let userEl = template.content.cloneNode(true);
             listUsers.append(userEl);
-
-            if (localStorageUserObj[user].userActive === true) {
-                const firstName = localStorageUserObj[user].firstName;
-                const lastName = localStorageUserObj[user].secondName;
-                welcomeMsg.textContent = ` ${firstName} ${lastName}`;
-            }
         }
+
+        const userData = JSON.parse(localStorage.getItem('userData'));
+        const userId = userData.userId;
+        const authUser = await dataBase.getOneUser(userId);
+
+        const welcomeMsg = document.querySelector('.welcome_message');
+        welcomeMsg.textContent = ` ${authUser.firstName} ${authUser.secondName}`
         const welcomeBlock = document.querySelector('.welcome_block');
         welcomeBlock.classList.remove('hide');
     }
 
     renderHomePage() {
-        // debugger;
+        
         const listUsers = document.querySelector('.content');
         page.clearElement(listUsers);
 
         const cont = document.createElement('h3');
         cont.textContent = 'Main Content'
         listUsers.append(cont);
-
-        // console.log(page.loginUser);
 
         if (page.loginUser === false) {
             const welcomeMsg = document.querySelector('.welcome_message');
@@ -78,9 +76,9 @@ class Page { // TODO:
 
     enterUser() {
         const loginUser = localStorage.getItem('userData');
-        if (loginUser){
+        if (loginUser) {
             page.loginUser = true;
-        }        
+        }
     }
 
     quitUser() {

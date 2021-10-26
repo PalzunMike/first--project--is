@@ -65,9 +65,9 @@ class DataBase {
         }
     }
 
-    async deteteUser(login){
+    async deleteUser(id){
         try {
-            const response = await fetch(`${this.proxy}/api/users/${login}`, { method: 'DELETE' });
+            const response = await fetch(`${this.proxy}/api/users/${id}`, { method: 'DELETE' });
             const data = await response.json();
             return data;
         } catch (e) {

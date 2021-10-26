@@ -50,23 +50,24 @@ const listUsers = document.querySelector('.content');
 listUsers.addEventListener('click', (event) => {
     const users = document.querySelectorAll('.user');
     const target = event.target.closest('div');
-    const loginUser = target.dataset.login;
+    const userId = target.dataset.id;
     const btnAction = event.target.dataset.buttonAction;
 
     if (btnAction === 'remove') {
-        editForm.deleteUser(loginUser, users);
+        const editForm = new EditForm('edit_form', modal);
+        editForm.deleteUser(userId, users);
     } else if (btnAction === 'edit') {
         popup.openModal(modal);
         modal.id = 'modalEdit';
         const editForm = new EditForm('edit_form', modal);
-        editForm.editUser(loginUser);
+        editForm.editUser(userId);
     }
 });
 
-const dataUsers = await dataBase.getAllUsers();
+
 
 // for (user of dataUsers){
 //     console.log(user);
 // }
-dataUsers.forEach(user => console.log(user));
+// dataUsers.forEach(user => console.log(user));
 // console.log(dataUsers);

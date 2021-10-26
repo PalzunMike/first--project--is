@@ -34,16 +34,16 @@ class UsersController {
             }
             const isMatchPass = await bcrypt.compare(password, user.password);
 
-            if (!isMatchPass){
-                return res.status(400).json({message:'Неверный пароль. Попробуйте снова'})
+            if (!isMatchPass) {
+                return res.status(400).json({ message: 'Неверный пароль. Попробуйте снова' })
             }
 
             const token = jwt.sign(
-                {userId: user.id},
+                { userId: user.id },
                 'secret string issoft',
-                {expiresIn: '1h'}
+                { expiresIn: '1h' }
             )
-            res.json({token, userId: user.id});
+            res.json({ token, userId: user.id });
 
         } catch (e) {
             res.status(500).json({ message: 'Что-то пошло не там. Попробуйте снова' });
@@ -74,7 +74,10 @@ class UsersController {
     async update(req, res) {
         try {
             const user = req.body;
-            const updateUser = await User.findOneAndUpdate(user.login, user);
+            if (!user._id) {
+                res.status(400).json({ message: 'ID неправильный' })
+            }
+            const updateUser = await User.findByIdAndUpdate(user._id, user, { new: true });
             return res.json(updateUser);
         } catch {
             res.status(500).json(e);
@@ -82,11 +85,11 @@ class UsersController {
     }
     async delete(req, res) {
         try {
-            const { login } = req.params;
-            // if (!login) {
-            //     res.status(400).json({ message: 'Login не указан' })
-            // }
-            const user = await User.findOneAndDelete({ login: `${login}` });
+            const { id } = req.params;
+            if (!id) {
+                res.status(400).json({ message: 'ID не указан' })
+            }
+            const user = await User.findByIdAndDelete(id);
             return res.json(user);
 
         } catch {
