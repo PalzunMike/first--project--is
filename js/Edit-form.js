@@ -15,10 +15,10 @@ export default class EditForm extends Form {
 
     deleteUser(userId, users) {
         dataBase.deleteUser(userId);
-        for (let i = 0; i < users.length; i++){
-           if (users[i].dataset.id === userId){
-               users[i].remove();
-           }
+        for (let i = 0; i < users.length; i++) {
+            if (users[i].dataset.id === userId) {
+                users[i].remove();
+            }
         }
     }
 
@@ -26,15 +26,18 @@ export default class EditForm extends Form {
         await this.templateInited;
 
         const userData = await dataBase.getOneUser(userId);
-        console.log(userData);
-        // const localStorageUserObj = this.storage.getObjectOnStorage('users');
         const modalEditWindow = document.getElementById('modalEdit');
 
         //Наполняем форму из local storage соответвующими значениями;
-        for (let index of this.formElement) { //TODO: Разобраться с датами и паролем!!!!!
+        for (let index of this.formElement) {
+            let inputName = index.name;
             if (index.type !== 'radio') {
-                let inputName = index.name;
-                index.value = userData[inputName];
+
+                if (index.type == 'date' && userData[inputName]) {
+                    index.value = userData[inputName].slice(0, 10);
+                } else if (userData[inputName]) {
+                    index.value = userData[inputName];
+                }
             }
         }
 
@@ -51,14 +54,7 @@ export default class EditForm extends Form {
             if (this.isValid()) {
                 this.userObj.sex = this.formElement.sex.value;
                 this.userObj._id = userId;
-
-                console.log(this.userObj);
-
                 dataBase.updateUser(this.userObj);
-
-                // localStorageUserObj[login] = this.userObj;
-
-                // this.storage.setObjectOnStorage('users', localStorageUserObj);
 
                 popup.clear(1);
                 let message = document.createElement('div');

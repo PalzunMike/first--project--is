@@ -70,14 +70,17 @@ body{
 
 .user{
     display: flex;
+    width: 90%;
     flex-direction: row;
-    align-items: center; 
-    margin-left: 25px;   
+    align-items: center;     
+    margin: 0 auto;  
+    border-bottom: 2px solid yellow; 
 }
 
 .user p{
     font-size: 1.2em;
     line-height: .5em;
+    margin-left: 2%;
     font-weight: bold;
     color: #9DF;
 }
@@ -304,7 +307,7 @@ h1 a img{
 #modalEdit{
     position: fixed;
     width: 600px;
-    height: 750px;
+    height: 600px;
 }
 
 .modal.active{

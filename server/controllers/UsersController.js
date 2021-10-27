@@ -1,10 +1,12 @@
-import User from './UserSchema.js';
+import User from '../models/UserSchema.js';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import { JWT_SECRET, SALT_ROUND } from '../config.js'
 
 class UsersController {
 
     async register(req, res) {
+
         try {
             const { dateOfBirthday, dateRegister, firstName, login, password, phone, secondName, sex, userActive } = req.body;
 
@@ -12,7 +14,7 @@ class UsersController {
             if (candidate) {
                 return res.status(400).json({ message: 'Пользователь с данным логином уже зарегистрирован' });
             }
-            const hashedPassword = await bcrypt.hash(password, 12);
+            const hashedPassword = await bcrypt.hashSync(password, SALT_ROUND);
 
             const user = await User.create({ dateOfBirthday, dateRegister, firstName, login, password: hashedPassword, phone, secondName, sex, userActive });
             await user.save();
@@ -40,7 +42,7 @@ class UsersController {
 
             const token = jwt.sign(
                 { userId: user.id },
-                'secret string issoft',
+                JWT_SECRET,
                 { expiresIn: '1h' }
             )
             res.json({ token, userId: user.id });

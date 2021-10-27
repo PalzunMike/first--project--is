@@ -3,7 +3,7 @@ import { template } from "./TemplateEngine.js";
 import { popup } from './Popup.js';
 import { dataBase } from './DataBase.js'
 
-class Page { // TODO:
+class Page {
 
     loginUser = false;
 
@@ -39,7 +39,7 @@ class Page { // TODO:
     }
 
     renderHomePage() {
-        
+
         const listUsers = document.querySelector('.content');
         page.clearElement(listUsers);
 

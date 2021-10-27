@@ -1,19 +1,16 @@
 import express from 'express';
 import cors from 'cors';
 import mongoose from 'mongoose';
-import router from './UserRouter.js';
+import usersRouter from './routes/UsersRouter.js';
+import {PORT, DB_URL} from './config.js'
 // import fileUpload from 'express-fileupload';
 
-const PORT = 5000;
-const DB_URL = 'mongodb+srv://admin:root@cluster0.4pzv9.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
+
 
 const app = express();
 app.use(cors());
 app.use(express.json({ extended: true }));
-app.use('/api', router);
-// app.use(fileUpload({}));
-
-// app.post('/',)
+app.use('/api/users', usersRouter);
 
 async function startApp() {
     try {

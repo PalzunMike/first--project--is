@@ -17,7 +17,6 @@ class Router {
                 return false;
             } else {
                 this.routes[this.root + location.hash]();
-                console.log(page.loginUser);
             }
 
         });

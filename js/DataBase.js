@@ -1,18 +1,18 @@
-// import {app} from '../server/server.js';
-
 class DataBase {
-    proxy = 'http://localhost:5000';
+    proxyURL = 'http://localhost:5000';
+
+
 
     async addUser(object) {
         try {
             object = JSON.stringify(object);
-            const response = await fetch(`${this.proxy}/api/users/register`, { method: 'POST', body: `${object}`, headers: { 'Content-Type': 'application/json' } });
+            const response = await fetch(`${this.proxyURL}/api/users/register`, { method: 'POST', body: `${object}`, headers: { 'Content-Type': 'application/json' } });
             const data = await response.json();
             if (!response.ok) {
                 throw new Error(data.message || 'Что-то пошло не так');
             }
             return data;
-        } catch (e) {
+        } catch (e) {            
             return e;
         }
     }
@@ -20,23 +20,20 @@ class DataBase {
     async authUser(object) {
         try {
             object = JSON.stringify(object);
-            const response = await fetch(`${this.proxy}/api/users/auth`, { method: 'POST', body: `${object}`, headers: { 'Content-Type': 'application/json' } });
+            const response = await fetch(`${this.proxyURL}/api/users/auth`, { method: 'POST', body: `${object}`, headers: { 'Content-Type': 'application/json' } });
             const data = await response.json();
             if (!response.ok) {
-                throw new Error(data.message || 'Что-то пошло не так');
-            }
-            const token = await data.token;
-            const userId = await data.userId;
-            localStorage.setItem('userData', JSON.stringify({ userId, token }));
+                throw new Error( data.message || 'Что-то пошло не так');
+            }                     
             return data;
-        } catch (e) {
-           return e;
+        } catch (e) {  
+            return e;
         }
     }
 
     async getAllUsers() {
         try {
-            const response = await fetch(`${this.proxy}/api/users`, { method: 'GET' });
+            const response = await fetch(`${this.proxyURL}/api/users`, { method: 'GET' });
             const data = await response.json();
             return data;
         } catch (e) {
@@ -44,9 +41,9 @@ class DataBase {
         }
     }
 
-    async getOneUser(login) {
+    async getOneUser(userId) {
         try {
-            const response = await fetch(`${this.proxy}/api/users/${login}`, { method: 'GET' });
+            const response = await fetch(`${this.proxyURL}/api/users/${userId}`, { method: 'GET' });
             const data = await response.json();
             return data;
         } catch (e) {
@@ -57,7 +54,7 @@ class DataBase {
     async updateUser(object) {
         try {
             object = JSON.stringify(object);
-            const response = await fetch(`${this.proxy}/api/users`, { method: 'PUT', body: `${object}`, headers: { 'Content-Type': 'application/json' } });
+            const response = await fetch(`${this.proxyURL}/api/users`, { method: 'PUT', body: `${object}`, headers: { 'Content-Type': 'application/json' } });
             const data = await response.json();
             return data;
         } catch (e) {
@@ -65,9 +62,9 @@ class DataBase {
         }
     }
 
-    async deleteUser(id){
+    async deleteUser(userId) {
         try {
-            const response = await fetch(`${this.proxy}/api/users/${id}`, { method: 'DELETE' });
+            const response = await fetch(`${this.proxyURL}/api/users/${userId}`, { method: 'DELETE' });
             const data = await response.json();
             return data;
         } catch (e) {

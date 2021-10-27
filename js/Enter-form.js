@@ -23,6 +23,9 @@ export default class EnterForm extends Form {
             this.setErrorMsg(this.formElement.password, auth.message);
             return false;
         }
+        const token = await auth.token;
+        const userId = await auth.userId;
+        localStorage.setItem('userData', JSON.stringify({ userId, token }));        
         return true;
     }
 
