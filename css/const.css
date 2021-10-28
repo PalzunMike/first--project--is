@@ -4,7 +4,11 @@
     --content-color: rgb(28, 25, 63);
     --banners-color: rgb(226, 161, 238);
     --footer-color: #666;
-    --btn-color: rgba(189, 189, 189, 0.6);
+    --btn-color: rgba(189, 189, 189, 0.8);
     --btn-hover-color: rgb(212, 237, 245);
-    --modal-color: rgb(95, 221, 238);
+    --modal-color: rgb(40, 90, 140);
+    --modal-border-color: rgba(139, 129, 30, 0.8);
+    --text-color: rgb(201, 201, 201);
+    --input-active-color: rgba(20, 20, 20, 0.9);
+
 }

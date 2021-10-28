@@ -1,19 +1,22 @@
-import { page } from "./ControllerPage.js";
+import { content } from "./pages/ContentRender.js"
+
 class Router {
 
     routes = {
-        '/': page.renderHomePage,
-        '/index.html': page.renderHomePage,
-        '/#': page.renderHomePage,
-        '/#admin': page.renderAdminPage,
-        '/#about_me': page.renderAboutMePage
-    }
-    root = '/'
+        '/': () => content.renderHome(),
+        '/index.html': () => content.renderHome(),
+        '/#': () => content.renderHome(),
+        '/#admin': () => content.renderEdit(),
+        '/#about_me': () => content.renderAboutMe() // можно через bind;
+    };
+    root = '/';
+    logged = false;
 
     constructor() {
-        window.addEventListener( 'popstate', () => {
-            if (location.hash === '#admin' && !page.loginUser) {
-                alert('Пройдите авторизацию');
+        window.addEventListener('popstate', async () => { 
+            await this.checkLogged();           
+            if (location.hash === '#admin' && !this.logged) {
+                alert('Пройдите авторизацию');                
                 return false;
             } else {
                 this.routes[this.root + location.hash]();
@@ -21,8 +24,12 @@ class Router {
 
         });
 
-        window.addEventListener('load', () => {
-            if (location.hash) {
+        window.addEventListener('load', async () => {
+            await this.checkLogged();  
+            if (location.hash === '#admin' && !this.logged) {
+                alert('Пройдите авторизацию');
+                return false;
+            }else{
                 this.routes[this.root + location.hash]();
             }
         });
@@ -32,6 +39,10 @@ class Router {
         window.history.pushState(null, null, pathname);
         this.routes[pathname]();
         return this;
+    }
+
+    async checkLogged(){
+        this.logged = await content.checkLoggedUser();
     }
 }
 

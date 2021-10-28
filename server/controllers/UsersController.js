@@ -32,12 +32,12 @@ class UsersController {
 
             const user = await User.findOne({ login });
             if (!user) {
-                return res.status(400).json({ message: 'Пользователь не найден' });
+                return res.status(401).json({ message: 'Пользователь не найден' });
             }
             const isMatchPass = await bcrypt.compare(password, user.password);
 
             if (!isMatchPass) {
-                return res.status(400).json({ message: 'Неверный пароль. Попробуйте снова' })
+                return res.status(401).json({ message: 'Неверный пароль. Попробуйте снова' })
             }
 
             const token = jwt.sign(

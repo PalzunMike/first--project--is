@@ -1,5 +1,4 @@
-import { storage } from "./Storage.js";
-import { template } from "./TemplateEngine.js";
+import { template } from "../TemplateEngine.js";
 export default class Form {
 
   userObj = {};
@@ -9,7 +8,6 @@ export default class Form {
   constructor(form, parentElement) {
     this.form = form;
     this.formElement;
-    this.storage = storage;
     this.parentElement = parentElement;
   }
 

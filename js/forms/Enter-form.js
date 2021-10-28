@@ -1,5 +1,5 @@
 import Form from './Form.js';
-import { dataBase } from './DataBase.js';
+import { usersDataBase } from '../database/CollectionUsersDataBase.js';
 // import database from 'mime-db';
 
 export default class EnterForm extends Form {
@@ -14,7 +14,7 @@ export default class EnterForm extends Form {
 
     async authorizationUser() {
         Form.clearErrors();
-        const auth = await dataBase.authUser(this.userObj);
+        const auth = await usersDataBase.authUser(this.userObj);
 
         if (auth.message === 'Пользователь не найден') {
             this.setErrorMsg(this.formElement.login, auth.message);

@@ -1,6 +1,6 @@
 import Form from './Form.js';
-import { popup } from './Popup.js';
-import { dataBase } from './DataBase.js';
+import { popup } from '../Popup.js';
+import { usersDataBase } from '../database/CollectionUsersDataBase.js';
 
 export default class EditForm extends Form {
 
@@ -14,7 +14,7 @@ export default class EditForm extends Form {
     }
 
     deleteUser(userId, users) {
-        dataBase.deleteUser(userId);
+        usersDataBase.deleteUser(userId);
         for (let i = 0; i < users.length; i++) {
             if (users[i].dataset.id === userId) {
                 users[i].remove();
@@ -25,7 +25,7 @@ export default class EditForm extends Form {
     async editUser(userId) {
         await this.templateInited;
 
-        const userData = await dataBase.getOneUser(userId);
+        const userData = await usersDataBase.getOneUser(userId);
         const modalEditWindow = document.getElementById('modalEdit');
 
         //Наполняем форму из local storage соответвующими значениями;
@@ -51,10 +51,11 @@ export default class EditForm extends Form {
         //При submit формы меняем объект localStorageUserObj и перезаписываем его в local Storage;
         this.addEventListenerOnSubmit((e) => {
             e.preventDefault();
+            Form.clearErrors();
             if (this.isValid()) {
                 this.userObj.sex = this.formElement.sex.value;
                 this.userObj._id = userId;
-                dataBase.updateUser(this.userObj);
+                usersDataBase.updateUser(this.userObj);
 
                 popup.clear(1);
                 let message = document.createElement('div');

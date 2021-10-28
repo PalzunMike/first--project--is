@@ -1,11 +1,9 @@
-import EnterForm from './Enter-form.js';
-import RegisterForm from './Register-form.js';
-import EditForm from './Edit-form.js';
+import EnterForm from './forms/Enter-form.js';
+import RegisterForm from './forms/Register-form.js';
+import EditForm from './forms/Edit-form.js';
 import { popup } from './Popup.js';
 import { router } from './Router.js';
-import { page } from './ControllerPage.js';
-
-import { dataBase } from './DataBase.js';
+import { page } from './pages/PageRender.js';
 
 const modal = document.querySelector('.modal');
 const btnBlock = document.querySelector('.btn_block');
@@ -15,13 +13,13 @@ btnBlock.addEventListener('click', async (e) => {
         popup.openModal(modal);
         const enterForm = new EnterForm('login_form', modal);
 
-        enterForm.addEventListenerOnSubmit( async (event) => {
+        enterForm.addEventListenerOnSubmit(async (event) => {
             event.preventDefault();
             const enter = await enterForm.submit();
             if (enter) {
-               page.enterUser();
+                page.checkLoggedUser();
                 router.navigate('/#admin');
-                // console.log(page.loginUser);
+                console.log(page.loggedUser);
             }
         });
 
@@ -40,8 +38,9 @@ btnBlock.addEventListener('click', async (e) => {
 });
 
 const quitBtn = document.querySelector('.quit_btn');
-quitBtn.addEventListener('click', () => {    
+quitBtn.addEventListener('click', () => {
     page.quitUser();
+    page.checkLoggedUser();
     router.navigate('/');
 });
 
@@ -49,18 +48,20 @@ const listUsers = document.querySelector('.content');
 
 listUsers.addEventListener('click', (event) => {
     const users = document.querySelectorAll('.user');
-    const target = event.target.closest('div');
-    const userId = target.dataset.id;
-    const btnAction = event.target.dataset.buttonAction;
+    const target = event.target.closest('.user');
+    if (target) {
+        const userId = target.dataset.id;
+        const btnAction = event.target.dataset.buttonAction;
 
-    if (btnAction === 'remove') {
-        const editForm = new EditForm('edit_form', modal);
-        editForm.deleteUser(userId, users);
-    } else if (btnAction === 'edit') {
-        popup.openModal(modal);
-        modal.id = 'modalEdit';
-        const editForm = new EditForm('edit_form', modal);
-        editForm.editUser(userId);
+        if (btnAction === 'remove') {
+            const editForm = new EditForm('edit_form', modal);
+            editForm.deleteUser(userId, users);
+        } else if (btnAction === 'edit') {
+            popup.openModal(modal);
+            modal.id = 'modalEdit';
+            const editForm = new EditForm('edit_form', modal);
+            editForm.editUser(userId);
+        }
     }
 });
 
