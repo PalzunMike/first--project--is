@@ -25,7 +25,7 @@ export default class EnterForm extends Form {
         }
         const token = await auth.token;
         const userId = await auth.userId;
-        localStorage.setItem('userData', JSON.stringify({ userId, token }));        
+        localStorage.setItem('userData', JSON.stringify({ userId, token }));
         return true;
     }
 

@@ -1,6 +1,6 @@
 import Page from "./PageRender.js";
 import { template } from "../TemplateEngine.js";
-import {usersDataBase} from "../database/CollectionUsersDataBase.js"
+import { usersDataBase } from "../database/CollectionUsersDataBase.js"
 
 class Content extends Page {
 
@@ -9,7 +9,7 @@ class Content extends Page {
         this.renderContent(templateAbout);
     }
 
-    async renderEdit() {         
+    async renderEdit() {
         const dataUsers = await usersDataBase.getAllUsers();
         const template = document.querySelector('#user_template');
         const userLogin = template.content.querySelector('.user_login');
@@ -24,6 +24,19 @@ class Content extends Page {
             usersWrapper.append(userElement);
         }
         this.renderContent(usersWrapper);
+    }
+
+    renderPhoto(){
+        const photoWrapper = document.createElement('div');
+        photoWrapper.classList.add('photo_wrapper');
+        const photoAddBtn = document.createElement('button');
+        photoAddBtn.textContent = 'Добавить фото';
+        const photoElement = document.createElement('img');        
+        photoElement.src = 'assets/img/logo.svg';
+        photoElement.classList.add('img');
+        photoWrapper.append(photoAddBtn);
+        photoWrapper.append(photoElement);
+        this.renderContent(photoWrapper);
     }
 
     renderHome() {

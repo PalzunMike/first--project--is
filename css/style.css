@@ -38,21 +38,50 @@ body{
 .menu{    
     flex-basis: 15%;    
     background-color: var(--menu-color);
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
 }
 
 .main_menu{
-    list-style: none;
-    padding-left: 3%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding: 0;
+    margin: 10px auto 0;
+    list-style: none;    
     font-size: 1.2em;
+}
+.main_menu li{
+    transition: all .5s;
+    background-color: rgba(0, 0, 0, .5);
+    border-radius: 3px;
+    margin: 3px auto;
+    font-size: .8em;
+    padding: 5px;
+    text-align: center;
+    min-width: 130px;
+    cursor: pointer;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    -ms-border-radius: 3px;
+    -o-border-radius: 3px;
+    -webkit-transition: all .5s;
+    -moz-transition: all .5s;
+    -ms-transition: all .5s;
+    -o-transition: all .5s;
+}
+
+.main_menu li:hover{
+    transition: all .5s;
+    background-color: rgba(0, 0, 0, .7);
+    -webkit-transition: all .5s;
+    -moz-transition: all .5s;
+    -ms-transition: all .5s;
+    -o-transition: all .5s;
 }
 
 .main_menu li a {
     text-decoration: none;
     font-weight: bold;
-    color: black;
+    color: var(--text-color);
 }
 
 .content{    
@@ -418,9 +447,13 @@ h1 a img{
     font-weight: bold;
 }
 
+.photo_wrapper{
+    outline: 1px solid red;
+}
+
 @media screen and (max-width: 720px){
     .wrapper{
-        flex-direction: column;
+        display: inline-block;
     }
     .main{
         width: 100%;
@@ -428,7 +461,7 @@ h1 a img{
 
     .menu{
         min-height: 0;
-        height: 30px;
+        height: 50px;
     }
 
     .banners{
@@ -442,4 +475,20 @@ h1 a img{
     .content{
         flex-grow: 8;
     }
+
+    .main_menu{
+        margin: 0;
+        height: 100%;
+        flex-direction: row;
+        justify-content: flex-start;  
+        align-items: center;      
+    }
+
+    .main_menu li{
+        margin: 0 0 0 5px;
+        height: 20px;
+    }
+
+    
+    
 } 
