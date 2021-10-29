@@ -16,7 +16,7 @@ class Router {
     constructor() {
         window.addEventListener('popstate', async () => { 
             await this.checkLogged();           
-            if (location.hash === '#admin' && !this.logged) {
+            if ((location.hash === '#admin' || location.hash === '#photo') && !this.logged) {
                 alert('Пройдите авторизацию');                
                 return false;
             } else {
@@ -27,7 +27,7 @@ class Router {
 
         window.addEventListener('load', async () => {
             await this.checkLogged();  
-            if (location.hash === '#admin' && !this.logged) {
+            if ((location.hash === '#admin' || location.hash === '#photo') && !this.logged) {
                 alert('Пройдите авторизацию');
                 return false;
             }else{

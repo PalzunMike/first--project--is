@@ -1,6 +1,7 @@
 import EnterForm from './forms/Enter-form.js';
 import RegisterForm from './forms/Register-form.js';
 import EditForm from './forms/Edit-form.js';
+import PhotoForm from './forms/Photo-form.js';
 import { popup } from './Popup.js';
 import { router } from './Router.js';
 import { page } from './pages/PageRender.js';
@@ -19,7 +20,6 @@ btnBlock.addEventListener('click', async (e) => {
             if (enter) {
                 page.checkLoggedUser();
                 router.navigate('/#admin');
-                console.log(page.loggedUser);
             }
         });
 
@@ -48,7 +48,7 @@ const listUsers = document.querySelector('.content');
 
 listUsers.addEventListener('click', (event) => {
     const users = document.querySelectorAll('.user');
-    const target = event.target.closest('.user');
+    const target = event.target.closest('.user') || event.target.closest('button');
     if (target) {
         const userId = target.dataset.id;
         const btnAction = event.target.dataset.buttonAction;
@@ -61,14 +61,10 @@ listUsers.addEventListener('click', (event) => {
             modal.id = 'modalEdit';
             const editForm = new EditForm('edit_form', modal);
             editForm.editUser(userId);
+        }else if (btnAction === 'photo'){
+            popup.openModal(modal);
+            modal.id = 'modalAddPhoto';
+            const photoForm = new PhotoForm('photo_form', modal);
         }
     }
 });
-
-
-
-// for (user of dataUsers){
-//     console.log(user);
-// }
-// dataUsers.forEach(user => console.log(user));
-// console.log(dataUsers);

@@ -195,7 +195,7 @@ h1 a img{
     color: var(--text-color);
 }
 
-.login_block, .register_block, .edit_block{    
+.login_block, .register_block, .edit_block, .photo_block{    
     width: 15%;
     min-width: 220px;
     position: absolute;
@@ -217,7 +217,7 @@ h1 a img{
     height: 100px;    
 }
 
-#login_form, #register_form, #edit_form { 
+#login_form, #register_form, #edit_form, #photo_form{ 
     font-family: Verdana, Geneva, Tahoma, sans-serif;    
     display: flex;    
     flex-direction: column; 
@@ -280,7 +280,7 @@ h1 a img{
     width: 15px;
 }
 
-.submit, .singInBtn, .regBtn, #editBtn, .quit_btn{
+.submit, .singInBtn, .regBtn, #editBtn, .quit_btn, .photo_btn{
     transition: all .5s;
     color: rgb(0, 2, 10);
     background-color: var(--btn-color);
@@ -317,7 +317,7 @@ h1 a img{
     opacity: .4;
 }
 
-.submit:hover:enabled, .singInBtn:hover, .regBtn:hover, #editBtn:hover, .quit_btn:hover{
+.submit:hover:enabled, .singInBtn:hover, .regBtn:hover, #editBtn:hover, .quit_btn:hover, .photo_btn:hover{
     transition: all .5s;
     background-color: var(--btn-hover-color);    
     -webkit-transition: all .5s;
@@ -448,7 +448,89 @@ h1 a img{
 }
 
 .photo_wrapper{
-    outline: 1px solid red;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* outline: 1px solid red; */
+}
+
+.photo_area{
+    width: 90%;
+    margin: 20px auto;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+
+    /* outline: 1px solid yellow; */
+}
+
+.photo_wrapper button{
+    width: 50%;
+    margin-top: 10px;
+}
+
+.photo_element{
+    margin: 1%;
+    width: 15%;
+}
+
+#photo_input{
+    opacity: 0;
+    visibility: hidden;
+    position: absolute;
+}
+
+.photo_field{
+    width: 150%;
+    margin: 20px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    flex-direction: row;   
+    font-size: 1em;
+    color: var(--text-color);
+}
+
+.photo_field_fake{
+    flex: 3;
+    padding: 10px;
+    border: 1px solid #c7c7c7;
+    border-radius: 3px 0 0 3px;
+    border-right: none;
+    box-sizing: border-box;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.photo_field_button{
+    flex: 1;
+    padding: 10px;
+    background: #199172;
+    border: 1px solid #199172;
+    box-sizing: border-box;
+    font-size: 1.1rem;
+    font-weight: 700;
+    border-radius: 0 3px 3px 0;
+    cursor: pointer;
+    transition: all .5s;
+    -webkit-transition: all .5s;
+    -moz-transition: all .5s;
+    -ms-transition: all .5s;
+    -o-transition: all .5s;
+}
+
+.photo_field_button:hover{
+    transition: all .5s;
+    background: #1bbc5b;
+    border: 1px solid #1bbc5b;
+    -webkit-transition: all .5s;
+    -moz-transition: all .5s;
+    -ms-transition: all .5s;
+    -o-transition: all .5s;
 }
 
 @media screen and (max-width: 720px){

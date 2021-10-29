@@ -1,5 +1,6 @@
 import Page from "./PageRender.js";
 import { template } from "../TemplateEngine.js";
+import PhotoForm from "../forms/Photo-form.js";
 import { usersDataBase } from "../database/CollectionUsersDataBase.js"
 
 class Content extends Page {
@@ -14,6 +15,7 @@ class Content extends Page {
         const template = document.querySelector('#user_template');
         const userLogin = template.content.querySelector('.user_login');
         const userBlock = template.content.querySelector('.user');
+
         const usersWrapper = document.createElement('div');
         usersWrapper.classList.add('users_wrapper');
 
@@ -29,13 +31,12 @@ class Content extends Page {
     renderPhoto(){
         const photoWrapper = document.createElement('div');
         photoWrapper.classList.add('photo_wrapper');
-        const photoAddBtn = document.createElement('button');
-        photoAddBtn.textContent = 'Добавить фото';
-        const photoElement = document.createElement('img');        
-        photoElement.src = 'assets/img/logo.svg';
-        photoElement.classList.add('img');
-        photoWrapper.append(photoAddBtn);
-        photoWrapper.append(photoElement);
+
+        const template = document.querySelector('#photo_template');
+        const photoBlock = template.content.cloneNode(true); 
+        
+        photoWrapper.append(photoBlock);
+
         this.renderContent(photoWrapper);
     }
 
