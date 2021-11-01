@@ -29,10 +29,19 @@ class Popup {
         overlay.classList.add('active');
     }
 
+    openImgModal(modal){
+        this.element = modal;
+        if (modal === null) return
+        modal.classList.add('select');
+        overlay.classList.add('active');
+    }
+
     closeModal(modal) {
+        debugger;
         if (modal === null) return
         modal.removeAttribute('id');
         modal.classList.remove('active');
+        modal.classList.remove('select');
         overlay.classList.remove('active');
     }
 
@@ -47,8 +56,9 @@ class Popup {
     }
 
     addEventListenerOverlay() {
+        debugger;
         this.overlay.addEventListener('click', () => {
-            const modals = document.querySelectorAll('.modal.active');
+            const modals = document.querySelectorAll('.modal.active' || '.select');
             modals.forEach(modal => {
                 this.closeModal(modal);
             });

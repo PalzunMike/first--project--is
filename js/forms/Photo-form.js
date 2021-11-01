@@ -1,6 +1,8 @@
 import Form from './Form.js';
 import { popup } from '../Popup.js';
 import { usersDataBase } from '../database/CollectionUsersDataBase.js';
+import { fileUpload } from '../database/FileUpload.js';
+import { content } from '../pages/ContentRender.js';
 
 export default class PhotoForm extends Form {
 
@@ -9,11 +11,11 @@ export default class PhotoForm extends Form {
     constructor(...args) {
         super(...args);
         this.getTemplate(this.templateURL);
-        this.shoeSelectedFile();
+        this.showSelectedFile();
         this.onSubmit();
     }
 
-    async shoeSelectedFile() {
+    async showSelectedFile() {
         await this.templateInited;
         let photoInputs = document.querySelectorAll('.field_file');
         Array.prototype.forEach.call(photoInputs, function (input) {
@@ -33,10 +35,30 @@ export default class PhotoForm extends Form {
         });
     }
 
-    onSubmit() {
-        this.addEventListenerOnSubmit((e) => {
-            debugger;
+    async addPhotoToUser(photoPath) {
+        const authUserObj = await usersDataBase.getOneUser(this.authUserId);
+        const photoArray = authUserObj.photo;
+
+        if (photoArray) {
+            photoArray.push(photoPath);
+        } else {
+            photoArray = [];
+            photoArray.push(photoPath);
+        }
+
+        authUserObj.photo = photoArray;
+        await usersDataBase.updateUser(authUserObj);
+    }
+
+    async onSubmit() {
+        this.addEventListenerOnSubmit(async (e) => {
             e.preventDefault();
+
+            const formData = new FormData(this.formElement);
+            const photoPath = await fileUpload.sendPhoto(formData);
+
+            await this.addPhotoToUser(photoPath);
+            content.renderPhoto();
         });
     }
 }

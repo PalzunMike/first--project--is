@@ -28,15 +28,25 @@ class Content extends Page {
         this.renderContent(usersWrapper);
     }
 
-    renderPhoto(){
+    async renderPhoto(){
         const photoWrapper = document.createElement('div');
         photoWrapper.classList.add('photo_wrapper');
-
         const template = document.querySelector('#photo_template');
-        const photoBlock = template.content.cloneNode(true); 
-        
+        const photoBlock = template.content.cloneNode(true);         
         photoWrapper.append(photoBlock);
 
+        const authUserObj = await usersDataBase.getOneUser(this.authUserId);
+        const photoArray = authUserObj.photo;
+        const photoArea = photoWrapper.querySelector('.photo_area');
+
+        photoArray.forEach(photo => {
+            console.log(photo);
+            const userPhoto = document.createElement('img');
+            userPhoto.src = `http://localhost:5000/${photo}`;
+            userPhoto.classList.add('photo_element');
+            photoArea.append(userPhoto);
+        });
+       
         this.renderContent(photoWrapper);
     }
 

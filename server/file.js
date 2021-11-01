@@ -1,22 +1,24 @@
 import multer from "multer";
 
 const storage = multer.diskStorage({
-    destination(req, file, cb){
-        cb(null, './uploads/')
+    destination: function (req, file, cb){
+        cb(null, './uploads');
     },
-    filename(req, file, cb){
-        cb(null, Math.random() + file.originalname)
+    filename: function (req, file, cb){
+        cb(null, (Math.round(Math.random() * 1E9)) + file.originalname);
     }
+
+    
 });
 
 const types = ['image/png', 'image/jpg', 'image/jpeg'];
 
 const fileFilter = (req, file, cb) => {
-    if (types.includes(file.mimetypes)){
+    if (types.includes(file.mimetype)){
         cb (null, true);
     }else {
         cb (null, false);
     }   
 };
 
-export default multer({storage, filename, fileFilter});
+export const upload = multer({storage, fileFilter});

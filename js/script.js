@@ -4,7 +4,8 @@ import EditForm from './forms/Edit-form.js';
 import PhotoForm from './forms/Photo-form.js';
 import { popup } from './Popup.js';
 import { router } from './Router.js';
-import { page } from './pages/PageRender.js';
+// import { page } from './pages/PageRender.js';
+import { content } from './pages/ContentRender.js';
 
 const modal = document.querySelector('.modal');
 const btnBlock = document.querySelector('.btn_block');
@@ -18,7 +19,7 @@ btnBlock.addEventListener('click', async (e) => {
             event.preventDefault();
             const enter = await enterForm.submit();
             if (enter) {
-                page.checkLoggedUser();
+                content.checkLoggedUser();
                 router.navigate('/#admin');
             }
         });
@@ -39,8 +40,8 @@ btnBlock.addEventListener('click', async (e) => {
 
 const quitBtn = document.querySelector('.quit_btn');
 quitBtn.addEventListener('click', () => {
-    page.quitUser();
-    page.checkLoggedUser();
+    content.quitUser();
+    content.checkLoggedUser();
     router.navigate('/');
 });
 
@@ -64,7 +65,11 @@ listUsers.addEventListener('click', (event) => {
         }else if (btnAction === 'photo'){
             popup.openModal(modal);
             modal.id = 'modalAddPhoto';
-            const photoForm = new PhotoForm('photo_form', modal);
-        }
+            const photoForm = new PhotoForm('photo_form', modal, content.authUserId);
+        }        
+    }
+    const imgTarget = event.target.closest('img');
+    if (imgTarget){
+        popup.openImgModal(imgTarget);
     }
 });

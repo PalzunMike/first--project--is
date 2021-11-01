@@ -1,10 +1,10 @@
 
 
 class PhotoController {
-    async add(req, res){
-        try{
-
-        }catch(e){
+    async add(req, res) {
+        try {            
+            res.json(req.file.path);
+        } catch (e) {
             console.log(e);
         }
     }

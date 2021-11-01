@@ -460,7 +460,7 @@ h1 a img{
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    justify-content: space-evenly;
+    justify-content: flex-start;
 
     /* outline: 1px solid yellow; */
 }
@@ -472,7 +472,16 @@ h1 a img{
 
 .photo_element{
     margin: 1%;
-    width: 15%;
+    width: 31%; 
+    height: 30%;   
+    object-fit: cover;
+    border-bottom: solid 1px yellow;
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -ms-border-radius: 10px;
+    -o-border-radius: 10px;
+    cursor: pointer;
 }
 
 #photo_input{
@@ -533,6 +542,25 @@ h1 a img{
     -o-transition: all .5s;
 }
 
+.select{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(1);
+    transition: 300ms ease-in-out;
+    width: 80vw;
+    height: inherit;
+    z-index: 10;
+    -webkit-transform: translate(-50%, -50%) scale(1);
+    -moz-transform: translate(-50%, -50%) scale(1);
+    -ms-transform: translate(-50%, -50%) scale(1);
+    -o-transform: translate(-50%, -50%) scale(1);
+    -webkit-transition: 300ms ease-in-out;
+    -moz-transition: 300ms ease-in-out;
+    -ms-transition: 300ms ease-in-out;
+    -o-transition: 300ms ease-in-out;
+}
+
 @media screen and (max-width: 720px){
     .wrapper{
         display: inline-block;
@@ -569,6 +597,15 @@ h1 a img{
     .main_menu li{
         margin: 0 0 0 5px;
         height: 20px;
+    }
+
+    .photo_area{
+        flex-direction: column;
+    }
+
+    .photo_element{
+        width: 100%;
+        border-bottom: 3px solid yellow;
     }
 
     

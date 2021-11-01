@@ -9,7 +9,8 @@ const User = new mongoose.Schema(
         password: { type: String, required: true },
         phone: { type: String, required: true },
         secondName: { type: String, required: true },
-        sex: { type: String, required: false }
+        sex: { type: String, required: false },
+        photo: { type: Array, required: false}
     },
     { versionKey: false }
 )

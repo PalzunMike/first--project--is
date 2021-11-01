@@ -3,6 +3,11 @@ import { usersDataBase } from '../database/CollectionUsersDataBase.js'
 
 export default class Page {
 
+    constructor(){
+        this.authUserId = '1';
+        // console.log(this.authUserId);
+    }    
+
     renderContent(element) {
         this.checkLoggedUser();
         const modalActive = document.querySelector('.active');
@@ -31,8 +36,9 @@ export default class Page {
 
         if (loginUser) {
             const userData = JSON.parse(loginUser);
-            const userId = userData.userId;
-            const authUser = await usersDataBase.getOneUser(userId);
+            this.authUserId = userData.userId;  
+            console.log(this.authUserId);          
+            const authUser = await usersDataBase.getOneUser(this.authUserId);
             autBlock.classList.add('hide');
             welcomeMsg.textContent = ` ${authUser.firstName} ${authUser.secondName}`;
             welcomeBlock.classList.remove('hide');
@@ -50,4 +56,4 @@ export default class Page {
     }
 }
 
-export const page = new Page();
+// export const page = new Page();
