@@ -29,39 +29,57 @@ class Popup {
         overlay.classList.add('active');
     }
 
-    openImgModal(modal){
-        this.element = modal;
-        if (modal === null) return
-        modal.classList.add('select');
+    openGallery(photo){
+        this.element = photo;
+        if (photo === null) return
+        photo.classList.add('select');
         overlay.classList.add('active');
+        const closeBtn = photo.querySelector('.close-btn');
+        const deleteBtn = photo.querySelector('.delete-photo');        
+        deleteBtn.style.zIndex = '1';
+        closeBtn.style.zIndex = '1';
+
+
     }
 
     closeModal(modal) {
-        debugger;
         if (modal === null) return
         modal.removeAttribute('id');
         modal.classList.remove('active');
-        modal.classList.remove('select');
         overlay.classList.remove('active');
+        
+    }
+
+    closeGallery(photo){
+        if (photo === null) return
+        photo.classList.remove('select');
+        overlay.classList.remove('active');
+        const closeBtn = photo.querySelector('.close-btn');
+        const deleteBtn = photo.querySelector('.delete-photo');        
+        deleteBtn.style.zIndex = '-1';
+        closeBtn.style.zIndex = '-1';         
     }
 
     addEventListenerClose() {
-        const modalWindows = document.querySelector('.modal');
-        modal.addEventListener('click', (e) => {
+        modal.addEventListener('click', (e) => {            
             if (e.target.dataset.closeButton === '') {
                 const modal = e.target.closest('.modal')
                 this.closeModal(modal);
             }
-        })
+        });        
     }
 
     addEventListenerOverlay() {
-        debugger;
         this.overlay.addEventListener('click', () => {
-            const modals = document.querySelectorAll('.modal.active' || '.select');
+            const modals = document.querySelectorAll('.modal.active');
             modals.forEach(modal => {
                 this.closeModal(modal);
             });
+
+            const photos = document.querySelectorAll('.select');
+            photos.forEach(photo =>{
+                this.closeGallery(photo);
+            })
         })
     }
     clear(num) {

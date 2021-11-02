@@ -48,28 +48,37 @@ quitBtn.addEventListener('click', () => {
 const listUsers = document.querySelector('.content');
 
 listUsers.addEventListener('click', (event) => {
+    // console.log(event.target);
     const users = document.querySelectorAll('.user');
     const target = event.target.closest('.user') || event.target.closest('button');
+    const gallery = event.target.closest('.photo_element');
+
+    if (gallery){
+        popup.openGallery(gallery);
+    }
+
     if (target) {
         const userId = target.dataset.id;
         const btnAction = event.target.dataset.buttonAction;
 
-        if (btnAction === 'remove') {
+        if (btnAction === 'remove-user') {
             const editForm = new EditForm('edit_form', modal);
             editForm.deleteUser(userId, users);
-        } else if (btnAction === 'edit') {
+        } else if (btnAction === 'edit-user') {
             popup.openModal(modal);
             modal.id = 'modalEdit';
             const editForm = new EditForm('edit_form', modal);
             editForm.editUser(userId);
-        }else if (btnAction === 'photo'){
+        }else if (btnAction === 'add-photo'){
             popup.openModal(modal);
             modal.id = 'modalAddPhoto';
             const photoForm = new PhotoForm('photo_form', modal, content.authUserId);
-        }        
-    }
-    const imgTarget = event.target.closest('img');
-    if (imgTarget){
-        popup.openImgModal(imgTarget);
-    }
+        }else if (btnAction === 'close-photo'){          
+            popup.closeGallery(gallery);
+        }else if (btnAction === 'remove-photo'){
+            const photo = target.previousElementSibling;
+            console.log(photo.src)
+        }       
+    }    
+    
 });

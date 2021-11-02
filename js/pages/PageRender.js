@@ -36,8 +36,7 @@ export default class Page {
 
         if (loginUser) {
             const userData = JSON.parse(loginUser);
-            this.authUserId = userData.userId;  
-            console.log(this.authUserId);          
+            this.authUserId = userData.userId;         
             const authUser = await usersDataBase.getOneUser(this.authUserId);
             autBlock.classList.add('hide');
             welcomeMsg.textContent = ` ${authUser.firstName} ${authUser.secondName}`;

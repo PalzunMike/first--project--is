@@ -8,7 +8,7 @@ class Router {
         '/#': () => content.renderHome(),
         '/#admin': () => content.renderEdit(),
         '/#about_me': () => content.renderAboutMe(), // можно через bind;
-        '/#photo': () => content.renderPhoto()
+        '/#photo': () => content.renderPhotoPage()
     };
     root = '/';
     logged = false;

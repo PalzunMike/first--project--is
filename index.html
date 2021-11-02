@@ -29,7 +29,7 @@
     </header>
     <div class="wrapper">
         <nav class="main menu">
-            <ul class="main_menu">                
+            <ul class="main_menu">
                 <li><a href="/#photo">Фотографии</a></li>
                 <li><a href="/#admin">Пользователи</a></li>
                 <li><a href="/#about_me">Обо мне</a></li>
@@ -53,16 +53,23 @@
         <div class="user" data-id="">
             <p class="user_login"></p>
             <div class="user_btn_block">
-                <button data-modal-target="#modalEdit" class="edit btn"><img data-button-action="edit"
+                <button data-modal-target="#modalEdit" class="edit btn"><img data-button-action="edit-user"
                         src="assets/img/edit.png" title="Редактировать пользователя" /></button>
-                <button class="remove btn"><img data-button-action="remove" src="assets/img/remove.png"
+                <button class="remove btn"><img data-button-action="remove-user" src="assets/img/remove.png"
                         title="Удалить пользователя" /></button>
             </div>
         </div>
     </template>
-    <template id="photo_template"> 
-        <button data-modal-target = "#modalAddPhoto" class="photo_btn" data-button-action="photo">Добавить фото</button>
+    <template id="photo_template">
+        <button data-modal-target="#modalAddPhoto" class="photo_btn" data-button-action="add-photo">Добавить фото</button>
         <div class="photo_area"></div>
+    </template>
+    <template id="photo_element_template">
+        <div class="photo_element">
+            <button data-button-action="close-photo" class="close-btn">&times;</button>
+            <img src="" alt="my photos" class="photo">
+            <button data-button-action="remove-photo" class="delete-photo">Удалить фото</button>
+        </div>
     </template>
     <script type="module" src="js\script.js"></script>
 

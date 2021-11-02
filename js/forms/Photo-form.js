@@ -58,7 +58,7 @@ export default class PhotoForm extends Form {
             const photoPath = await fileUpload.sendPhoto(formData);
 
             await this.addPhotoToUser(photoPath);
-            content.renderPhoto();
+            content.renderPhotoPage();
         });
     }
 }
