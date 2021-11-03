@@ -41,7 +41,11 @@ class UsersController {
             }
 
             const token = jwt.sign(
-                { userId: user.id },
+                { 
+                    userId: user.id,
+                    firstName: user.firstName,
+                    secondName: user.secondName
+                },
                 JWT_SECRET,
                 { expiresIn: '1h' }
             )
