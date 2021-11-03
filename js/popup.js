@@ -29,17 +29,15 @@ class Popup {
         overlay.classList.add('visible');
     }
 
-    openGallery(photo){
+    openGallery(photo) {
         this.element = photo;
         if (photo === null) return
         photo.classList.add('select');
         overlay.classList.add('visible');
         const closeBtn = photo.querySelector('.close-btn');
-        const deleteBtn = photo.querySelector('.delete-photo');        
+        const deleteBtn = photo.querySelector('.delete-photo');
         deleteBtn.style.zIndex = '1';
         closeBtn.style.zIndex = '1';
-
-
     }
 
     closeModal(modal) {
@@ -47,26 +45,26 @@ class Popup {
         modal.removeAttribute('id');
         modal.classList.remove('active');
         overlay.classList.remove('visible');
-        
+
     }
 
-    closeGallery(photo){
+    closeGallery(photo) {
         if (photo === null) return
         photo.classList.remove('select');
         overlay.classList.remove('visible');
         const closeBtn = photo.querySelector('.close-btn');
-        const deleteBtn = photo.querySelector('.delete-photo');        
+        const deleteBtn = photo.querySelector('.delete-photo');
         deleteBtn.style.zIndex = '-1';
-        closeBtn.style.zIndex = '-1';         
+        closeBtn.style.zIndex = '-1';
     }
 
     addEventListenerClose() {
-        modal.addEventListener('click', (e) => {            
+        modal.addEventListener('click', (e) => {
             if (e.target.dataset.closeButton === '') {
                 const modal = e.target.closest('.modal')
                 this.closeModal(modal);
             }
-        });        
+        });
     }
 
     addEventListenerOverlay() {
@@ -77,7 +75,7 @@ class Popup {
             });
 
             const photos = document.querySelectorAll('.select');
-            photos.forEach(photo =>{
+            photos.forEach(photo => {
                 this.closeGallery(photo);
             })
         })

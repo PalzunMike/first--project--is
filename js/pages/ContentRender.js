@@ -30,18 +30,18 @@ class Content extends Page {
         this.renderContent(usersWrapper);
     }
 
-    async renderPhotoPage(){
+    async renderPhotoPage() {
         const photoPageWrapper = document.createElement('div');
         photoPageWrapper.classList.add('photo_wrapper');
         const template = document.querySelector('#photo_template');
-        const photoBlock = template.content.cloneNode(true);         
-        photoPageWrapper.append(photoBlock);      
+        const photoBlock = template.content.cloneNode(true);
+        photoPageWrapper.append(photoBlock);
         await this.renderContent(photoPageWrapper);
 
         await this.renderPhoto();
     }
 
-    async renderPhoto(){
+    async renderPhoto() {
         const authUserObj = await usersDataBase.getOneUser(this.authUserId);
         const photoArray = authUserObj.photo;
         const photoArea = document.querySelector('.photo_area');
@@ -51,22 +51,21 @@ class Content extends Page {
             const photoElement = photoElementTempalte.content.cloneNode(true);
             const photoImg = photoElement.querySelector('.photo');
             photoImg.dataset.path = photo;
-            photoImg.src = `http://localhost:5000/${photo}`; 
+            photoImg.src = `http://localhost:5000/${photo}`;
+            photoArea.append(photoElement);
 
-            photoArea.append(photoElement);       
-             
         });
     }
 
     async deletePhoto(photoPath) {
         const authUserObj = await usersDataBase.getOneUser(this.authUserId);
-        const photoArray = authUserObj.photo;        
+        const photoArray = authUserObj.photo;
         const photoIndex = photoArray.indexOf(photoPath);
         photoArray.splice(photoIndex, 1);
         authUserObj.photo = photoArray;
         await usersDataBase.updateUser(authUserObj);
         await fileUpload.deletePhoto(photoPath);
-    }   
+    }
 
     renderHome() {
         const mainContent = document.createElement('h3');

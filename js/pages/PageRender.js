@@ -41,6 +41,7 @@ export default class Page {
 
         if (loginUser) {
             const userData = JSON.parse(loginUser);
+<<<<<<< Updated upstream
 
             this.token = userData.token;
             console.log(this.token);
@@ -53,6 +54,8 @@ export default class Page {
 
             console.log(decodedData);
 
+=======
+>>>>>>> Stashed changes
             this.authUserId = userData.userId;
             const authUser = await usersDataBase.getOneUser(this.authUserId);
             autBlock.classList.add('hide');

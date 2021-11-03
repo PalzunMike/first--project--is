@@ -48,12 +48,11 @@ quitBtn.addEventListener('click', () => {
 const contentBlock = document.querySelector('.content');
 
 contentBlock.addEventListener('click', (event) => {
-    // console.log(event.target);
     const users = document.querySelectorAll('.user');
     const target = event.target.closest('.user') || event.target.closest('button');
     const gallery = event.target.closest('.photo_element');
 
-    if (gallery){
+    if (gallery) {
         popup.openGallery(gallery);
     }
 
@@ -69,17 +68,17 @@ contentBlock.addEventListener('click', (event) => {
             modal.id = 'modalEdit';
             const editForm = new EditForm('edit_form', modal);
             editForm.editUser(userId);
-        }else if (btnAction === 'add-photo'){
+        } else if (btnAction === 'add-photo') {
             popup.openModal(modal);
             modal.id = 'modalAddPhoto';
             const photoForm = new PhotoForm('photo_form', modal, content.authUserId);
-        }else if (btnAction === 'close-photo'){          
+        } else if (btnAction === 'close-photo') {
             popup.closeGallery(gallery);
-        }else if (btnAction === 'remove-photo'){
+        } else if (btnAction === 'remove-photo') {
             const photo = target.previousElementSibling;
             content.deletePhoto(photo.dataset.path);
             content.renderPhotoPage();
-        }       
-    }    
-    
+        }
+    }
+
 });

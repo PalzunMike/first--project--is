@@ -14,10 +14,10 @@ class Router {
     logged = false;
 
     constructor() {
-        window.addEventListener('popstate', async () => { 
-            await this.checkLogged();           
+        window.addEventListener('popstate', async () => {
+            await this.checkLogged();
             if ((location.hash === '#admin' || location.hash === '#photo') && !this.logged) {
-                alert('Пройдите авторизацию');                
+                alert('Пройдите авторизацию');
                 return false;
             } else {
                 this.routes[this.root + location.hash]();
@@ -26,11 +26,11 @@ class Router {
         });
 
         window.addEventListener('load', async () => {
-            await this.checkLogged();  
+            await this.checkLogged();
             if ((location.hash === '#admin' || location.hash === '#photo') && !this.logged) {
                 alert('Пройдите авторизацию');
                 return false;
-            }else{
+            } else {
                 this.routes[this.root + location.hash]();
             }
         });
@@ -42,7 +42,7 @@ class Router {
         return this;
     }
 
-    async checkLogged(){
+    async checkLogged() {
         this.logged = await content.checkLoggedUser();
     }
 }
