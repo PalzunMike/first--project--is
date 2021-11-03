@@ -4,8 +4,8 @@ import EditForm from './forms/Edit-form.js';
 import PhotoForm from './forms/Photo-form.js';
 import { popup } from './Popup.js';
 import { router } from './Router.js';
-// import { page } from './pages/PageRender.js';
 import { content } from './pages/ContentRender.js';
+import { authCheck } from './AuthCheck.js';
 
 const modal = document.querySelector('.modal');
 const btnBlock = document.querySelector('.btn_block');
@@ -19,7 +19,6 @@ btnBlock.addEventListener('click', async (e) => {
             event.preventDefault();
             const enter = await enterForm.submit();
             if (enter) {
-                content.checkLoggedUser();
                 router.navigate('/#admin');
             }
         });
@@ -41,7 +40,6 @@ btnBlock.addEventListener('click', async (e) => {
 const quitBtn = document.querySelector('.quit_btn');
 quitBtn.addEventListener('click', () => {
     content.quitUser();
-    content.checkLoggedUser();
     router.navigate('/');
 });
 

@@ -1,4 +1,5 @@
-import { content } from "./pages/ContentRender.js"
+import { content } from "./pages/ContentRender.js";
+import { authCheck } from "../js/AuthCheck.js";
 
 class Router {
 
@@ -42,8 +43,8 @@ class Router {
         return this;
     }
 
-    async checkLogged() {
-        this.logged = await content.checkLoggedUser();
+    checkLogged() {
+        this.logged = authCheck.checkLoggedUser();
     }
 }
 

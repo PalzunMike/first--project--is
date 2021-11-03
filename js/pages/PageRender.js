@@ -1,15 +1,15 @@
 import { popup } from '../Popup.js';
-import { usersDataBase } from '../database/CollectionUsersDataBase.js'
+import { usersDataBase } from '../database/CollectionUsersDataBase.js';
+import { authCheck } from '../AuthCheck.js';
 
 export default class Page {
 
     constructor() {
         this.authUserId = '1';
-        // console.log(this.authUserId);
     }
 
     renderContent(element) {
-        this.checkLoggedUser();
+        this.renderWelcomeMsg();
         const modalActive = document.querySelector('.active');
         const gallery = document.querySelector('.select');
         if (modalActive) {
@@ -33,39 +33,21 @@ export default class Page {
         };
     }
 
-    async checkLoggedUser() {
-        const loginUser = localStorage.getItem('userData');
+    renderWelcomeMsg() {  
         const autBlock = document.querySelector('.btn_block');
         const welcomeBlock = document.querySelector('.welcome_block');
         const welcomeMsg = document.querySelector('.welcome_message');
-
-        if (loginUser) {
-            const userData = JSON.parse(loginUser);
-
-
-            this.token = userData.token;
-            console.log(this.token);
-
-            let base64Url = this.token.split('.')[1]; // token you get
-            let base64 = decodeURIComponent(atob(base64Url).split('').map(function(c) {
-                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-            }).join(''));
-            let decodedData = JSON.parse(base64);
-
-            console.log(decodedData);
-
-            this.authUserId = userData.userId;
-            const authUser = await usersDataBase.getOneUser(this.authUserId);
+                
+        if (authCheck.checkLoggedUser()){
+            this.authUserId = authCheck.loggedUser.userId;
             autBlock.classList.add('hide');
-            welcomeMsg.textContent = ` ${authUser.firstName} ${authUser.secondName}`;
+            welcomeMsg.textContent = ` ${authCheck.loggedUser.firstName} ${authCheck.loggedUser.secondName}`;
             welcomeBlock.classList.remove('hide');
-            return true;
-        } else {
+        }else {
             welcomeMsg.textContent = ' ';
             autBlock.classList.remove('hide');
             welcomeBlock.classList.add('hide');
-            return false;
-        }
+        }        
     }
 
     quitUser() {
