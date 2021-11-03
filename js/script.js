@@ -45,9 +45,9 @@ quitBtn.addEventListener('click', () => {
     router.navigate('/');
 });
 
-const listUsers = document.querySelector('.content');
+const contentBlock = document.querySelector('.content');
 
-listUsers.addEventListener('click', (event) => {
+contentBlock.addEventListener('click', (event) => {
     // console.log(event.target);
     const users = document.querySelectorAll('.user');
     const target = event.target.closest('.user') || event.target.closest('button');
@@ -77,7 +77,8 @@ listUsers.addEventListener('click', (event) => {
             popup.closeGallery(gallery);
         }else if (btnAction === 'remove-photo'){
             const photo = target.previousElementSibling;
-            console.log(photo.src)
+            content.deletePhoto(photo.dataset.path);
+            content.renderPhotoPage();
         }       
     }    
     

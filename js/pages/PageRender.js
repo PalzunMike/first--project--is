@@ -11,7 +11,12 @@ export default class Page {
     renderContent(element) {
         this.checkLoggedUser();
         const modalActive = document.querySelector('.active');
-        popup.closeModal(modalActive);
+        const gallery = document.querySelector('.select');
+        if (modalActive){
+            popup.closeModal(modalActive);
+        }else {
+            popup.closeGallery(gallery);
+        }
         const content = document.querySelector('.content');
         this.clearElement(content);
         const isDOMElement = element instanceof Element;

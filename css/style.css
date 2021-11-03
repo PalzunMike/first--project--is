@@ -375,9 +375,6 @@ h1 a img{
     -o-transform: translate(-50%, -50%) scale(1);
 }
 
-
-
-
 #succesEdit{
     position: fixed;
     width: 100%;
@@ -406,7 +403,7 @@ h1 a img{
     pointer-events: none;
 }
 
-#overlay.active{
+#overlay.visible{
     opacity: 1;
     pointer-events: all;
 }
@@ -441,15 +438,12 @@ h1 a img{
 
 .photo_area{
     width: 90%;
-    /* height: 100%; */
     margin: 20px auto;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: flex-start;
-    /* flex-basis: 31%; */
-
-    outline: 1px solid yellow;
+    
 }
 
 .photo_btn{
@@ -460,9 +454,8 @@ h1 a img{
 .photo_element{
     position: relative;
     margin: 1%;
-    width: 10vw;
-    /* min-width: 30%; */
-    height: 20vh;
+    width: 23%;
+    height: 15vw;
     transition: 300ms all ;
     -webkit-transition: 300ms all ;
     -moz-transition: 300ms all ;
@@ -554,8 +547,6 @@ h1 a img{
     transition: 300ms all;
     width: 30vw;
     height: 30vh;
-    /* max-height: 60vh;
-    max-width: 60vw; */
     z-index: 10;
     -webkit-transform: translate(-50%, -50%) scale(2.7);
     -moz-transform: translate(-50%, -50%) scale(2.5);
@@ -652,9 +643,19 @@ h1 a img{
 
     .photo_element{
         width: 100%;
-        /* border-bottom: 3px solid yellow; */
+        height: 70vw;
     }
 
+    .select{
+        width: 85%;
+        transform: translate(-50%, -50%) scale(1.1);
+        -webkit-transform: translate(-50%, -50%) scale(1.1);
+        -moz-transform: translate(-50%, -50%) scale(1.1);
+        -ms-transform: translate(-50%, -50%) scale(1.1);
+        -o-transform: translate(-50%, -50%) scale(1.1);
+}
+
+    
     
     
 } 

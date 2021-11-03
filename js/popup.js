@@ -26,14 +26,14 @@ class Popup {
         this.clear(1);
         if (modal === null) return
         modal.classList.add('active');
-        overlay.classList.add('active');
+        overlay.classList.add('visible');
     }
 
     openGallery(photo){
         this.element = photo;
         if (photo === null) return
         photo.classList.add('select');
-        overlay.classList.add('active');
+        overlay.classList.add('visible');
         const closeBtn = photo.querySelector('.close-btn');
         const deleteBtn = photo.querySelector('.delete-photo');        
         deleteBtn.style.zIndex = '1';
@@ -46,14 +46,14 @@ class Popup {
         if (modal === null) return
         modal.removeAttribute('id');
         modal.classList.remove('active');
-        overlay.classList.remove('active');
+        overlay.classList.remove('visible');
         
     }
 
     closeGallery(photo){
         if (photo === null) return
         photo.classList.remove('select');
-        overlay.classList.remove('active');
+        overlay.classList.remove('visible');
         const closeBtn = photo.querySelector('.close-btn');
         const deleteBtn = photo.querySelector('.delete-photo');        
         deleteBtn.style.zIndex = '-1';

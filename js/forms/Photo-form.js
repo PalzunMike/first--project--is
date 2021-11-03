@@ -49,7 +49,7 @@ export default class PhotoForm extends Form {
         authUserObj.photo = photoArray;
         await usersDataBase.updateUser(authUserObj);
     }
-
+    
     async onSubmit() {
         this.addEventListenerOnSubmit(async (e) => {
             e.preventDefault();
