@@ -448,6 +448,8 @@ h1 a img{
 
 .photo_btn{
     width: 50%;
+    height: 40px;
+    font-weight: bold;
     margin-top: 20px;
 }
 
@@ -455,7 +457,7 @@ h1 a img{
     position: relative;
     margin: 1%;
     width: 23%;
-    height: 15vw;
+    height: 14vw;
     transition: 300ms all ;
     -webkit-transition: 300ms all ;
     -moz-transition: 300ms all ;
