@@ -1,7 +1,7 @@
 import Form from './Form.js';
-import { popup } from '../Popup.js';
 import { usersDataBase } from '../database/UsersDataBase.js';
 import { fileUpload } from '../database/FileLoader.js';
+import { pagePhotoGallery } from '../pages/PagePhotoGallery.js';
 
 export default class PhotoForm extends Form {
 
@@ -36,7 +36,7 @@ export default class PhotoForm extends Form {
 
     async addPhotoToUser(photoPath) {
         const authUserObj = await usersDataBase.getOneUser(this.authUserId);
-        const photoArray = authUserObj.photo;
+        const photoArray = await pagePhotoGallery.getPhotoArray();
 
         if (photoArray) {
             photoArray.push(photoPath);
@@ -44,11 +44,10 @@ export default class PhotoForm extends Form {
             photoArray = [];
             photoArray.push(photoPath);
         }
-
         authUserObj.photo = photoArray;
         await usersDataBase.updateUser(authUserObj);
     }
-    
+
     async onSubmit() {
         this.addEventListenerOnSubmit(async (e) => {
             e.preventDefault();
@@ -57,7 +56,7 @@ export default class PhotoForm extends Form {
             const photoPath = await fileUpload.sendPhoto(formData);
 
             await this.addPhotoToUser(photoPath);
-            content.renderPhotoPage();
+            pagePhotoGallery.renderPhotoGalleryPage();
         });
     }
 }

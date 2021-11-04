@@ -1,4 +1,5 @@
 import PageController from "./PageController.js";
+import { authCheck } from "../AuthCheck.js";
 import { usersDataBase } from "../database/UsersDataBase.js"
 import { fileUpload } from '../database/FileLoader.js';
 
@@ -15,10 +16,9 @@ class PagePhotoGallery extends PageController{
     }
 
     async renderPhotoArea() {
-        const authUserObj = await usersDataBase.getOneUser(this.authUserId);
-        const photoArray = authUserObj.photo;
         const photoArea = document.querySelector('.photo_area');
-
+        const photoArray = await this.getPhotoArray();
+        
         photoArray.forEach(photo => {
             const photoElementTempalte = document.querySelector('#photo_element_template');
             const photoElement = photoElementTempalte.content.cloneNode(true);
@@ -27,6 +27,13 @@ class PagePhotoGallery extends PageController{
             photoImg.src = `http://localhost:5000/${photo}`;
             photoArea.append(photoElement);
         });
+    }
+
+    async getPhotoArray(){
+        const authUserObj = await usersDataBase.getOneUser(this.authUserId);
+        const photoArray = authUserObj.photo;
+        const decodePhotoArray = photoArray.map(item => decodeURIComponent(escape(window.atob(item))));
+        return decodePhotoArray;
     }
 
     async deletePhoto(photoPath) {

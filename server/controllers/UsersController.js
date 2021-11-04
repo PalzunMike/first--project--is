@@ -59,11 +59,13 @@ class UsersController {
     async getAll(req, res) {
         try {
             const users = await User.find();
+            // console.log(users);
             return res.json(users);
         } catch {
             res.status(500).json(e);
         }
     }
+
     async getOne(req, res) {
         try {
             const { id } = req.params;
@@ -71,15 +73,18 @@ class UsersController {
                 res.status(400).json({ message: 'ID не указан' })
             }
             const user = await User.findById(id);
+            const encodePhoto = user.photo.map(item => Buffer.from(item).toString('base64'));
+            user.photo = encodePhoto;
             return res.json(user);
-
         } catch {
             res.status(500).json(e);
         }
     }
+
     async update(req, res) {
         try {
             const user = req.body;
+            
             if (!user._id) {
                 res.status(400).json({ message: 'ID неправильный' })
             }
@@ -89,6 +94,7 @@ class UsersController {
             res.status(500).json(e);
         }
     }
+
     async delete(req, res) {
         try {
             const { id } = req.params;

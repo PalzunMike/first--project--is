@@ -67,7 +67,7 @@ contentBlock.addEventListener('click', (event) => {
         } else if (btnAction === 'add-photo') {
             popup.openModal(modal);
             modal.id = 'modalAddPhoto';
-            const photoForm = new PhotoForm('photo_form', modal, content.authUserId);
+            const photoForm = new PhotoForm('photo_form', modal, pagePhotoGallery.authUserId);
         } else if (btnAction === 'close-photo') {
             popup.closeGallery(gallery);
         } else if (btnAction === 'remove-photo') {
