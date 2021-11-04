@@ -4,13 +4,13 @@ import EditForm from './forms/Edit-form.js';
 import PhotoForm from './forms/Photo-form.js';
 import { popup } from './Popup.js';
 import { router } from './Router.js';
-import { content } from './pages/ContentRender.js';
-import { authCheck } from './AuthCheck.js';
+import { pageHome } from "./pages/PageHome.js";
+import { pagePhotoGallery } from "./pages/PagePhotoGallery.js"
 
 const modal = document.querySelector('.modal');
-const btnBlock = document.querySelector('.btn_block');
+const header = document.getElementById('header');
 
-btnBlock.addEventListener('click', async (e) => {
+header.addEventListener('click', async (e) => {
     if (e.target.dataset.modalTarget === '#modalLog') {
         popup.openModal(modal);
         const enterForm = new EnterForm('login_form', modal);
@@ -34,13 +34,11 @@ btnBlock.addEventListener('click', async (e) => {
                 document.querySelector('.register_block').textContent = 'Пользователь успешно добавлен. Воспользуйтесь кнопкой входа, чтобы зайти на сайт.';
             }
         });
-    }
-});
 
-const quitBtn = document.querySelector('.quit_btn');
-quitBtn.addEventListener('click', () => {
-    content.quitUser();
-    router.navigate('/');
+    } else if (e.target.dataset.quitButton === 'quit') {
+        pageHome.quitUser();
+        router.navigate('/');
+    }
 });
 
 const contentBlock = document.querySelector('.content');
@@ -74,9 +72,11 @@ contentBlock.addEventListener('click', (event) => {
             popup.closeGallery(gallery);
         } else if (btnAction === 'remove-photo') {
             const photo = target.previousElementSibling;
-            content.deletePhoto(photo.dataset.path);
-            content.renderPhotoPage();
+            const delPhoto = async () => {
+                await pagePhotoGallery.deletePhoto(photo.dataset.path);
+                pagePhotoGallery.renderPhotoGalleryPage();
+            }
+            delPhoto();
         }
     }
-
 });

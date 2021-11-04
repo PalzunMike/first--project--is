@@ -1,5 +1,5 @@
 import Form from './Form.js';
-import { usersDataBase } from '../database/CollectionUsersDataBase.js';
+import { usersDataBase } from '../database/UsersDataBase.js';
 // import database from 'mime-db';
 
 export default class EnterForm extends Form {

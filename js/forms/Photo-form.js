@@ -1,8 +1,7 @@
 import Form from './Form.js';
 import { popup } from '../Popup.js';
-import { usersDataBase } from '../database/CollectionUsersDataBase.js';
-import { fileUpload } from '../database/FileUpload.js';
-import { content } from '../pages/ContentRender.js';
+import { usersDataBase } from '../database/UsersDataBase.js';
+import { fileUpload } from '../database/FileLoader.js';
 
 export default class PhotoForm extends Form {
 

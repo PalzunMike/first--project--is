@@ -1,8 +1,7 @@
 import { popup } from '../Popup.js';
-import { usersDataBase } from '../database/CollectionUsersDataBase.js';
 import { authCheck } from '../AuthCheck.js';
 
-export default class Page {
+export default class PageController {
 
     constructor() {
         this.authUserId = '1';
@@ -54,5 +53,3 @@ export default class Page {
         localStorage.removeItem('userData');
     }
 }
-
-// export const page = new Page();

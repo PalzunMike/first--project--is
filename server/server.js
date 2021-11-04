@@ -3,11 +3,7 @@ import cors from 'cors';
 import mongoose from 'mongoose';
 import usersRouter from './routes/UsersRouter.js';
 import photoRouter from './routes/PhotoRouter.js';
-import {PORT, DB_URL} from './config.js';
-// import __dirname from 'path';
-// import fileUpload from 'express-fileupload';
-
-
+import { PORT, DB_URL } from './config.js';
 
 const app = express();
 app.use(cors());
@@ -15,8 +11,6 @@ app.use(express.json({ extended: true }));
 app.use('/uploads', express.static('uploads'));
 app.use('/api/users', usersRouter);
 app.use('/api/upload', photoRouter);
-
-// console.log(dirname);
 
 async function startApp() {
     try {

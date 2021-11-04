@@ -8,7 +8,6 @@ class AuthCheck {
 
     checkLoggedUser() {
         const loginUser = localStorage.getItem('userData');
-
         if (loginUser) {            
             const userData = JSON.parse(loginUser);
             const token = this.decodeToken(userData.token);

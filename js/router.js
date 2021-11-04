@@ -1,15 +1,18 @@
-import { content } from "./pages/ContentRender.js";
 import { authCheck } from "../js/AuthCheck.js";
+import { pageHome } from "./pages/PageHome.js";
+import { pageEditUsers } from "./pages/PageEditUsers.js";
+import { pageAbout } from "./pages/PageAbout.js";
+import { pagePhotoGallery } from "./pages/PagePhotoGallery.js"
 
 class Router {
 
     routes = {
-        '/': () => content.renderHome(),
-        '/index.html': () => content.renderHome(),
-        '/#': () => content.renderHome(),
-        '/#admin': () => content.renderEdit(),
-        '/#about_me': () => content.renderAboutMe(), // можно через bind;
-        '/#photo': () => content.renderPhotoPage()
+        '/': () => pageHome.renderHomePage(),
+        '/index.html': () => pageHome.renderHomePage(),
+        '/#': () => pageHome.renderHomePage(),
+        '/#admin': () => pageEditUsers.renderEditUsersPage(),
+        '/#about_me': () => pageAbout.renderAboutPage(),       // TODO: можно через bind;
+        '/#photo': () => pagePhotoGallery.renderPhotoGalleryPage()
     };
     root = '/';
     logged = false;

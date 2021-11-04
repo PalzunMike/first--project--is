@@ -1,6 +1,6 @@
 import Form from './Form.js';
 import { popup } from '../Popup.js';
-import { usersDataBase } from '../database/CollectionUsersDataBase.js';
+import { usersDataBase } from '../database/UsersDataBase.js';
 
 export default class EditForm extends Form {
 

@@ -2,7 +2,7 @@ import fs from 'fs';
 
 class PhotoController {
     async add(req, res) {
-        try {            
+        try {
             res.json(req.file.path);
         } catch (e) {
             console.log(e);
@@ -10,13 +10,14 @@ class PhotoController {
     }
 
     async delete(req, res) {
-        try {   
-            const {path} = req.body;       
-            fs.unlink(path, function(err){
-                if(err) return console.log(err);
+        try {
+            const { path } = req.body;
+            fs.unlink(path, function (err) {
+                if (err) return console.log(err);
                 console.log('file deleted successfully');
-           }); 
-            
+            });
+            res.end();
+
         } catch (e) {
             console.log(e);
         }
