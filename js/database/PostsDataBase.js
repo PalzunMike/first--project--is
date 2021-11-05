@@ -1,9 +1,9 @@
 import DataBase from "./DataBase.js";
 
-class FileUpload extends DataBase {
-    async sendPhoto(body) {
+class PostsDataBase extends DataBase {
+    async addPost(body) {
         try {
-            const response = await fetch(`${this.proxyURL}/upload`, { method: 'POST', body: body });
+            const response = await fetch(`${this.proxyURL}/posts`, { method: 'POST', body: body });
             const data = await response.json();
             if (!response.ok) {
                 throw new Error(data.message || 'Что-то пошло не так');
@@ -22,4 +22,4 @@ class FileUpload extends DataBase {
     }
 }
 
-export const fileUpload = new FileUpload();
+export const postsDataBase = new PostsDataBase();

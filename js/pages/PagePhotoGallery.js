@@ -1,7 +1,7 @@
 import PageController from "./PageController.js";
 import { authCheck } from "../AuthCheck.js";
 import { usersDataBase } from "../database/UsersDataBase.js"
-import { fileUpload } from '../database/FileLoader.js';
+import { postsDataBase } from '../database/PostsDataBase.js';
 
 class PagePhotoGallery extends PageController{
     
@@ -24,26 +24,33 @@ class PagePhotoGallery extends PageController{
             const photoElement = photoElementTempalte.content.cloneNode(true);
             const photoImg = photoElement.querySelector('.photo');
             photoImg.dataset.path = photo;
-            photoImg.src = `http://localhost:5000/${photo}`;
+            photoImg.src = `data:image/jpeg;base64, ${photo}`;
             photoArea.append(photoElement);
         });
     }
 
     async getPhotoArray(){
         const authUserObj = await usersDataBase.getOneUser(this.authUserId);
+        // console.log(authUserObj);
         const photoArray = authUserObj.photo;
-        const decodePhotoArray = photoArray.map(item => decodeURIComponent(escape(window.atob(item))));
-        return decodePhotoArray;
+        // console.log(photoArray);
+        return photoArray;
+        // const decodePhotoArray = photoArray.map(item => decodeURIComponent(escape(window.atob(item))));
+        // return decodePhotoArray;
     }
 
-    async deletePhoto(photoPath) {
+    async deletePhoto(photoSrc) {
         const authUserObj = await usersDataBase.getOneUser(this.authUserId);
-        const photoArray = authUserObj.photo;
-        const photoIndex = photoArray.indexOf(photoPath);
-        photoArray.splice(photoIndex, 1);
-        authUserObj.photo = photoArray;
-        await usersDataBase.updateUser(authUserObj);
-        await fileUpload.deletePhoto(photoPath);
+        const photoArray = await this.getPhotoArray();
+        const photoIndex = photoArray.indexOf(photoSrc);
+        // console.log(photoIndex);
+        const decodePhoto = await atob(photoSrc);
+        console.log(decodePhoto);
+        // photoArray.splice(photoIndex, 1);
+        authUserObj.photo = `${photoIndex}`;
+        console.log(authUserObj);
+        await usersDataBase.deletePhoto(photoSrc);
+        // await fileUpload.deletePhoto(photoPath);
     }
 
 }

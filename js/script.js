@@ -1,7 +1,7 @@
 import EnterForm from './forms/Enter-form.js';
 import RegisterForm from './forms/Register-form.js';
 import EditForm from './forms/Edit-form.js';
-import PhotoForm from './forms/Photo-form.js';
+import PostForm from './forms/Post-form.js';
 import { popup } from './Popup.js';
 import { router } from './Router.js';
 import { pageHome } from "./pages/PageHome.js";
@@ -67,13 +67,14 @@ contentBlock.addEventListener('click', (event) => {
         } else if (btnAction === 'add-photo') {
             popup.openModal(modal);
             modal.id = 'modalAddPhoto';
-            const photoForm = new PhotoForm('photo_form', modal, pagePhotoGallery.authUserId);
+            const postForm = new PostForm('post_form', modal, pagePhotoGallery.authUserId);
         } else if (btnAction === 'close-photo') {
             popup.closeGallery(gallery);
         } else if (btnAction === 'remove-photo') {
             const photo = target.previousElementSibling;
-            const delPhoto = async () => {
-                await pagePhotoGallery.deletePhoto(photo.dataset.path);
+            const delPhoto = async () => {                
+                const photoSrc = photo.dataset.path;
+                await pagePhotoGallery.deletePhoto(photoSrc);
                 pagePhotoGallery.renderPhotoGalleryPage();
             }
             delPhoto();

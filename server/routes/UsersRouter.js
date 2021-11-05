@@ -8,6 +8,7 @@ router.post('/auth', UsersController.auth);
 router.get('', UsersController.getAll);
 router.get('/:id', UsersController.getOne);
 router.put('', UsersController.update);
+router.put('/del_pht', UsersController.deletePhoto);
 router.delete('/:id', UsersController.delete);
 
 export default router;

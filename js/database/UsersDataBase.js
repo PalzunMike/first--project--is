@@ -19,6 +19,7 @@ class UsersDataBase extends DataBase {
     async getAllUsers() {
         const response = await this.get(this.basicURL);
         return response;
+
     }
 
     async getOneUser(userId) {
@@ -29,6 +30,12 @@ class UsersDataBase extends DataBase {
 
     async updateUser(body) {
         const response = await this.put(this.basicURL, body);
+        return response;        
+    }
+
+    async deletePhoto(body) {
+        const URL = `${this.basicURL}/del_pht`;
+        const response = await this.put(URL, body);
         return response;        
     }
 
