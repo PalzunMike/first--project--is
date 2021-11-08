@@ -60,12 +60,8 @@ class UsersController {
     async getAll(req, res) {
         try {
             const users = await User.find();
-            users.forEach(user => {
-                const photo = user.photo.map(item => fs.readFileSync(item, {encoding: 'base64'}));
-                user.photo = photo;
-            })
             return res.json(users);
-        } catch {
+        } catch (e){
             res.status(500).json(e);
         }
     }
@@ -76,11 +72,7 @@ class UsersController {
             if (!id) {
                 res.status(400).json({ message: 'ID не указан' })
             }
-            const user = await User.findById(id);         
-
-            const photo = user.photo.map(item => fs.readFileSync(item, {encoding: 'base64'}));
-             
-            user.photo = photo;
+            const user = await User.findById(id); 
             return res.json(user);
         } catch {
             res.status(500).json(e);
@@ -90,27 +82,12 @@ class UsersController {
     async update(req, res) {
         try {
             const user = req.body;
-
-            console.log(user);
-
             if (!user._id) {
                 res.status(400).json({ message: 'ID неправильный' })
             }
             const updateUser = await User.findByIdAndUpdate(user._id, user, { new: true });
             return res.json(updateUser);
         } catch {
-            res.status(500).json(e);
-        }
-    }
-
-    async deletePhoto(req, res) {
-        try{
-            const photo = new Buffer (req.body, 'base64');
-            console.log(photo);
-            // console.log(user.photo, user._id);
-            // const userInBD = await User.findById(user._id);
-            // console.log(userInBD.photo);
-        }catch (e){
             res.status(500).json(e);
         }
     }

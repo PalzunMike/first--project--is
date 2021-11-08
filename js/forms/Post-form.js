@@ -42,17 +42,36 @@ export default class PostForm extends Form {
 
     }
 
+    async checkPostOnUser(postId) {
+        await this.templateInited;
+        const authUserObj = await usersDataBase.getOneUser(this.authUserId);
+        const postArray = authUserObj.posts;
+        const photoIndex = postArray.indexOf(postId);
+        if (photoIndex >= 0){
+            const post = await postsDataBase.getOnePost(postId);            
+            this.formElement.title.value = post.title;
+            const preview = this.formElement.querySelector('.photo_field_fake');
+            preview.innerText = '';
+            const img = document.createElement('img');
+            img.src = `data:image/jpeg;base64, ${post.photo}`;
+            preview.append(img);
+            this.formElement.submit.innerText = 'Изменить';
+            return true;
+        }
+        return false;
+    }
+
     async addPhotoToUser(photoId) {
         const authUserObj = await usersDataBase.getOneUser(this.authUserId);
-        const photoArray = await pagePhotoGallery.getPhotoArray();
+        const postArray = authUserObj.posts;
 
-        if (photoArray) {
-            photoArray.push(photoId);
+        if (postArray) {
+            postArray.push(photoId);
         } else {
-            photoArray = [];
-            photoArray.push(photoId);
+            postArray = [];
+            postArray.push(photoId);
         }
-        authUserObj.photo = photoArray;
+        authUserObj.posts = postArray;
         await usersDataBase.updateUser(authUserObj);
     }
 
@@ -61,6 +80,7 @@ export default class PostForm extends Form {
             e.preventDefault();
 
             const formData = new FormData(this.formElement);
+
             const photoId = await postsDataBase.addPost(formData);
             await this.addPhotoToUser(photoId.postId);
             pagePhotoGallery.renderPhotoGalleryPage();

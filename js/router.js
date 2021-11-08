@@ -12,7 +12,7 @@ class Router {
         '/#': () => pageHome.renderHomePage(),
         '/#admin': () => pageEditUsers.renderEditUsersPage(),
         '/#about_me': () => pageAbout.renderAboutPage(),       // TODO: можно через bind;
-        '/#photo': () => pagePhotoGallery.renderPhotoGalleryPage()
+        '/#posts': () => pagePhotoGallery.renderPhotoGalleryPage()
     };
     root = '/';
     logged = false;
@@ -20,7 +20,7 @@ class Router {
     constructor() {
         window.addEventListener('popstate', async () => {
             await this.checkLogged();
-            if ((location.hash === '#admin' || location.hash === '#photo') && !this.logged) {
+            if ((location.hash === '#admin' || location.hash === '#posts') && !this.logged) {
                 alert('Пройдите авторизацию');
                 return false;
             } else {
@@ -31,7 +31,7 @@ class Router {
 
         window.addEventListener('load', async () => {
             await this.checkLogged();
-            if ((location.hash === '#admin' || location.hash === '#photo') && !this.logged) {
+            if ((location.hash === '#admin' || location.hash === '#posts') && !this.logged) {
                 alert('Пройдите авторизацию');
                 return false;
             } else {

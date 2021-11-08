@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 
 const Post = new mongoose.Schema(
     {
-        postTitle: { type: String, required: false },
+        title: { type: String, required: false },
         photo: { type: String, required: true}
     },
     { versionKey: false }

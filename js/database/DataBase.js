@@ -18,7 +18,8 @@ export default class DataBase {
 
     async get(url) {
         try {
-            const response = await fetch(`${this.proxyURL}${url}`, { method: 'GET' });
+            const response = await fetch(`${this.proxyURL}${url}`, { method: 'GET' });  
+
             const data = await response.json();
             return data;
         } catch (e) {

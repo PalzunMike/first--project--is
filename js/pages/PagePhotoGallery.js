@@ -16,41 +16,39 @@ class PagePhotoGallery extends PageController{
     }
 
     async renderPhotoArea() {
+        const authUserObj = await usersDataBase.getOneUser(this.authUserId);       
+        const postsArray = authUserObj.posts;
         const photoArea = document.querySelector('.photo_area');
-        const photoArray = await this.getPhotoArray();
         
-        photoArray.forEach(photo => {
-            const photoElementTempalte = document.querySelector('#photo_element_template');
-            const photoElement = photoElementTempalte.content.cloneNode(true);
+        postsArray.forEach( async post => {            
+            post = await postsDataBase.getOnePost(post); 
+                    ;   
+            const postElementTempalte = document.querySelector('#post_element_template');
+            const photoElement = postElementTempalte.content.cloneNode(true);
+            const divPostEl = photoElement.querySelector('.post_element');
             const photoImg = photoElement.querySelector('.photo');
-            photoImg.dataset.path = photo;
-            photoImg.src = `data:image/jpeg;base64, ${photo}`;
+            const title = photoElement.querySelector('.title');
+            divPostEl.dataset.postId = post._id;
+            photoImg.src = `data:image/jpeg;base64, ${post.photo}`;
+            if (post.title){
+                title.innerText = post.title;
+            }            
             photoArea.append(photoElement);
         });
+    } 
+
+    async deletePhoto(postId) {
+        const authUserObj = await usersDataBase.getOneUser(this.authUserId);       
+        const postsArray = authUserObj.posts;
+        const photoIndex = postsArray.indexOf(postId);
+        postsArray.splice(photoIndex, 1);
+        authUserObj.photo = postsArray;
+        await usersDataBase.updateUser(authUserObj);
+        await postsDataBase.deletePost(postId);
     }
 
-    async getPhotoArray(){
-        const authUserObj = await usersDataBase.getOneUser(this.authUserId);
-        // console.log(authUserObj);
-        const photoArray = authUserObj.photo;
-        // console.log(photoArray);
-        return photoArray;
-        // const decodePhotoArray = photoArray.map(item => decodeURIComponent(escape(window.atob(item))));
-        // return decodePhotoArray;
-    }
+    async editPost(postId){
 
-    async deletePhoto(photoSrc) {
-        const authUserObj = await usersDataBase.getOneUser(this.authUserId);
-        const photoArray = await this.getPhotoArray();
-        const photoIndex = photoArray.indexOf(photoSrc);
-        // console.log(photoIndex);
-        const decodePhoto = await atob(photoSrc);
-        console.log(decodePhoto);
-        // photoArray.splice(photoIndex, 1);
-        authUserObj.photo = `${photoIndex}`;
-        console.log(authUserObj);
-        await usersDataBase.deletePhoto(photoSrc);
-        // await fileUpload.deletePhoto(photoPath);
     }
 
 }

@@ -46,7 +46,7 @@ const contentBlock = document.querySelector('.content');
 contentBlock.addEventListener('click', (event) => {
     const users = document.querySelectorAll('.user');
     const target = event.target.closest('.user') || event.target.closest('button');
-    const gallery = event.target.closest('.photo_element');
+    const gallery = event.target.closest('.post_element');
 
     if (gallery) {
         popup.openGallery(gallery);
@@ -64,20 +64,28 @@ contentBlock.addEventListener('click', (event) => {
             modal.id = 'modalEdit';
             const editForm = new EditForm('edit_form', modal);
             editForm.editUser(userId);
-        } else if (btnAction === 'add-photo') {
+        } else if (btnAction === 'add-post') {
             popup.openModal(modal);
             modal.id = 'modalAddPhoto';
             const postForm = new PostForm('post_form', modal, pagePhotoGallery.authUserId);
-        } else if (btnAction === 'close-photo') {
+        } else if (btnAction === 'close-post') {
             popup.closeGallery(gallery);
-        } else if (btnAction === 'remove-photo') {
-            const photo = target.previousElementSibling;
-            const delPhoto = async () => {                
-                const photoSrc = photo.dataset.path;
-                await pagePhotoGallery.deletePhoto(photoSrc);
+        } else if (btnAction === 'remove-post') {
+            const postElement = target.closest('div');
+            const delPhoto = async () => {
+                const postId = postElement.dataset.postId;
+                await pagePhotoGallery.deletePhoto(postId);
                 pagePhotoGallery.renderPhotoGalleryPage();
             }
             delPhoto();
+        } else if (btnAction === 'edit-post') {
+            const postElement = target.closest('div');
+            popup.closeGallery(postElement);
+            console.log(postElement.dataset.postId);
+            popup.openModal(modal);
+            modal.id = 'modalAddPhoto';
+            const postForm = new PostForm('post_form', modal, pagePhotoGallery.authUserId);
+            postForm.checkPostOnUser(postElement.dataset.postId);
         }
     }
 });
