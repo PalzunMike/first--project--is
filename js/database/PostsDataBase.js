@@ -4,16 +4,8 @@ class PostsDataBase extends DataBase {
     basicURL = '/posts';
 
     async addPost(body) {
-        try {
-            const response = await fetch(`${this.proxyURL}${this.basicURL}`, { method: 'POST', body: body });
-            const data = await response.json();
-            if (!response.ok) {
-                throw new Error(data.message || 'Что-то пошло не так');
-            }
-            return data;
-        } catch (e) {
-            return e;
-        }
+        const response = await this.requestWithFormData(this.basicURL, body, 'POST');
+        return response;
     }
 
     async getAllPosts() {
@@ -24,6 +16,12 @@ class PostsDataBase extends DataBase {
     async getOnePost(postId) {
         const URL = `${this.basicURL}/${postId}`;
         const response = await this.get(URL);
+        return response;
+    }
+
+    async updatePost(postId, body) {
+        const URL = `${this.basicURL}/${postId}`;
+        const response = await this.requestWithFormData(URL, body, 'PUT');
         return response;
     }
 

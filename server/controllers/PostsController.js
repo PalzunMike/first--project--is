@@ -40,6 +40,30 @@ class PostsController {
         }
     }
 
+    async update(req, res) {
+        try {
+            const { id } = req.params;
+            if (!id) {
+                res.status(400).json({ message: 'ID не указан' })
+            }
+            const { title } = req.body;
+            let post = {};
+            if (req.file) {
+                post = { title, photo: req.file.path };
+                const oldPost = await Post.findById(id);
+                fs.unlink(oldPost.photo, function (err) {
+                    if (err) return console.log(err);
+                    console.log('file deleted successfully');
+                });
+            }
+            post.title = title;
+            const updatePost = await Post.findByIdAndUpdate(id, post, { new: true });
+            return res.json(updatePost);
+        } catch (e) {
+            res.status(500).json(e);
+        }
+    }
+
     async delete(req, res) {
         try {
             const { id } = req.params;

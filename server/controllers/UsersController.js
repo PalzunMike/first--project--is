@@ -39,7 +39,7 @@ class UsersController {
 
             if (!isMatchPass) {
                 return res.status(401).json({ message: 'Неверный пароль. Попробуйте снова' })
-            }
+            }           
 
             const token = jwt.sign(
                 {
@@ -50,7 +50,11 @@ class UsersController {
                 JWT_SECRET,
                 { expiresIn: '1h' }
             )
-            res.json({ token, userId: user.id });
+
+            user.hasToken = token;
+            const activeUser = await User.findOneAndUpdate({login}, user, { new: true } );
+
+            res.json({ token });
 
         } catch (e) {
             res.status(500).json({ message: 'Что-то пошло не там. Попробуйте снова' });

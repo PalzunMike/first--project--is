@@ -12,11 +12,11 @@ class AuthCheck {
             const userData = JSON.parse(loginUser);
             const token = this.decodeToken(userData.token);
             this.loggedUser = {
-                userId: token.userId,
+                _id: token.userId,
                 firstName: token.firstName,
                 secondName: token.secondName
             }
-            return true;
+            return userData.token;
         }
         return false;
     }

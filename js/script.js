@@ -4,7 +4,6 @@ import EditForm from './forms/Edit-form.js';
 import PostForm from './forms/Post-form.js';
 import { popup } from './Popup.js';
 import { router } from './Router.js';
-import { pageHome } from "./pages/PageHome.js";
 import { pagePhotoGallery } from "./pages/PagePhotoGallery.js"
 
 const modal = document.querySelector('.modal');
@@ -36,7 +35,7 @@ header.addEventListener('click', async (e) => {
         });
 
     } else if (e.target.dataset.quitButton === 'quit') {
-        pageHome.quitUser();
+        await pagePhotoGallery.quitUser();
         router.navigate('/');
     }
 });
@@ -81,11 +80,11 @@ contentBlock.addEventListener('click', (event) => {
         } else if (btnAction === 'edit-post') {
             const postElement = target.closest('div');
             popup.closeGallery(postElement);
-            console.log(postElement.dataset.postId);
+
             popup.openModal(modal);
             modal.id = 'modalAddPhoto';
-            const postForm = new PostForm('post_form', modal, pagePhotoGallery.authUserId);
-            postForm.checkPostOnUser(postElement.dataset.postId);
+            const postForm = new PostForm('post_form', modal, pagePhotoGallery.authUserId, postElement.dataset.postId);
+            postForm.editPost(postElement.dataset.postId);
         }
     }
 });

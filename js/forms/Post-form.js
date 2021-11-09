@@ -7,8 +7,10 @@ export default class PostForm extends Form {
 
     templateURL = './templates/post-form-template.html';
 
-    constructor(...args) {
-        super(...args);
+    constructor(form, parentElement, authUserId, postId) {
+        super(form, parentElement);
+        this.authUserId = authUserId;
+        this.postId = postId;
         this.getTemplate(this.templateURL);
         this.showSelectedFile();
         this.onSubmit();
@@ -42,34 +44,35 @@ export default class PostForm extends Form {
 
     }
 
-    async checkPostOnUser(postId) {
+    async editPost(postId) {
         await this.templateInited;
         const authUserObj = await usersDataBase.getOneUser(this.authUserId);
         const postArray = authUserObj.posts;
         const photoIndex = postArray.indexOf(postId);
-        if (photoIndex >= 0){
-            const post = await postsDataBase.getOnePost(postId);            
+        if (photoIndex >= 0) {
+            const post = await postsDataBase.getOnePost(postId);
             this.formElement.title.value = post.title;
             const preview = this.formElement.querySelector('.photo_field_fake');
             preview.innerText = '';
             const img = document.createElement('img');
             img.src = `data:image/jpeg;base64, ${post.photo}`;
             preview.append(img);
+            this.formElement.photo.required = false;
             this.formElement.submit.innerText = 'Изменить';
             return true;
         }
         return false;
     }
 
-    async addPhotoToUser(photoId) {
+    async addPhotoToUser(postId) {
         const authUserObj = await usersDataBase.getOneUser(this.authUserId);
         const postArray = authUserObj.posts;
 
         if (postArray) {
-            postArray.push(photoId);
+            postArray.push(postId);
         } else {
             postArray = [];
-            postArray.push(photoId);
+            postArray.push(postId);
         }
         authUserObj.posts = postArray;
         await usersDataBase.updateUser(authUserObj);
@@ -81,8 +84,12 @@ export default class PostForm extends Form {
 
             const formData = new FormData(this.formElement);
 
-            const photoId = await postsDataBase.addPost(formData);
-            await this.addPhotoToUser(photoId.postId);
+            if (this.postId) {
+                await postsDataBase.updatePost(this.postId, formData);
+            } else {
+                const photoId = await postsDataBase.addPost(formData);
+                await this.addPhotoToUser(photoId.postId);
+            }
             pagePhotoGallery.renderPhotoGalleryPage();
         });
     }

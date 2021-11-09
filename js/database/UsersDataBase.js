@@ -33,12 +33,6 @@ class UsersDataBase extends DataBase {
         return response;        
     }
 
-    async deletePhoto(body) {
-        const URL = `${this.basicURL}/del_pht`;
-        const response = await this.put(URL, body);
-        return response;        
-    }
-
     async deleteUser(userId) {
         const URL = `${this.basicURL}/${userId}`;
         const response = await this.delete(URL);
