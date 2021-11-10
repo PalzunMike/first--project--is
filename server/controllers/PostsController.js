@@ -21,7 +21,6 @@ class PostsController {
                 const photo = fs.readFileSync(post.photo, { encoding: 'base64' });
                 post.photo = photo;
             })
-            console.log(posts);
             return res.json(posts);
         } catch (e) {
             console.log(e.message);

@@ -6,9 +6,26 @@ class PageTape extends PageController {
 
     async renderTapePage() {
         const posts = await postsDataLayer.getAllPosts();
-        // const mainContent = document.createElement('h3');
-        // mainContent.textContent = 'Main Content'
-        // this.renderContent(mainContent);
+
+        const tape = document.createElement('div');
+        tape.classList.add('tape_wrapper');        
+
+        posts.forEach(async post => {
+
+            const tapeElementTempalte = document.querySelector('#tape_element_template');
+            const tapeElement = tapeElementTempalte.content.cloneNode(true);
+            const divTapeEl = tapeElement.querySelector('.tape_element');
+            const photoImg = tapeElement.querySelector('.photo');
+            const title = tapeElement.querySelector('.title');
+            divTapeEl.dataset.postId = post._id;
+            photoImg.src = `data:image/jpeg;base64, ${post.photo}`;
+            if (post.title) {
+                title.innerText = post.title;
+            }
+            tape.append(tapeElement);
+        });
+
+        await this.renderContent(tape);
     }
 }
 
