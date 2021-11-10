@@ -22,7 +22,7 @@ class PagePhotoGallery extends PageController{
         
         postsArray.forEach( async post => {            
             post = await postsDataBase.getOnePost(post); 
-                    ;   
+            
             const postElementTempalte = document.querySelector('#post_element_template');
             const photoElement = postElementTempalte.content.cloneNode(true);
             const divPostEl = photoElement.querySelector('.post_element');

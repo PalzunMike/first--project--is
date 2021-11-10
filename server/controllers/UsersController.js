@@ -1,7 +1,6 @@
 import User from '../models/UserSchema.js';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import fs from 'fs';
 import { JWT_SECRET, SALT_ROUND } from '../config.js'
 
 class UsersController {
@@ -48,7 +47,7 @@ class UsersController {
                     secondName: user.secondName
                 },
                 JWT_SECRET,
-                { expiresIn: '1h' }
+                { expiresIn: '2h' }
             )
 
             user.hasToken = token;
