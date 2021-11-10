@@ -13,9 +13,11 @@ export const checkToken = async function (req, res, next){
             return res.status(401).json({ message: 'Необходимо авторизироваться снова' });
         }
         const user = await User.findById(userData.userId);
-        if (user.hasToken = token){
-            next();
-        }   
+
+        if (user.hasToken !== token){
+            return res.status(401).json({ message: 'Пользователь не авторизирован'});
+        }         
+        next();   
         
     }catch (e) {
         return res.status(400).json({message: `${e.message}`});
