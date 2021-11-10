@@ -479,7 +479,7 @@ h1 a img{
     position: absolute;
     width: 100%;
     font-size: 1.1vw;
-    padding: .1vw 0;
+    /* padding: .1vw 0; */
     text-align: center;
     color: var(--text-color);
     bottom: 2%;
@@ -713,7 +713,8 @@ h1 a img{
 
     .title{
         font-size: 4.5vw;
-        padding: 1.5vw 0;
+        line-height: 5.5vw;
+        /* padding: 1.5vw 0; */
     }
 
     

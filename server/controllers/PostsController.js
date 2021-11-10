@@ -5,7 +5,8 @@ class PostsController {
     async add(req, res) {
         try {
             const { title } = req.body;
-            const post = await Post.create({ title, photo: req.file.path });
+            const datePost = new Date().toISOString().slice(0, 10);
+            const post = await Post.create({ title, photo: req.file.path, date: datePost});
             res.status(201).json({ postId: post.id });
         } catch (e) {
             console.log(e);
