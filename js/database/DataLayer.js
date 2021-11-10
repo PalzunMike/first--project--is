@@ -1,5 +1,5 @@
 import { authCheck } from "../AuthCheck.js";
-export default class DataBase {
+export default class DataLayer {
 
     proxyURL = 'http://localhost:5000/api';
     access_token;

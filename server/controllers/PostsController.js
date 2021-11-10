@@ -16,12 +16,15 @@ class PostsController {
     async getAll(req, res) {
         try {
             const posts = await Post.find();
+            
             posts.forEach(post => {
-                const photo = post.photo.map(item => fs.readFileSync(item, { encoding: 'base64' }));
+                const photo = fs.readFileSync(post.photo, { encoding: 'base64' });
                 post.photo = photo;
             })
+            console.log(posts);
             return res.json(posts);
         } catch (e) {
+            console.log(e.message);
             res.status(500).json(e);
         }
     }

@@ -1,6 +1,6 @@
-import DataBase from "./DataBase.js";
+import DataLayer from "./DataLayer.js";
 
-class PostsDataBase extends DataBase {
+class PostsDataLayer extends DataLayer {
     basicURL = '/posts';
 
     async addPost(body) {
@@ -28,8 +28,8 @@ class PostsDataBase extends DataBase {
     async deletePost(postId) {
         const URL = `${this.basicURL}/${postId}`;
         const response = await this.delete(URL);
-        return response;        
+        return response;
     }
 }
 
-export const postsDataBase = new PostsDataBase();
+export const postsDataLayer = new PostsDataLayer();

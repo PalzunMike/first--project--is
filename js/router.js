@@ -2,16 +2,18 @@ import { authCheck } from "../js/AuthCheck.js";
 import { pageHome } from "./pages/PageHome.js";
 import { pageEditUsers } from "./pages/PageEditUsers.js";
 import { pageAbout } from "./pages/PageAbout.js";
-import { pagePhotoGallery } from "./pages/PagePhotoGallery.js"
+import { pagePhotoGallery } from "./pages/PagePhotoGallery.js";
+import { pageTape } from "./pages/PageTape.js";
 
 class Router {
 
     routes = {
-        '/': () => pageHome.renderHomePage(),
-        '/index.html': () => pageHome.renderHomePage(),
-        '/#': () => pageHome.renderHomePage(),
+        '/': () => pageTape.renderTapePage(),
+        '/index.html': () => pageTape.renderTapePage(),
+        '/#': () => pageTape.renderTapePage(),
+        '/#tape': () => pageTape.renderTapePage(),
         '/#admin': () => pageEditUsers.renderEditUsersPage(),
-        '/#about_me': () => pageAbout.renderAboutPage(),       // TODO: можно через bind;
+        '/#about_me': () => pageAbout.renderAboutPage(),      
         '/#posts': () => pagePhotoGallery.renderPhotoGalleryPage()
     };
     root = '/';

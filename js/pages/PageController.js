@@ -1,6 +1,6 @@
 import { popup } from '../Popup.js';
 import { authCheck } from '../AuthCheck.js';
-import { usersDataBase } from '../database/UsersDataBase.js';
+import { usersDataLayer } from '../database/UsersDataLayer.js';
 
 export default class PageController {
 
@@ -53,7 +53,7 @@ export default class PageController {
     async quitUser() {        
         const loggedUser = authCheck.loggedUser;
         loggedUser.hasToken = "";
-        await usersDataBase.updateUser(loggedUser);
+        await usersDataLayer.updateUser(loggedUser);
         localStorage.removeItem('userData');
     }
 }
