@@ -1,10 +1,9 @@
 import EnterForm from './forms/Enter-form.js';
 import RegisterForm from './forms/Register-form.js';
 import EditForm from './forms/Edit-form.js';
-import PhotoForm from './forms/Photo-form.js';
+import PostForm from './forms/Post-form.js';
 import { popup } from './Popup.js';
 import { router } from './Router.js';
-import { pageHome } from "./pages/PageHome.js";
 import { pagePhotoGallery } from "./pages/PagePhotoGallery.js"
 
 const modal = document.querySelector('.modal');
@@ -36,7 +35,7 @@ header.addEventListener('click', async (e) => {
         });
 
     } else if (e.target.dataset.quitButton === 'quit') {
-        pageHome.quitUser();
+        await pagePhotoGallery.quitUser();
         router.navigate('/');
     }
 });
@@ -46,7 +45,7 @@ const contentBlock = document.querySelector('.content');
 contentBlock.addEventListener('click', (event) => {
     const users = document.querySelectorAll('.user');
     const target = event.target.closest('.user') || event.target.closest('button');
-    const gallery = event.target.closest('.photo_element');
+    const gallery = event.target.closest('.post_element');
 
     if (gallery) {
         popup.openGallery(gallery);
@@ -64,19 +63,28 @@ contentBlock.addEventListener('click', (event) => {
             modal.id = 'modalEdit';
             const editForm = new EditForm('edit_form', modal);
             editForm.editUser(userId);
-        } else if (btnAction === 'add-photo') {
+        } else if (btnAction === 'add-post') {
             popup.openModal(modal);
             modal.id = 'modalAddPhoto';
-            const photoForm = new PhotoForm('photo_form', modal, pagePhotoGallery.authUserId);
-        } else if (btnAction === 'close-photo') {
+            const postForm = new PostForm('post_form', modal, pagePhotoGallery.authUserId);
+        } else if (btnAction === 'close-post') {
             popup.closeGallery(gallery);
-        } else if (btnAction === 'remove-photo') {
-            const photo = target.previousElementSibling;
+        } else if (btnAction === 'remove-post') {
+            const postElement = target.closest('div');
             const delPhoto = async () => {
-                await pagePhotoGallery.deletePhoto(photo.dataset.path);
+                const postId = postElement.dataset.postId;
+                await pagePhotoGallery.deletePhoto(postId);
                 pagePhotoGallery.renderPhotoGalleryPage();
             }
             delPhoto();
+        } else if (btnAction === 'edit-post') {
+            const postElement = target.closest('div');
+            popup.closeGallery(postElement);
+
+            popup.openModal(modal);
+            modal.id = 'modalAddPhoto';
+            const postForm = new PostForm('post_form', modal, pagePhotoGallery.authUserId, postElement.dataset.postId);
+            postForm.editPost(postElement.dataset.postId);
         }
     }
 });

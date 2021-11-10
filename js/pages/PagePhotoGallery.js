@@ -1,7 +1,7 @@
 import PageController from "./PageController.js";
 import { authCheck } from "../AuthCheck.js";
 import { usersDataBase } from "../database/UsersDataBase.js"
-import { fileUpload } from '../database/FileLoader.js';
+import { postsDataBase } from '../database/PostsDataBase.js';
 
 class PagePhotoGallery extends PageController{
     
@@ -16,34 +16,39 @@ class PagePhotoGallery extends PageController{
     }
 
     async renderPhotoArea() {
+        const authUserObj = await usersDataBase.getOneUser(this.authUserId);       
+        const postsArray = authUserObj.posts;
         const photoArea = document.querySelector('.photo_area');
-        const photoArray = await this.getPhotoArray();
         
-        photoArray.forEach(photo => {
-            const photoElementTempalte = document.querySelector('#photo_element_template');
-            const photoElement = photoElementTempalte.content.cloneNode(true);
+        postsArray.forEach( async post => {            
+            post = await postsDataBase.getOnePost(post); 
+            
+            const postElementTempalte = document.querySelector('#post_element_template');
+            const photoElement = postElementTempalte.content.cloneNode(true);
+            const divPostEl = photoElement.querySelector('.post_element');
             const photoImg = photoElement.querySelector('.photo');
-            photoImg.dataset.path = photo;
-            photoImg.src = `http://localhost:5000/${photo}`;
+            const title = photoElement.querySelector('.title');
+            divPostEl.dataset.postId = post._id;
+            photoImg.src = `data:image/jpeg;base64, ${post.photo}`;
+            if (post.title){
+                title.innerText = post.title;
+            }            
             photoArea.append(photoElement);
         });
-    }
+    } 
 
-    async getPhotoArray(){
-        const authUserObj = await usersDataBase.getOneUser(this.authUserId);
-        const photoArray = authUserObj.photo;
-        const decodePhotoArray = photoArray.map(item => decodeURIComponent(escape(window.atob(item))));
-        return decodePhotoArray;
-    }
-
-    async deletePhoto(photoPath) {
-        const authUserObj = await usersDataBase.getOneUser(this.authUserId);
-        const photoArray = authUserObj.photo;
-        const photoIndex = photoArray.indexOf(photoPath);
-        photoArray.splice(photoIndex, 1);
-        authUserObj.photo = photoArray;
+    async deletePhoto(postId) {
+        const authUserObj = await usersDataBase.getOneUser(this.authUserId);       
+        const postsArray = authUserObj.posts;
+        const photoIndex = postsArray.indexOf(postId);
+        postsArray.splice(photoIndex, 1);
+        authUserObj.photo = postsArray;
         await usersDataBase.updateUser(authUserObj);
-        await fileUpload.deletePhoto(photoPath);
+        await postsDataBase.deletePost(postId);
+    }
+
+    async editPost(postId){
+
     }
 
 }

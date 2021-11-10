@@ -1,5 +1,6 @@
 import { popup } from '../Popup.js';
 import { authCheck } from '../AuthCheck.js';
+import { usersDataBase } from '../database/UsersDataBase.js';
 
 export default class PageController {
 
@@ -38,7 +39,7 @@ export default class PageController {
         const welcomeMsg = document.querySelector('.welcome_message');
                 
         if (authCheck.checkLoggedUser()){
-            this.authUserId = authCheck.loggedUser.userId;
+            this.authUserId = authCheck.loggedUser._id;
             autBlock.classList.add('hide');
             welcomeMsg.textContent = ` ${authCheck.loggedUser.firstName} ${authCheck.loggedUser.secondName}`;
             welcomeBlock.classList.remove('hide');
@@ -49,7 +50,10 @@ export default class PageController {
         }        
     }
 
-    quitUser() {
+    async quitUser() {        
+        const loggedUser = authCheck.loggedUser;
+        loggedUser.hasToken = "";
+        await usersDataBase.updateUser(loggedUser);
         localStorage.removeItem('userData');
     }
 }

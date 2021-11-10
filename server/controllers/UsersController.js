@@ -17,7 +17,7 @@ class UsersController {
             const hashedPassword = await bcrypt.hashSync(password, SALT_ROUND);
 
             const user = await User.create({ dateOfBirthday, dateRegister, firstName, login, password: hashedPassword, phone, secondName, sex, userActive });
-            await user.save();
+            // await user.save();
 
             res.status(201).json({ user });
 
@@ -38,18 +38,22 @@ class UsersController {
 
             if (!isMatchPass) {
                 return res.status(401).json({ message: 'Неверный пароль. Попробуйте снова' })
-            }
+            }           
 
             const token = jwt.sign(
-                { 
+                {
                     userId: user.id,
                     firstName: user.firstName,
                     secondName: user.secondName
                 },
                 JWT_SECRET,
-                { expiresIn: '1h' }
+                { expiresIn: '2h' }
             )
-            res.json({ token, userId: user.id });
+
+            user.hasToken = token;
+            const activeUser = await User.findOneAndUpdate({login}, user, { new: true } );
+
+            res.json({ token });
 
         } catch (e) {
             res.status(500).json({ message: 'Что-то пошло не там. Попробуйте снова' });
@@ -59,9 +63,8 @@ class UsersController {
     async getAll(req, res) {
         try {
             const users = await User.find();
-            // console.log(users);
             return res.json(users);
-        } catch {
+        } catch (e){
             res.status(500).json(e);
         }
     }
@@ -72,9 +75,7 @@ class UsersController {
             if (!id) {
                 res.status(400).json({ message: 'ID не указан' })
             }
-            const user = await User.findById(id);
-            const encodePhoto = user.photo.map(item => Buffer.from(item).toString('base64'));
-            user.photo = encodePhoto;
+            const user = await User.findById(id); 
             return res.json(user);
         } catch {
             res.status(500).json(e);
@@ -84,7 +85,6 @@ class UsersController {
     async update(req, res) {
         try {
             const user = req.body;
-            
             if (!user._id) {
                 res.status(400).json({ message: 'ID неправильный' })
             }

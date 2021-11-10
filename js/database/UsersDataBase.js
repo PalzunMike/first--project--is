@@ -19,11 +19,15 @@ class UsersDataBase extends DataBase {
     async getAllUsers() {
         const response = await this.get(this.basicURL);
         return response;
+
     }
 
     async getOneUser(userId) {
         const URL = `${this.basicURL}/${userId}`;
         const response = await this.get(URL);
+        if (response.message){
+            console.log(response.message);
+        }      
         return response;
     }
 

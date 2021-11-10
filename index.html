@@ -30,7 +30,7 @@
     <div class="wrapper">
         <nav class="main menu">
             <ul class="main_menu">
-                <li><a href="/#photo">Фотографии</a></li>
+                <li><a href="/#posts">Фотографии</a></li>
                 <li><a href="/#admin">Пользователи</a></li>
                 <li><a href="/#about_me">Обо мне</a></li>
             </ul>
@@ -61,14 +61,16 @@
         </div>
     </template>
     <template id="photo_template">
-        <button data-modal-target="#modalAddPhoto" class="photo_btn" data-button-action="add-photo">Добавить фото</button>
+        <button data-modal-target="#modalAddPhoto" class="photo_btn" data-button-action="add-post">Добавить фото</button>
         <div class="photo_area"></div>
     </template>
-    <template id="photo_element_template">
-        <div class="photo_element">
-            <button data-button-action="close-photo" class="close-btn">&times;</button>
-            <img src="" alt="my photos" data-path = "" class="photo">
-            <button data-button-action="remove-photo" class="delete-photo">Удалить фото</button>
+    <template id="post_element_template">
+        <div class="post_element" data-post-id = "">
+            <button data-button-action="close-post" class="close-btn">&times;</button>
+            <img src="" alt="my photos" class="photo">
+            <p class="title"></p>
+            <button data-button-action="edit-post" class="edit-post">Редактировать фото</button>
+            <button data-button-action="remove-post" class="delete-post">Удалить фото</button>
         </div>
     </template>
     <script type="module" src="js\script.js"></script>

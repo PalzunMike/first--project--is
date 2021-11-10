@@ -5,11 +5,10 @@ export default class Form {
   template;
   templateInited;
 
-  constructor(form, parentElement, authUserId) {
+  constructor(form, parentElement) {
     this.form = form;
     this.formElement;
-    this.parentElement = parentElement;
-    this.authUserId = authUserId;
+    this.parentElement = parentElement;    
   }
 
   async getTemplate(templateURL) {

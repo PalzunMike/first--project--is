@@ -35,8 +35,10 @@ class Popup {
         photo.classList.add('select');
         overlay.classList.add('visible');
         const closeBtn = photo.querySelector('.close-btn');
-        const deleteBtn = photo.querySelector('.delete-photo');
+        const deleteBtn = photo.querySelector('.delete-post');
+        const editBtn = photo.querySelector('.edit-post');
         deleteBtn.style.zIndex = '1';
+        editBtn.style.zIndex = '1';
         closeBtn.style.zIndex = '1';
     }
 
@@ -53,7 +55,9 @@ class Popup {
         photo.classList.remove('select');
         overlay.classList.remove('visible');
         const closeBtn = photo.querySelector('.close-btn');
-        const deleteBtn = photo.querySelector('.delete-photo');
+        const deleteBtn = photo.querySelector('.delete-post');
+        const editBtn = photo.querySelector('.edit-post');        
+        editBtn.style.zIndex = '-1';
         deleteBtn.style.zIndex = '-1';
         closeBtn.style.zIndex = '-1';
     }
