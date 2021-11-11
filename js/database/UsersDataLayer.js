@@ -31,6 +31,15 @@ class UsersDataLayer extends DataLayer {
         return response;
     }
 
+    async getAuthor(postId) {
+        const URL = `${this.basicURL}/author/${postId}`;
+        const response = await this.get(URL);
+        if (response.message) {
+            console.log(response.message);
+        }
+        return response;
+    }
+
     async updateUser(body) {
         const response = await this.put(this.basicURL, body);
         return response;

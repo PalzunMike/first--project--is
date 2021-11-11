@@ -21,7 +21,10 @@ class PostsController {
                 const photo = fs.readFileSync(post.photo, { encoding: 'base64' });
                 post.photo = photo;
             })
-            return res.json(posts);
+            const sortPosts = posts.sort(function (a,b){
+                return new Date(a.date) - new Date(b.date);
+            })
+            return res.json(sortPosts);
         } catch (e) {
             console.log(e.message);
             res.status(500).json(e);

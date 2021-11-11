@@ -1,6 +1,6 @@
 import Form from './Form.js';
 import { usersDataLayer } from '../database/UsersDataLayer.js';
-// import database from 'mime-db';
+
 
 export default class EnterForm extends Form {
 
@@ -27,8 +27,7 @@ export default class EnterForm extends Form {
         const userId = await auth.userId;
         localStorage.setItem('userData', JSON.stringify({ userId, token }));
         return true;
-    }
-
+    }    
     async submit() {
 
         if (!this.isValid()) {

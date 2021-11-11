@@ -6,13 +6,7 @@ class PageTape extends PageController {
 
     async renderTapePage() {
         const posts = await postsDataLayer.getAllPosts();
-
-        const sortPosts = posts.sort(function (a,b){
-            return new Date(a.date) - new Date(b.date);
-        })
-
-        console.log(sortPosts);
-
+        console.log(posts);
         const tape = document.createElement('div');
         tape.classList.add('tape_wrapper');
 
@@ -22,7 +16,7 @@ class PageTape extends PageController {
             this.renderContent(mainContent);
         }
 
-        sortPosts.forEach( post => {
+        posts.forEach( post => {
             const tapeElementTempalte = document.querySelector('#tape_element_template');
             const tapeElement = tapeElementTempalte.content.cloneNode(true);
 
@@ -49,7 +43,7 @@ class PageTape extends PageController {
         const allPosts = document.querySelectorAll('.tape_element');
         for (let i=  0; i < allPosts.length; i++){
             const author = allPosts[i].querySelector('.author');
-            const nameAuthor = await usersDataLayer.getOneUser(allPosts[i].dataset.postId);
+            const nameAuthor = await usersDataLayer.getAuthor(allPosts[i].dataset.postId);
             author.innerText = `Автор: ${nameAuthor.firstName} ${nameAuthor.secondName}`;
         }
     }

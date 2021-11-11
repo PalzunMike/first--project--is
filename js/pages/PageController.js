@@ -34,6 +34,7 @@ export default class PageController {
     }
 
     renderWelcomeMsg() {  
+        
         const autBlock = document.querySelector('.btn_block');
         const welcomeBlock = document.querySelector('.welcome_block');
         const welcomeMsg = document.querySelector('.welcome_message');
@@ -43,6 +44,7 @@ export default class PageController {
             autBlock.classList.add('hide');
             welcomeMsg.textContent = ` ${authCheck.loggedUser.firstName} ${authCheck.loggedUser.secondName}`;
             welcomeBlock.classList.remove('hide');
+            authCheck.addRelevantLink();
         }else {
             welcomeMsg.textContent = ' ';
             autBlock.classList.remove('hide');
@@ -50,10 +52,11 @@ export default class PageController {
         }        
     }
 
-    async quitUser() { 
+    async quitUser() {         
         const loggedUser = await usersDataLayer.getOneUser(authCheck.loggedUser._id);
         loggedUser.hasToken = "";
         await usersDataLayer.updateUser(loggedUser);
         localStorage.removeItem('userData');
+        authCheck.removeRelevantLink();
     }
 }
