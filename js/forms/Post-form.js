@@ -75,7 +75,7 @@ export default class PostForm extends Form {
             postArray.push(postId);
         }
         authUserObj.posts = postArray;
-        await usersDataBase.updateUser(authUserObj);
+        await usersDataLayer.updateUser(authUserObj);
     }
 
     async onSubmit() {

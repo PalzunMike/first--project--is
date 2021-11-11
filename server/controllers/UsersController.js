@@ -75,8 +75,13 @@ class UsersController {
             if (!id) {
                 res.status(400).json({ message: 'ID не указан' })
             }
-            const user = await User.findById(id); 
-            return res.json(user);
+            const user = await User.findById(id);            
+            const userPost = await User.findOne({posts: id});            
+            if (user){
+                return res.json(user);
+            }else if (userPost){
+                return res.json(userPost);
+            }    
         } catch {
             res.status(500).json(e);
         }
