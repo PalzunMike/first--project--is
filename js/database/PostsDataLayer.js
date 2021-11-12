@@ -25,6 +25,12 @@ class PostsDataLayer extends DataLayer {
         return response;
     }
 
+    async updatePostForLike(postId, body) {
+        const URL = `${this.basicURL}/updateLike/${postId}`;
+        const response = await this.put(URL, body);
+        return response;
+    }
+
     async deletePost(postId) {
         const URL = `${this.basicURL}/${postId}`;
         const response = await this.delete(URL);

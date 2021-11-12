@@ -1,6 +1,9 @@
 import Form from './Form.js';
 import { popup } from '../Popup.js';
 import { usersDataLayer } from '../database/UsersDatalayer.js';
+import { postsDataLayer } from '../database/PostsDataLayer.js';
+import { authCheck } from '../AuthCheck.js';
+// import { router } from '../router.js';
 
 export default class EditForm extends Form {
 
@@ -13,8 +16,15 @@ export default class EditForm extends Form {
         this.setMaskForPhone();
     }
 
-    deleteUser(userId, users) {
-        usersDataLayer.deleteUser(userId);
+    async deleteUser(userId, users) {        
+        const delUser = await usersDataLayer.getOneUser(userId);
+        const postsDelUser = delUser.posts;
+        postsDelUser.forEach(post => {
+            postsDataLayer.deletePost(post);
+        })        
+        authCheck.removeRelevantLink();       
+        await usersDataLayer.deleteUser(userId);
+        localStorage.removeItem('userData');
         for (let i = 0; i < users.length; i++) {
             if (users[i].dataset.id === userId) {
                 users[i].remove();
