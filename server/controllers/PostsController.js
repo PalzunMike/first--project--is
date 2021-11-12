@@ -5,7 +5,7 @@ class PostsController {
     async add(req, res) {
         try {
             const { title } = req.body;
-            const datePost = new Date().toISOString().slice(0, 10);
+            const datePost = new Date().toISOString();
             const post = await Post.create({ title, photo: req.file.path, date: datePost});
             res.status(201).json({ postId: post.id });
         } catch (e) {
@@ -16,12 +16,17 @@ class PostsController {
     async getAll(req, res) {
         try {
             const posts = await Post.find();
+            
             posts.forEach(post => {
-                const photo = post.photo.map(item => fs.readFileSync(item, { encoding: 'base64' }));
+                const photo = fs.readFileSync(post.photo, { encoding: 'base64' });
                 post.photo = photo;
             })
-            return res.json(posts);
+            const sortPosts = posts.sort(function (a,b){
+                return new Date(a.date) - new Date(b.date);
+            })
+            return res.json(sortPosts);
         } catch (e) {
+            console.log(e.message);
             res.status(500).json(e);
         }
     }

@@ -1,7 +1,7 @@
 import PageController from "./PageController.js";
 import { authCheck } from "../AuthCheck.js";
-import { usersDataBase } from "../database/UsersDataBase.js"
-import { postsDataBase } from '../database/PostsDataBase.js';
+import { usersDataLayer } from "../database/UsersDataLayer.js"
+import { postsDataLayer } from '../database/PostsDataLayer.js';
 
 class PagePhotoGallery extends PageController{
     
@@ -16,12 +16,12 @@ class PagePhotoGallery extends PageController{
     }
 
     async renderPhotoArea() {
-        const authUserObj = await usersDataBase.getOneUser(this.authUserId);       
+        const authUserObj = await usersDataLayer.getOneUser(this.authUserId);       
         const postsArray = authUserObj.posts;
         const photoArea = document.querySelector('.photo_area');
         
         postsArray.forEach( async post => {            
-            post = await postsDataBase.getOnePost(post); 
+            post = await postsDataLayer.getOnePost(post); 
             
             const postElementTempalte = document.querySelector('#post_element_template');
             const photoElement = postElementTempalte.content.cloneNode(true);
@@ -38,17 +38,13 @@ class PagePhotoGallery extends PageController{
     } 
 
     async deletePhoto(postId) {
-        const authUserObj = await usersDataBase.getOneUser(this.authUserId);       
+        const authUserObj = await usersDataLayer.getOneUser(this.authUserId);       
         const postsArray = authUserObj.posts;
         const photoIndex = postsArray.indexOf(postId);
         postsArray.splice(photoIndex, 1);
         authUserObj.photo = postsArray;
-        await usersDataBase.updateUser(authUserObj);
-        await postsDataBase.deletePost(postId);
-    }
-
-    async editPost(postId){
-
+        await usersDataLayer.updateUser(authUserObj);
+        await postsDataLayer.deletePost(postId);
     }
 
 }

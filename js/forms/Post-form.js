@@ -1,6 +1,6 @@
 import Form from './Form.js';
-import { usersDataBase } from '../database/UsersDataBase.js';
-import { postsDataBase } from '../database/PostsDataBase.js';
+import { usersDataLayer } from '../database/UsersDataLayer.js';
+import { postsDataLayer } from '../database/PostsDataLayer.js';
 import { pagePhotoGallery } from '../pages/PagePhotoGallery.js';
 
 export default class PostForm extends Form {
@@ -46,11 +46,11 @@ export default class PostForm extends Form {
 
     async editPost(postId) {
         await this.templateInited;
-        const authUserObj = await usersDataBase.getOneUser(this.authUserId);
+        const authUserObj = await usersDataLayer.getOneUser(this.authUserId);
         const postArray = authUserObj.posts;
         const photoIndex = postArray.indexOf(postId);
         if (photoIndex >= 0) {
-            const post = await postsDataBase.getOnePost(postId);
+            const post = await postsDataLayer.getOnePost(postId);
             this.formElement.title.value = post.title;
             const preview = this.formElement.querySelector('.photo_field_fake');
             preview.innerText = '';
@@ -65,7 +65,7 @@ export default class PostForm extends Form {
     }
 
     async addPhotoToUser(postId) {
-        const authUserObj = await usersDataBase.getOneUser(this.authUserId);
+        const authUserObj = await usersDataLayer.getOneUser(this.authUserId);
         const postArray = authUserObj.posts;
 
         if (postArray) {
@@ -75,7 +75,7 @@ export default class PostForm extends Form {
             postArray.push(postId);
         }
         authUserObj.posts = postArray;
-        await usersDataBase.updateUser(authUserObj);
+        await usersDataLayer.updateUser(authUserObj);
     }
 
     async onSubmit() {
@@ -85,9 +85,9 @@ export default class PostForm extends Form {
             const formData = new FormData(this.formElement);
 
             if (this.postId) {
-                await postsDataBase.updatePost(this.postId, formData);
+                await postsDataLayer.updatePost(this.postId, formData);
             } else {
-                const photoId = await postsDataBase.addPost(formData);
+                const photoId = await postsDataLayer.addPost(formData);
                 await this.addPhotoToUser(photoId.postId);
             }
             pagePhotoGallery.renderPhotoGalleryPage();

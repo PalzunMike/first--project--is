@@ -1,5 +1,5 @@
 import Form from './Form.js';
-import { usersDataBase } from '../database/UsersDataBase.js';
+import { usersDataLayer } from '../database/UsersDataLayer.js';
 
 export default class RegisterForm extends Form {
 
@@ -17,7 +17,7 @@ export default class RegisterForm extends Form {
     let dateReg = new Date().toISOString().slice(0, 10);
     this.userObj.dateRegister = dateReg;
 
-    const register = await usersDataBase.registerUser(this.userObj);
+    const register = await usersDataLayer.registerUser(this.userObj);
     if (register.message) {
       super.setErrorMsg(this.formElement.login, register.message);
       return false;

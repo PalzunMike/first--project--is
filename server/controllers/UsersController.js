@@ -38,7 +38,7 @@ class UsersController {
 
             if (!isMatchPass) {
                 return res.status(401).json({ message: 'Неверный пароль. Попробуйте снова' })
-            }           
+            }
 
             const token = jwt.sign(
                 {
@@ -51,7 +51,7 @@ class UsersController {
             )
 
             user.hasToken = token;
-            const activeUser = await User.findOneAndUpdate({login}, user, { new: true } );
+            const activeUser = await User.findOneAndUpdate({ login }, user, { new: true });
 
             res.json({ token });
 
@@ -64,7 +64,7 @@ class UsersController {
         try {
             const users = await User.find();
             return res.json(users);
-        } catch (e){
+        } catch (e) {
             res.status(500).json(e);
         }
     }
@@ -75,8 +75,21 @@ class UsersController {
             if (!id) {
                 res.status(400).json({ message: 'ID не указан' })
             }
-            const user = await User.findById(id); 
+            const user = await User.findById(id);
             return res.json(user);
+        } catch {
+            res.status(500).json(e);
+        }
+    }
+
+    async getUserOnPostId(req, res) {
+        try {
+            const { id } = req.params;
+            if (!id) {
+                res.status(400).json({ message: 'ID не указан' })
+            }
+            const userPost = await User.findOne({ posts: id });
+            return res.json(userPost);
         } catch {
             res.status(500).json(e);
         }

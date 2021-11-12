@@ -1,6 +1,6 @@
 import { popup } from '../Popup.js';
 import { authCheck } from '../AuthCheck.js';
-import { usersDataBase } from '../database/UsersDataBase.js';
+import { usersDataLayer } from '../database/UsersDataLayer.js';
 
 export default class PageController {
 
@@ -33,7 +33,7 @@ export default class PageController {
         };
     }
 
-    renderWelcomeMsg() {  
+    renderWelcomeMsg() {        
         const autBlock = document.querySelector('.btn_block');
         const welcomeBlock = document.querySelector('.welcome_block');
         const welcomeMsg = document.querySelector('.welcome_message');
@@ -43,6 +43,7 @@ export default class PageController {
             autBlock.classList.add('hide');
             welcomeMsg.textContent = ` ${authCheck.loggedUser.firstName} ${authCheck.loggedUser.secondName}`;
             welcomeBlock.classList.remove('hide');
+            authCheck.addRelevantLink();
         }else {
             welcomeMsg.textContent = ' ';
             autBlock.classList.remove('hide');
@@ -50,10 +51,11 @@ export default class PageController {
         }        
     }
 
-    async quitUser() {        
-        const loggedUser = authCheck.loggedUser;
+    async quitUser() {         
+        const loggedUser = await usersDataLayer.getOneUser(authCheck.loggedUser._id);
         loggedUser.hasToken = "";
-        await usersDataBase.updateUser(loggedUser);
+        await usersDataLayer.updateUser(loggedUser);
         localStorage.removeItem('userData');
+        authCheck.removeRelevantLink();
     }
 }

@@ -18,7 +18,7 @@ header.addEventListener('click', async (e) => {
             event.preventDefault();
             const enter = await enterForm.submit();
             if (enter) {
-                router.navigate('/#admin');
+                router.navigate('/#tape');
             }
         });
 

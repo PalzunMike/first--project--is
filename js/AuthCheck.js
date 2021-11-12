@@ -8,7 +8,7 @@ class AuthCheck {
 
     checkLoggedUser() {
         const loginUser = localStorage.getItem('userData');
-        if (loginUser) {            
+        if (loginUser) {
             const userData = JSON.parse(loginUser);
             const token = this.decodeToken(userData.token);
             this.loggedUser = {
@@ -30,6 +30,21 @@ class AuthCheck {
         const decodedToken = JSON.parse(jsonPayload);
         return decodedToken;
     }
+
+    addRelevantLink() {
+        const relevantLink = document.querySelectorAll('.relevant');
+        for (let i = 0; i < relevantLink.length; i++) {
+            relevantLink[i].classList.remove('hide');
+        }
+    }
+
+    removeRelevantLink() {
+        const relevantLink = document.querySelectorAll('.relevant');
+        for (let i = 0; i < relevantLink.length; i++) {
+            relevantLink[i].classList.add('hide');
+        }
+    }
+
 }
 
 export const authCheck = new AuthCheck();

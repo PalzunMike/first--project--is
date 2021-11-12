@@ -1,6 +1,6 @@
-import DataBase from "./DataBase.js";
+import DataLayer from "./DataLayer.js";
 
-class UsersDataBase extends DataBase {
+class UsersDataLayer extends DataLayer {
 
     basicURL = '/users';
 
@@ -25,22 +25,31 @@ class UsersDataBase extends DataBase {
     async getOneUser(userId) {
         const URL = `${this.basicURL}/${userId}`;
         const response = await this.get(URL);
-        if (response.message){
+        if (response.message) {
             console.log(response.message);
-        }      
+        }
+        return response;
+    }
+
+    async getAuthor(postId) {
+        const URL = `${this.basicURL}/author/${postId}`;
+        const response = await this.get(URL);
+        if (response.message) {
+            console.log(response.message);
+        }
         return response;
     }
 
     async updateUser(body) {
         const response = await this.put(this.basicURL, body);
-        return response;        
+        return response;
     }
 
     async deleteUser(userId) {
         const URL = `${this.basicURL}/${userId}`;
         const response = await this.delete(URL);
-        return response;        
+        return response;
     }
 }
 
-export const usersDataBase = new UsersDataBase();
+export const usersDataLayer = new UsersDataLayer();
