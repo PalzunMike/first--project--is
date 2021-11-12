@@ -16,36 +16,68 @@ class PageTape extends PageController {
             this.renderContent(mainContent);
         }
 
-        posts.forEach( post => {
-            const tapeElementTempalte = document.querySelector('#tape_element_template');
-            const tapeElement = tapeElementTempalte.content.cloneNode(true);
+        const postsElements = await Promise.all(
+            posts.map( async post => {
+                const tapeElementTempalte = document.querySelector('#tape_element_template');
+                const tapeElement = tapeElementTempalte.content.cloneNode(true);
+    
+                const divTapeEl = tapeElement.querySelector('.tape_element');
+                divTapeEl.dataset.postId = post._id;
+    
+                const photoImg = tapeElement.querySelector('.photo');
+                photoImg.src = `data:image/jpeg;base64, ${post.photo}`;
+    
+                const title = tapeElement.querySelector('.title');
+                if (post.title) {
+                    title.innerText = post.title;
+                }
+    
+                const timePost = tapeElement.querySelector('.time-post');
+                const optionsDate = { year: 'numeric', month: 'long', day: 'numeric' };
+                const date = new Date(post.date);
+                timePost.innerText = date.toLocaleDateString('ru-RU', optionsDate);
 
-            const divTapeEl = tapeElement.querySelector('.tape_element');
-            divTapeEl.dataset.postId = post._id;
-
-            const photoImg = tapeElement.querySelector('.photo');
-            photoImg.src = `data:image/jpeg;base64, ${post.photo}`;
-
-            const title = tapeElement.querySelector('.title');
-            if (post.title) {
-                title.innerText = post.title;
-            }
-
-            const timePost = tapeElement.querySelector('.time-post');
-            const optionsDate = { year: 'numeric', month: 'long', day: 'numeric' };
-            const date = new Date(post.date);
-            timePost.innerText = date.toLocaleDateString('ru-RU', optionsDate);
-
-            tape.append(tapeElement);            
-        });
+                const author = tapeElement.querySelector('.author');
+                const nameAuthor = await usersDataLayer.getAuthor(post._id);
+                author.innerText = `Автор: ${nameAuthor.firstName} ${nameAuthor.secondName}`; 
+                return tapeElement;
+            })
+        )
+        for (let i = 0; i < postsElements.length; i++){
+            tape.append(postsElements[i]);
+        }
         await this.renderContent(tape);
 
-        const allPosts = document.querySelectorAll('.tape_element');
-        for (let i=  0; i < allPosts.length; i++){
-            const author = allPosts[i].querySelector('.author');
-            const nameAuthor = await usersDataLayer.getAuthor(allPosts[i].dataset.postId);
-            author.innerText = `Автор: ${nameAuthor.firstName} ${nameAuthor.secondName}`;
-        }
+        // posts.forEach( post => {
+        //     const tapeElementTempalte = document.querySelector('#tape_element_template');
+        //     const tapeElement = tapeElementTempalte.content.cloneNode(true);
+
+        //     const divTapeEl = tapeElement.querySelector('.tape_element');
+        //     divTapeEl.dataset.postId = post._id;
+
+        //     const photoImg = tapeElement.querySelector('.photo');
+        //     photoImg.src = `data:image/jpeg;base64, ${post.photo}`;
+
+        //     const title = tapeElement.querySelector('.title');
+        //     if (post.title) {
+        //         title.innerText = post.title;
+        //     }
+
+        //     const timePost = tapeElement.querySelector('.time-post');
+        //     const optionsDate = { year: 'numeric', month: 'long', day: 'numeric' };
+        //     const date = new Date(post.date);
+        //     timePost.innerText = date.toLocaleDateString('ru-RU', optionsDate);
+
+        //     tape.append(tapeElement);            
+        // });
+        // await this.renderContent(tape);
+
+        // const allPosts = document.querySelectorAll('.tape_element');
+        // for (let i=  0; i < allPosts.length; i++){
+        //     const author = allPosts[i].querySelector('.author');
+        //     const nameAuthor = await usersDataLayer.getAuthor(allPosts[i].dataset.postId);
+        //     author.innerText = `Автор: ${nameAuthor.firstName} ${nameAuthor.secondName}`;
+        // }
     }
 }
 

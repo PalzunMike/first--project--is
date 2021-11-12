@@ -33,8 +33,7 @@ export default class PageController {
         };
     }
 
-    renderWelcomeMsg() {  
-        
+    renderWelcomeMsg() {        
         const autBlock = document.querySelector('.btn_block');
         const welcomeBlock = document.querySelector('.welcome_block');
         const welcomeMsg = document.querySelector('.welcome_message');

@@ -1,7 +1,6 @@
 .container_for_main{
 	width: 95%;
 	margin:0px auto;
-	/* min-width: 400px; */
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -76,13 +75,10 @@
 }
 
 .item_skills{
-	/* position: relative; */
 	display: flex;
 	flex-direction: row;
 	align-items: center;
 	width: 100%;
-
-	/* outline: 1px solid red; */
 }
 
 .scale{
