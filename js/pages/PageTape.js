@@ -7,11 +7,11 @@ class PageTape extends PageController {
     async renderTapePage() {
         this.renderWelcomeMsg();
         const limitPosts = 3;
-        let offsetPosts = 0;
+        let page = 0;
         const tape = document.createElement('div');
         tape.classList.add('tape_wrapper');
 
-        const posts = await this.getPostElement(limitPosts, offsetPosts);
+        const posts = await this.getPostElement(limitPosts, page);
 
         for (let i = 0; i < posts.length; i++) {
             tape.append(posts[i]);
@@ -21,28 +21,26 @@ class PageTape extends PageController {
         const options = {
             root: null,
             rootMargin: "0px",
-            threshold: 0.7
+            threshold: 1
         };
-
-        let tapeLast = tape.lastElementChild;
 
         function handleIntersect(entries, observer) {
             entries.forEach(async (entry) => {
                 if (entry.isIntersecting) {
-                    offsetPosts += 3;
-                    const posts = await pageTape.getPostElement(limitPosts, offsetPosts);
-                    console.log(posts);                    
+                    page += 1;
+                    const posts = await pageTape.getPostElement(limitPosts, page);
+                    console.log(posts);
                     for (let i = 0; i < posts.length; i++) {
                         tape.append(posts[i]);
                     }
                 }
-                tapeLast = tape.lastElementChild;                
+                tapeLast = tape.lastElementChild;
             });
             observer.observe(tapeLast);
         }
+        const observer = new IntersectionObserver(handleIntersect, options);
 
-        let observer = new IntersectionObserver(handleIntersect, options);
-        
+        let tapeLast = tape.lastElementChild;
         observer.observe(tapeLast);
 
         // window.addEventListener('scroll', async () => {
@@ -57,9 +55,8 @@ class PageTape extends PageController {
         //         }
         //     }
         // })
-
     }
-    
+
     async getPostElement(limit, offset) {
         const posts = await postsDataLayer.getAllPosts(limit, offset);
 

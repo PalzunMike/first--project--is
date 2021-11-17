@@ -18,7 +18,7 @@ class PostsController {
             // console.log(req.options);
             const { query } = req.params;
             const queryObj = JSON.parse(query);
-            const posts = await Post.find().sort({ date: 1 }).skip(queryObj.offset).limit(queryObj.limit);
+            const posts = await Post.find().sort({ date: 1 }).skip(queryObj.page * queryObj.limit).limit(queryObj.limit);
 
             posts.forEach(post => {
                 const photo = fs.readFileSync(post.photo, { encoding: 'base64' });
@@ -48,19 +48,6 @@ class PostsController {
             res.status(500).json(e);
         }
     }
-
-    // async getPostOnLikeAuthor(req, res) {
-    //     try {
-    //         const { id } = req.params;
-    //         if (!id) {
-    //             res.status(400).json({ message: 'ID не указан' })
-    //         }
-    //         const userPost = await User.findOne({ posts: id });
-    //         return res.json(userPost);
-    //     } catch {
-    //         res.status(500).json(e);
-    //     }
-    // }
 
     async update(req, res) {
         try {

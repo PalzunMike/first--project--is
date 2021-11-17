@@ -8,8 +8,8 @@ class PostsDataLayer extends DataLayer {
         return response;
     }
 
-    async getAllPosts(limit, offset) {
-        let query = { limit, offset };
+    async getAllPosts(limit, page) {
+        let query = { limit, page };
         query = JSON.stringify(query);
         const URL = `${this.basicURL}/tape/${query}`;
         const response = await this.get(URL);
