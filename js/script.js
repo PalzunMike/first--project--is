@@ -55,7 +55,7 @@ contentBlock.addEventListener('click', (event) => {
     }
 
     if (tapeElement && authCheck.checkLoggedUser()){
-        pageTape.checkLike(tapeElement);
+        pageTape.addOrDeleteLike(tapeElement);
     }
 
     if (target) {

@@ -5,10 +5,63 @@ import { usersDataLayer } from "../database/UsersDataLayer.js";
 class PageTape extends PageController {
 
     async renderTapePage() {
-        const posts = await postsDataLayer.getAllPosts();
-
+        this.renderWelcomeMsg();
+        const limitPosts = 3;
+        let offsetPosts = 0;
         const tape = document.createElement('div');
         tape.classList.add('tape_wrapper');
+
+        const posts = await this.getPostElement(limitPosts, offsetPosts);
+
+        for (let i = 0; i < posts.length; i++) {
+            tape.append(posts[i]);
+        }
+        await this.renderContent(tape);
+
+        const options = {
+            root: null,
+            rootMargin: "0px",
+            threshold: 0.7
+        };
+
+        let tapeLast = tape.lastElementChild;
+
+        function handleIntersect(entries, observer) {
+            entries.forEach(async (entry) => {
+                if (entry.isIntersecting) {
+                    offsetPosts += 3;
+                    const posts = await pageTape.getPostElement(limitPosts, offsetPosts);
+                    console.log(posts);                    
+                    for (let i = 0; i < posts.length; i++) {
+                        tape.append(posts[i]);
+                    }
+                }
+                tapeLast = tape.lastElementChild;                
+            });
+            observer.observe(tapeLast);
+        }
+
+        let observer = new IntersectionObserver(handleIntersect, options);
+        
+        observer.observe(tapeLast);
+
+        // window.addEventListener('scroll', async () => {
+        //     const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+        //     // console.log(scrollTop, scrollHeight, clientHeight);
+        //     if (scrollTop + clientHeight >= scrollHeight) {
+        //         offsetPosts += 2;
+        //         const posts = await this.getPostElement(limitPosts, offsetPosts);
+        //         console.log(posts);
+        //         for (let i = 0; i < posts.length; i++) {
+        //             tape.append(posts[i]);
+        //         }
+        //     }
+        // })
+
+    }
+    
+    async getPostElement(limit, offset) {
+        const posts = await postsDataLayer.getAllPosts(limit, offset);
 
         if (!posts) {
             const mainContent = document.createElement('h3');
@@ -41,38 +94,35 @@ class PageTape extends PageController {
                 const nameAuthor = await usersDataLayer.getAuthor(post._id);
                 author.innerText = `Автор: ${nameAuthor.firstName} ${nameAuthor.secondName}`;
 
+                const imgLike = tapeElement.querySelector('.like_img');
+                if (post.likesAuthor.includes(this.authUserId)) {
+                    imgLike.src = "/assets/img/liked.png";
+                } else {
+                    imgLike.src = "/assets/img/like.png";
+                }
                 const likes = tapeElement.querySelector('.count_likes');
                 likes.innerText = post.likesAuthor.length;
                 return tapeElement;
             })
         )
-        for (let i = 0; i < postsElements.length; i++) {
-            tape.append(postsElements[i]);
-        }
-        await this.renderContent(tape);
-    }    
-
-    async checkLike(tapeElement) {
-        const likedPost = await postsDataLayer.getOnePost(tapeElement.dataset.postId);
-        const likesArray = likedPost.likesAuthor;
-
-        const hasLike = likesArray.includes(this.authUserId);
-
-        if (hasLike) {
-            const likeIndex = likesArray.indexOf(this.authUserId);
-            likesArray.splice(likeIndex, 1);            
-        } else {
-            likesArray.push(this.authUserId);            
-        }
-        const fakePost = {
-            likesAuthor: likesArray
-        }
-        await postsDataLayer.updatePostForLike(tapeElement.dataset.postId, fakePost);
-
-        this.renderCoutLikes(tapeElement);
+        return postsElements;
     }
 
-    async renderCoutLikes(tapeElement){
+    async addOrDeleteLike(tapeElement) {
+        const imgLike = tapeElement.querySelector('.like_img');
+        const fakePost = {
+            likesAuthor: this.authUserId
+        }
+        const hasLike = await postsDataLayer.updatePostForLike(tapeElement.dataset.postId, fakePost);
+        if (hasLike) {
+            imgLike.src = "/assets/img/liked.png";
+        } else {
+            imgLike.src = "/assets/img/like.png";
+        }
+        await this.renderCountLikes(tapeElement);
+    }
+
+    async renderCountLikes(tapeElement) {
         const likes = tapeElement.querySelector('.count_likes');
         const post = await postsDataLayer.getOnePost(tapeElement.dataset.postId);
         likes.innerText = post.likesAuthor.length;
