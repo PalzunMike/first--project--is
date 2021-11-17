@@ -89,6 +89,7 @@ class UsersController {
                 res.status(400).json({ message: 'ID не указан' })
             }
             const userPost = await User.findOne({ posts: id });
+            // console.log(userPost);
             return res.json(userPost);
         } catch {
             res.status(500).json(e);

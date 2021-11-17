@@ -4,7 +4,9 @@ import EditForm from './forms/Edit-form.js';
 import PostForm from './forms/Post-form.js';
 import { popup } from './Popup.js';
 import { router } from './Router.js';
-import { pagePhotoGallery } from "./pages/PagePhotoGallery.js"
+import { pagePhotoGallery } from "./pages/PagePhotoGallery.js";
+import { pageTape } from './pages/PageTape.js';
+import { authCheck } from './AuthCheck.js';
 
 const modal = document.querySelector('.modal');
 const header = document.getElementById('header');
@@ -46,9 +48,14 @@ contentBlock.addEventListener('click', (event) => {
     const users = document.querySelectorAll('.user');
     const target = event.target.closest('.user') || event.target.closest('button');
     const gallery = event.target.closest('.post_element');
+    const tapeElement = event.target.closest('.tape_element');
 
     if (gallery) {
         popup.openGallery(gallery);
+    }
+
+    if (tapeElement && authCheck.checkLoggedUser()){
+        pageTape.addOrDeleteLike(tapeElement);
     }
 
     if (target) {

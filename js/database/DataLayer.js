@@ -3,15 +3,16 @@ export default class DataLayer {
 
     proxyURL = 'http://localhost:5000/api';
     access_token;
-    constructor(){
-        this.checkToken();        
-    } 
-    
-    async checkToken(){
+    constructor() {
+        this.checkToken();
+    }
+
+    async checkToken() {
         this.access_token = await authCheck.checkLoggedUser();
     }
 
     async requestWithFormData(url, body, method) {
+        await this.checkToken();
         try {
             const response = await fetch(`${this.proxyURL}${url}`, { method: method, body: body, headers: { 'Authorization': `Bearer ${this.access_token}` } });
             const data = await response.json();

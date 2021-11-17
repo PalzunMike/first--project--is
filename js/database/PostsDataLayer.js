@@ -8,8 +8,11 @@ class PostsDataLayer extends DataLayer {
         return response;
     }
 
-    async getAllPosts() {
-        const response = await this.get(this.basicURL);
+    async getAllPosts(limit, page) {
+        let query = { limit, page };
+        query = JSON.stringify(query);
+        const URL = `${this.basicURL}/tape/${query}`;
+        const response = await this.get(URL);
         return response;
     }
 
@@ -22,6 +25,12 @@ class PostsDataLayer extends DataLayer {
     async updatePost(postId, body) {
         const URL = `${this.basicURL}/${postId}`;
         const response = await this.requestWithFormData(URL, body, 'PUT');
+        return response;
+    }
+
+    async updatePostForLike(postId, body) {
+        const URL = `${this.basicURL}/updateLike/${postId}`;
+        const response = await this.put(URL, body);
         return response;
     }
 
