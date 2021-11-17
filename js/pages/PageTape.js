@@ -21,7 +21,7 @@ class PageTape extends PageController {
         const options = {
             root: null,
             rootMargin: "0px",
-            threshold: 1
+            threshold: 0.5
         };
 
         function handleIntersect(entries, observer) {
@@ -123,6 +123,10 @@ class PageTape extends PageController {
         const likes = tapeElement.querySelector('.count_likes');
         const post = await postsDataLayer.getOnePost(tapeElement.dataset.postId);
         likes.innerText = post.likesAuthor.length;
+    }
+
+    addComment(tapeElement){
+        console.log(tapeElement);
     }
 }
 

@@ -46,7 +46,7 @@ const contentBlock = document.querySelector('.content');
 
 contentBlock.addEventListener('click', (event) => {
     const users = document.querySelectorAll('.user');
-    const target = event.target.closest('.user') || event.target.closest('button');
+    const target = event.target.closest('.user') || event.target.closest('button') || event.target.closest('.comment');
     const gallery = event.target.closest('.post_element');
     const tapeElement = event.target.closest('.tape_element');
 
@@ -54,7 +54,7 @@ contentBlock.addEventListener('click', (event) => {
         popup.openGallery(gallery);
     }
 
-    if (tapeElement && authCheck.checkLoggedUser()){
+    if (tapeElement && authCheck.checkLoggedUser() && !target){
         pageTape.addOrDeleteLike(tapeElement);
     }
 
@@ -92,6 +92,8 @@ contentBlock.addEventListener('click', (event) => {
             modal.id = 'modalAddPhoto';
             const postForm = new PostForm('post_form', modal, pagePhotoGallery.authUserId, postElement.dataset.postId);
             postForm.editPost(postElement.dataset.postId);
+        }else if (btnAction === 'comment-post'){
+            pageTape.addComment(tapeElement);
         }
     }
 });

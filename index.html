@@ -62,11 +62,12 @@
         </div>
     </template>
     <template id="photo_template">
-        <button data-modal-target="#modalAddPhoto" class="photo_btn" data-button-action="add-post">Добавить фото</button>
+        <button data-modal-target="#modalAddPhoto" class="photo_btn" data-button-action="add-post">Добавить
+            фото</button>
         <div class="photo_area"></div>
     </template>
     <template id="post_element_template">
-        <div class="post_element" data-post-id = "">
+        <div class="post_element" data-post-id="">
             <button data-button-action="close-post" class="close-btn">&times;</button>
             <img src="" alt="my photos" class="photo">
             <p class="title"></p>
@@ -75,16 +76,24 @@
         </div>
     </template>
     <template id="tape_element_template">
-        <div class="tape_element" data-post-id = "">            
+        <div class="tape_element" data-post-id="">
             <img src="" alt="my photos" class="photo">
             <p class="title"></p>
             <div class="caption">
-                <time datetime="2016-11-18T" class="time-post">26 ноября</time>
+
                 <div class="like">
                     <img class="like_img" src="/assets/img/like.png" alt="likes">
                     <span class="count_likes"></span>
                 </div>
-                <span class="author">Михаил</span>
+                <div class="comment" ><img data-button-action="comment-post" src="./assets/img/comment.png" alt="add-comments"></div>
+
+
+
+                <div class="info_post">
+                    <time datetime="2016-11-18T" class="time-post">26 ноября</time>
+                    <span class="author">Михаил</span>
+                </div>
+
             </div>
         </div>
     </template>
