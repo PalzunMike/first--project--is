@@ -1,8 +1,12 @@
 import PageController from "./PageController.js";
+import { template } from "../TemplateEngine.js";
 import { postsDataLayer } from "../database/PostsDataLayer.js";
 import { usersDataLayer } from "../database/UsersDataLayer.js";
+import { authCheck } from "../AuthCheck.js";
 
 class PageTape extends PageController {
+
+    // writtingComment = false;
 
     async renderTapePage() {
         this.renderWelcomeMsg();
@@ -123,10 +127,6 @@ class PageTape extends PageController {
         const likes = tapeElement.querySelector('.count_likes');
         const post = await postsDataLayer.getOnePost(tapeElement.dataset.postId);
         likes.innerText = post.likesAuthor.length;
-    }
-
-    addComment(tapeElement){
-        console.log(tapeElement);
     }
 }
 

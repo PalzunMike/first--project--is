@@ -2,6 +2,7 @@ import EnterForm from './forms/Enter-form.js';
 import RegisterForm from './forms/Register-form.js';
 import EditForm from './forms/Edit-form.js';
 import PostForm from './forms/Post-form.js';
+import CommentForm from './forms/Comment-form.js';
 import { popup } from './Popup.js';
 import { router } from './Router.js';
 import { pagePhotoGallery } from "./pages/PagePhotoGallery.js";
@@ -54,7 +55,7 @@ contentBlock.addEventListener('click', (event) => {
         popup.openGallery(gallery);
     }
 
-    if (tapeElement && authCheck.checkLoggedUser() && !target){
+    if (tapeElement && authCheck.checkLoggedUser() && !target) {
         pageTape.addOrDeleteLike(tapeElement);
     }
 
@@ -87,13 +88,13 @@ contentBlock.addEventListener('click', (event) => {
         } else if (btnAction === 'edit-post') {
             const postElement = target.closest('div');
             popup.closeGallery(postElement);
-
             popup.openModal(modal);
             modal.id = 'modalAddPhoto';
             const postForm = new PostForm('post_form', modal, pagePhotoGallery.authUserId, postElement.dataset.postId);
             postForm.editPost(postElement.dataset.postId);
-        }else if (btnAction === 'comment-post'){
-            pageTape.addComment(tapeElement);
+        } else if (btnAction === 'comment-post') { 
+            const commentForm = new CommentForm('comment_form', tapeElement);
+            // pageTape.addComment(tapeElement);
         }
     }
 });

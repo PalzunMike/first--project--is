@@ -5,6 +5,7 @@ import { usersDataLayer } from '../database/UsersDataLayer.js';
 export default class EnterForm extends Form {
 
     templateURL = './templates/enter-form-template.html';
+    position = 'beforeend';
 
     constructor(...args) {
         super(...args);

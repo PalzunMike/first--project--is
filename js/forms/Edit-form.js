@@ -8,6 +8,7 @@ import { authCheck } from '../AuthCheck.js';
 export default class EditForm extends Form {
 
     templateURL = './templates/edit-form-template.html';
+    position = 'beforeend';
 
     constructor(...args) {
         super(...args);

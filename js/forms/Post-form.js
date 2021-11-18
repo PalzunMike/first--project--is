@@ -6,6 +6,7 @@ import { pagePhotoGallery } from '../pages/PagePhotoGallery.js';
 export default class PostForm extends Form {
 
     templateURL = './templates/post-form-template.html';
+    position = 'beforeend';
 
     constructor(form, parentElement, authUserId, postId) {
         super(form, parentElement);

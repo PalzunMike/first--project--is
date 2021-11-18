@@ -1,13 +1,14 @@
-import Like from '../models/LikeSchema.js';
+import Comment from '../models/CommentSchema.js';
+import Post from '../models/PostSchema.js';
 
-class PostsController {
-    async addLike(req, res) {
+class CommentsController {
+    async addComment(req, res) {
         try {
-            const { author, post } = req.body;
-            console.log(author, post);
+            const { authorId, authorName, text, postId } = req.body;
             const dateLike = new Date().toISOString();
-            const like = await Like.create({ author, post, date: dateLike });
-            res.status(201).json({ likeId: like.id });
+            const comment = await Comment.create({ authorId, authorName, text, date: dateLike });
+            const post = await Post.findByIdAndUpdate(postId, {comments: comment._id});
+            res.status(201).json({ commentId: comment.id });
         } catch (e) {
             console.log(e);
         }
@@ -70,7 +71,7 @@ class PostsController {
     //     }
     // }
 
-    async deleteLike(req, res) {
+    async deleteComment(req, res) {
         try {
             const { author, post } = req.body;
             console.log(author, post);
@@ -83,4 +84,4 @@ class PostsController {
     }
 }
 
-export default new PostsController();
+export default new CommentsController();

@@ -1,17 +1,17 @@
 import DataLayer from "./DataLayer.js";
 
-class LikesDataLayer extends DataLayer {
-    basicURL = '/likes';
+class CommentsDataLayer extends DataLayer {
+    basicURL = '/comments';
 
-    async addLike(body) {
+    async addComment(body) {
         const response = await this.post(this.basicURL, body);
         return response;
     }
 
-    async deleteLike(body) {
+    async deleteComment(body) {
         const response = await this.delete(this.basicURL, body);
         return response;
     }
 }
 
-export const likesDataLayer = new LikesDataLayer();
+export const commentsDataLayer = new CommentsDataLayer();

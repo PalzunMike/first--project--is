@@ -4,6 +4,7 @@ export default class Form {
   userObj = {};
   template;
   templateInited;
+  position = '';
 
   constructor(form, parentElement) {
     this.form = form;
@@ -20,7 +21,7 @@ export default class Form {
   }
 
   renderForm(modal) {
-    modal.insertAdjacentHTML('beforeend', this.template);
+    modal.insertAdjacentHTML(this.position, this.template);
     this.formElement = document.getElementById(this.form);
   }
 

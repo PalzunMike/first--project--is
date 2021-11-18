@@ -748,7 +748,7 @@ h1 a img{
     cursor: pointer;
     height: 33px;
     /* margin-left: 55px; */
-    opacity: 0.7;
+    opacity: 0.6;
     transition:  all 400ms;
     -webkit-transition:  all 400ms;
     -moz-transition:  all 400ms;
@@ -757,6 +757,48 @@ h1 a img{
 }
 
 .comment img:hover{
+    opacity: 1;
+}
+
+.comment_button{
+    background: inherit;
+    border: none;
+}
+
+.comment_block{
+    /*line-height: 30px;
+    *//*outline: 1px solid red;
+    */width: 90%;
+    margin: 1% auto 0;
+}
+
+#comment_form{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    width: 100%;
+    align-items: center;
+
+    /* outline: 3px solid gold; */
+}
+
+.comment_field{
+    width: calc(100% - 30px);
+    font-size: 1em;
+    resize: vertical;
+    min-height: 17px;
+    max-height: 150px;
+    overflow-x: hidden;
+    overflow-y: auto ;    
+}
+
+.comment_button img{
+    height: 30px;
+    cursor: pointer;
+    opacity: .6;
+}
+
+.comment_button img:hover{
     opacity: 1;
 }
 

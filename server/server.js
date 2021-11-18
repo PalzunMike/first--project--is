@@ -3,7 +3,7 @@ import cors from 'cors';
 import mongoose from 'mongoose';
 import usersRouter from './routes/UsersRouter.js';
 import postsRouter from './routes/PostsRouter.js';
-import likesRouter from './routes/LikesRouter.js';
+import commentsRouter from './routes/CommentsRouter.js';
 import { PORT, DB_URL } from './config.js';
 
 const app = express();
@@ -12,7 +12,7 @@ app.use(express.json({ extended: true }));
 app.use('/uploads', express.static('uploads'));
 app.use('/api/users', usersRouter);
 app.use('/api/posts', postsRouter);
-// app.use('/api/likes', likesRouter)
+app.use('/api/comments', commentsRouter)
 
 async function startApp() {
     try {
