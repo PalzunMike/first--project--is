@@ -5,6 +5,6 @@ import {checkToken} from "../middlewares/check-token.js";
 const router = new Router();
 
 router.post('', CommentsController.addComment);
-router.delete('', checkToken, CommentsController.deleteComment);
+router.delete('/:id', checkToken, CommentsController.deleteComment);
 
 export default router;

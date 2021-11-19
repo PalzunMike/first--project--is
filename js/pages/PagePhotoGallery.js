@@ -19,12 +19,9 @@ class PagePhotoGallery extends PageController{
         const authUserObj = await usersDataLayer.getOneUser(this.authUserId);       
         const postsArray = authUserObj.posts;
         const photoArea = document.querySelector('.photo_area');
-
-        console.log(postsArray);
         
         postsArray.forEach( async post => {            
             post = await postsDataLayer.getOnePost(post); 
-            console.log(post);
             
             const postElementTempalte = document.querySelector('#post_element_template');
             const photoElement = postElementTempalte.content.cloneNode(true);

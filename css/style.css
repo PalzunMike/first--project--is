@@ -744,7 +744,11 @@ h1 a img{
     
 }
 
-.comment img{
+.comment_btn_hide{
+    display: none;
+}
+
+.comment_add_btn img{
     cursor: pointer;
     height: 33px;
     /* margin-left: 55px; */
@@ -756,7 +760,7 @@ h1 a img{
     -o-transition:  all 400ms;
 }
 
-.comment img:hover{
+.comment_add_btn img:hover{
     opacity: 1;
 }
 
@@ -799,6 +803,43 @@ h1 a img{
 }
 
 .comment_button img:hover{
+    opacity: 1;
+}
+
+.comment{
+    background-color: rgba(255, 255, 255, 0.61);
+    width: 85%;
+    border-radius: 7px;
+    margin: 2px auto 0;
+    font-size: .7em;
+    -webkit-border-radius: 7px;
+    -moz-border-radius: 7px;
+    -ms-border-radius: 7px;
+    -o-border-radius: 7px;
+}
+.comment h4{
+    margin: 0 0 0 5px;
+}
+
+.comment p{
+    margin: 0 0 0 15px;
+}
+
+.comment_delete_btn, .comment_answer_btn{
+    float: right;
+    color: red;
+    background: none;
+    outline: none;
+    border: none;
+    cursor: pointer;
+    opacity: .6; 
+}
+
+.comment_answer_btn{
+    color: green;
+}
+
+.comment_delete_btn:hover, .comment_answer_btn:hover{
     opacity: 1;
 }
 

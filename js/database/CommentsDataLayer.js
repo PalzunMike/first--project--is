@@ -8,8 +8,9 @@ class CommentsDataLayer extends DataLayer {
         return response;
     }
 
-    async deleteComment(body) {
-        const response = await this.delete(this.basicURL, body);
+    async deleteComment(commentId) {
+        const URL = `${this.basicURL}/${commentId}`;
+        const response = await this.delete(URL);
         return response;
     }
 }

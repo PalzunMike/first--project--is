@@ -3,7 +3,6 @@ import { popup } from '../Popup.js';
 import { usersDataLayer } from '../database/UsersDatalayer.js';
 import { postsDataLayer } from '../database/PostsDataLayer.js';
 import { authCheck } from '../AuthCheck.js';
-// import { router } from '../router.js';
 
 export default class EditForm extends Form {
 

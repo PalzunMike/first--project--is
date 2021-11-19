@@ -2,9 +2,6 @@ import Form from './Form.js';
 import { authCheck } from '../AuthCheck.js';
 import { pageTape } from '../pages/PageTape.js';
 import { commentsDataLayer } from '../database/CommentsDataLayer.js';
-// import { usersDataLayer } from '../database/UsersDataLayer.js';
-// import { postsDataLayer } from '../database/PostsDataLayer.js';
-// import { pagePhotoGallery } from '../pages/PagePhotoGallery.js';
 
 export default class CommentForm extends Form {
 
@@ -13,7 +10,7 @@ export default class CommentForm extends Form {
 
     constructor(form, parentElement) {
         super(form, parentElement);
-        this.showCommentForm();        
+        this.showCommentForm();
     }
 
     async showCommentForm() {
@@ -37,12 +34,22 @@ export default class CommentForm extends Form {
                 authorId: `${authCheck.loggedUser._id}`,
                 authorName: `${authCheck.loggedUser.firstName} ${authCheck.loggedUser.secondName}`,
                 text: `${this.formElement.comment.value}`,
-                postId : this.parentElement.dataset.postId
+                postId: this.parentElement.dataset.postId
             }
-            const commentId = await commentsDataLayer.addComment(commentObj);
-            // console.log(authCheck.loggedUser);
-            console.log(commentId);
-            // pageTape.renderTapePage();
+
+            const comments = await commentsDataLayer.addComment(commentObj);
+            const commentsElements = pageTape.renderComments(comments.comments);
+
+            if (comments.comments.length > 1) {
+                const lastCommentId = commentsElements[comments.comments.length - 2].dataset.commentId;
+                const lastComment = document.querySelector(`.comment[data-comment-id='${lastCommentId}']`);
+                lastComment.after(commentsElements[comments.comments.length - 1]);
+            } else {
+                this.parentElement.after(commentsElements[comments.comments.length - 1]);
+            }
+            const commentBlock = document.querySelector('.comment_block');
+            commentBlock.remove();
+
         });
     }
 }

@@ -55,6 +55,7 @@ export default class PageController {
         const loggedUser = await usersDataLayer.getOneUser(authCheck.loggedUser._id);
         loggedUser.hasToken = "";
         await usersDataLayer.updateUser(loggedUser);
+        this.authUserId = '';
         localStorage.removeItem('userData');
         authCheck.removeRelevantLink();
     }

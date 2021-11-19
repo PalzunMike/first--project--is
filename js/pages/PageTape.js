@@ -3,6 +3,7 @@ import { template } from "../TemplateEngine.js";
 import { postsDataLayer } from "../database/PostsDataLayer.js";
 import { usersDataLayer } from "../database/UsersDataLayer.js";
 import { authCheck } from "../AuthCheck.js";
+import { commentsDataLayer } from "../database/CommentsDataLayer.js";
 
 class PageTape extends PageController {
 
@@ -22,6 +23,8 @@ class PageTape extends PageController {
         }
         await this.renderContent(tape);
 
+        let lastPosts = posts;
+
         const options = {
             root: null,
             rootMargin: "0px",
@@ -30,15 +33,18 @@ class PageTape extends PageController {
 
         function handleIntersect(entries, observer) {
             entries.forEach(async (entry) => {
-                if (entry.isIntersecting) {
-                    page += 1;
-                    const posts = await pageTape.getPostElement(limitPosts, page);
-                    console.log(posts);
-                    for (let i = 0; i < posts.length; i++) {
-                        tape.append(posts[i]);
+                if (lastPosts.length !== 0) {
+                    if (entry.isIntersecting) {
+                        page += 1;
+                        const posts = await pageTape.getPostElement(limitPosts, page);
+                        for (let i = 0; i < posts.length; i++) {
+                            tape.append(posts[i]);
+                        }
+                        lastPosts = posts;
                     }
+                    tapeLast = tape.lastElementChild;
                 }
-                tapeLast = tape.lastElementChild;
+
             });
             observer.observe(tapeLast);
         }
@@ -46,19 +52,6 @@ class PageTape extends PageController {
 
         let tapeLast = tape.lastElementChild;
         observer.observe(tapeLast);
-
-        // window.addEventListener('scroll', async () => {
-        //     const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
-        //     // console.log(scrollTop, scrollHeight, clientHeight);
-        //     if (scrollTop + clientHeight >= scrollHeight) {
-        //         offsetPosts += 2;
-        //         const posts = await this.getPostElement(limitPosts, offsetPosts);
-        //         console.log(posts);
-        //         for (let i = 0; i < posts.length; i++) {
-        //             tape.append(posts[i]);
-        //         }
-        //     }
-        // })
     }
 
     async getPostElement(limit, offset) {
@@ -103,10 +96,70 @@ class PageTape extends PageController {
                 }
                 const likes = tapeElement.querySelector('.count_likes');
                 likes.innerText = post.likesAuthor.length;
+
+                const commentBtn = tapeElement.querySelector('.comment_add_btn');
+                
+                if (!authCheck.checkLoggedUser()){
+                    commentBtn.classList.add('comment_btn_hide');
+                }
+
+                const comments = this.renderComments(post.comments);
+                for (let i = 0; i < comments.length; i++) {
+                    tapeElement.append(comments[i]);
+                }
+
+                // if (comments.length > 2){
+                //     for (let i = 2; i < comments.length; i++) {
+                //         tapeElement.append(comments[i]);
+                //         console.log(comments[i]);
+                //         comments[i].classList.add('hide');
+                //     }
+                // }
+
                 return tapeElement;
             })
         )
         return postsElements;
+    }
+
+    renderComments(comments) {
+        const commentElements = comments.map(comment => {
+            const commentElement = document.createElement('div');
+            commentElement.classList.add('comment');
+            commentElement.setAttribute('data-comment-id', comment._id);
+
+            const commentAuthor = document.createElement('h4');
+            commentAuthor.textContent = comment.authorName;
+
+            const commentText = document.createElement('p');
+            commentText.textContent = comment.text;
+
+            const answerCommentBtn = document.createElement('button');
+            answerCommentBtn.classList.add('comment_answer_btn');
+            answerCommentBtn.textContent = 'ответить';
+            answerCommentBtn.setAttribute('data-button-action', 'comment-answer');
+
+            const deleteCommentBtn = document.createElement('button');
+            deleteCommentBtn.classList.add('comment_delete_btn');
+            deleteCommentBtn.textContent = 'удалить';
+            deleteCommentBtn.setAttribute('data-button-action', 'comment-delete');
+
+            commentElement.append(commentAuthor);
+            commentElement.append(commentText);            
+            if (this.authUserId === comment.authorId) {
+                commentElement.append(deleteCommentBtn);                
+            }
+            if (authCheck.checkLoggedUser()){
+                commentElement.append(answerCommentBtn);
+            }
+            return commentElement;
+        })
+        return commentElements;
+    }
+
+    async deleteComment(commentElement){
+        const deletedComment = await commentsDataLayer.deleteComment(commentElement.dataset.commentId);
+        commentElement.remove();
     }
 
     async addOrDeleteLike(tapeElement) {
