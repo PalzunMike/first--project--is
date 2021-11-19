@@ -50,12 +50,13 @@ contentBlock.addEventListener('click', (event) => {
     const target = event.target.closest('.user') || event.target.closest('button') || event.target.closest('.comment_add_btn');
     const gallery = event.target.closest('.post_element');
     const tapeElement = event.target.closest('.tape_element');
+    const fieldForLike = event.target.closest('.main_post');
 
     if (gallery) {
         popup.openGallery(gallery);
     }
 
-    if (tapeElement && authCheck.checkLoggedUser() && !target) {
+    if (fieldForLike && authCheck.checkLoggedUser() && !target) {
         pageTape.addOrDeleteLike(tapeElement);
     }
 
@@ -93,11 +94,15 @@ contentBlock.addEventListener('click', (event) => {
             const postForm = new PostForm('post_form', modal, pagePhotoGallery.authUserId, postElement.dataset.postId);
             postForm.editPost(postElement.dataset.postId);
         } else if (btnAction === 'comment-post') { 
-            const commentForm = new CommentForm('comment_form', tapeElement);
+            const commentForm = new CommentForm('comment_form', target.closest('.caption'), tapeElement);
         }else if (btnAction === 'comment-delete'){
             pageTape.deleteComment(target.closest('.comment'));
         }else if (btnAction === 'comment-answer'){
             console.log('answer comment');
+        }else if (btnAction === 'show_comments'){
+            pageTape.showAllComments(target);
+        }else if (btnAction === 'hide_comments'){
+            pageTape.hideComments(target);
         }
     }
 });

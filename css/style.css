@@ -673,8 +673,12 @@ h1 a img{
     -o-border-radius: 10px; 
      
 }
+.main_post{
+    position: relative;
+    /* outline: 1px solid red; */
+}
 
-.tape_element .photo{
+.main_post .photo{
     width: 100%;
     height: 100%;
     filter: none;
@@ -686,10 +690,10 @@ h1 a img{
     -o-border-radius:10px 10px 0  0;
 }
 
-.tape_element .title{
-    bottom: 2.5vh;
-    font-size: 1.5em;
+.main_post .title{
+    bottom: 0;
     line-height: 1.5em;
+    font-size: 1.5em;
 }
 
 .caption{
@@ -816,6 +820,11 @@ h1 a img{
     -moz-border-radius: 7px;
     -ms-border-radius: 7px;
     -o-border-radius: 7px;
+    transition: all 400ms;
+    -webkit-transition: all 400ms;
+    -moz-transition: all 400ms;
+    -ms-transition: all 400ms;
+    -o-transition: all 400ms;
 }
 .comment h4{
     margin: 0 0 0 5px;
@@ -832,7 +841,12 @@ h1 a img{
     outline: none;
     border: none;
     cursor: pointer;
-    opacity: .6; 
+    opacity: .6;
+    transition: all 200ms;
+    -webkit-transition: all 200ms;
+    -moz-transition: all 200ms;
+    -ms-transition: all 200ms;
+    -o-transition: all 200ms;
 }
 
 .comment_answer_btn{
@@ -841,6 +855,37 @@ h1 a img{
 
 .comment_delete_btn:hover, .comment_answer_btn:hover{
     opacity: 1;
+    transition: all 200ms;
+    -webkit-transition: all 200ms;
+    -moz-transition: all 200ms;
+    -ms-transition: all 200ms;
+    -o-transition: all 200ms;
+}
+
+.show_all_comments{
+    width: 50%;
+    background-color: rgba(255, 255, 255, 0.31);
+    border-radius: 10px;
+    border: none;
+    margin: 5px auto 0;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -ms-border-radius: 10px;
+    -o-border-radius: 10px;
+    transition: all 300ms;
+    -webkit-transition: all 300ms;
+    -moz-transition: all 300ms;
+    -ms-transition: all 300ms;
+    -o-transition: all 300ms;
+}
+
+.show_all_comments:hover{
+    transition: all 300ms;
+    background-color: rgba(255, 255, 255, 0.71);
+    -webkit-transition: all 300ms;
+    -moz-transition: all 300ms;
+    -ms-transition: all 300ms;
+    -o-transition: all 300ms;
 }
 
 @media screen and (max-width: 720px){

@@ -69,7 +69,7 @@ class PageTape extends PageController {
                 const tapeElement = tapeElementTempalte.content.cloneNode(true);
 
                 const divTapeEl = tapeElement.querySelector('.tape_element');
-                divTapeEl.dataset.postId = post._id;
+                divTapeEl.dataset.postId = post._id;                
 
                 const photoImg = tapeElement.querySelector('.photo');
                 photoImg.src = `data:image/jpeg;base64, ${post.photo}`;
@@ -98,28 +98,55 @@ class PageTape extends PageController {
                 likes.innerText = post.likesAuthor.length;
 
                 const commentBtn = tapeElement.querySelector('.comment_add_btn');
-                
-                if (!authCheck.checkLoggedUser()){
+
+                if (!authCheck.checkLoggedUser()) {
                     commentBtn.classList.add('comment_btn_hide');
                 }
 
                 const comments = this.renderComments(post.comments);
-                for (let i = 0; i < comments.length; i++) {
-                    tapeElement.append(comments[i]);
+
+                if (comments.length > 2) {
+                    for (let i = 2; i < comments.length; i++) {
+                        comments[i].classList.add('hide');
+                    }                    
                 }
 
-                // if (comments.length > 2){
-                //     for (let i = 2; i < comments.length; i++) {
-                //         tapeElement.append(comments[i]);
-                //         console.log(comments[i]);
-                //         comments[i].classList.add('hide');
-                //     }
-                // }
+                for (let i = 0; i < comments.length; i++) {
+                   divTapeEl.append(comments[i]);
+                }
+
+                if (comments.length > 2){
+                    const showAllComments = document.createElement('button');
+                    showAllComments.classList.add('show_all_comments');
+                    showAllComments.textContent = '▼ показать все комментарии ▼';
+                    showAllComments.setAttribute('data-button-action', 'show_comments');
+                    divTapeEl.append(showAllComments);
+                }
 
                 return tapeElement;
             })
         )
         return postsElements;
+    }
+
+    showAllComments(element){
+        const mainElement = element.closest('.tape_element');
+        const hidedComments = mainElement.querySelectorAll('.hide');        
+            for (let i = 0; i < hidedComments.length; i++ ){
+                hidedComments[i].classList.remove('hide');
+            }
+        element.textContent = '▲ показать все комментарии ▲';
+        element.setAttribute('data-button-action', 'hide_comments'); 
+    }
+
+    hideComments(element){
+        const mainElement = element.closest('.tape_element');
+        const comments = mainElement.querySelectorAll('.comment');        
+            for (let i = 2; i < comments.length; i++ ){
+                comments[i].classList.add('hide');
+            }
+        element.textContent = '▼ показать все комментарии ▼';
+        element.setAttribute('data-button-action', 'show_comments'); 
     }
 
     renderComments(comments) {
@@ -145,11 +172,11 @@ class PageTape extends PageController {
             deleteCommentBtn.setAttribute('data-button-action', 'comment-delete');
 
             commentElement.append(commentAuthor);
-            commentElement.append(commentText);            
+            commentElement.append(commentText);
             if (this.authUserId === comment.authorId) {
-                commentElement.append(deleteCommentBtn);                
+                commentElement.append(deleteCommentBtn);
             }
-            if (authCheck.checkLoggedUser()){
+            if (authCheck.checkLoggedUser()) {
                 commentElement.append(answerCommentBtn);
             }
             return commentElement;
@@ -157,9 +184,17 @@ class PageTape extends PageController {
         return commentElements;
     }
 
-    async deleteComment(commentElement){
+    async deleteComment(commentElement) {
         const deletedComment = await commentsDataLayer.deleteComment(commentElement.dataset.commentId);
+        const mainElement = commentElement.closest('.tape_element');
         commentElement.remove();
+        const comments = mainElement.querySelectorAll('.comment');
+        if (comments.length <= 2){
+            const showBtn = mainElement.querySelector('.show_all_comments');
+            showBtn.remove();
+        }
+        console.log(comments.length);
+        
     }
 
     async addOrDeleteLike(tapeElement) {

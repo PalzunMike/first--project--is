@@ -8,15 +8,16 @@ export default class CommentForm extends Form {
     templateURL = './templates/comment-form-template.html';
     position = 'afterend';
 
-    constructor(form, parentElement) {
+    constructor(form, parentElement, element) {
         super(form, parentElement);
+        this.relatedElement = element;
         this.showCommentForm();
     }
 
     async showCommentForm() {
         const commentBlock = document.querySelector('.comment_block');
         if (commentBlock) {
-            if (commentBlock.previousSibling.dataset.postId !== this.parentElement.dataset.postId) {
+            if (commentBlock.closest('.tape_element').dataset.postId !== this.relatedElement.dataset.postId) {
                 await this.getTemplate(this.templateURL);
                 this.onSubmit();
             }
@@ -34,8 +35,10 @@ export default class CommentForm extends Form {
                 authorId: `${authCheck.loggedUser._id}`,
                 authorName: `${authCheck.loggedUser.firstName} ${authCheck.loggedUser.secondName}`,
                 text: `${this.formElement.comment.value}`,
-                postId: this.parentElement.dataset.postId
+                postId: this.relatedElement.dataset.postId
             }
+
+            console.log(commentObj);
 
             const comments = await commentsDataLayer.addComment(commentObj);
             const commentsElements = pageTape.renderComments(comments.comments);
