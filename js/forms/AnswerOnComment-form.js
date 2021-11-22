@@ -3,9 +3,9 @@ import { authCheck } from '../AuthCheck.js';
 import { pageTape } from '../pages/PageTape.js';
 import { commentsDataLayer } from '../database/CommentsDataLayer.js';
 
-export default class CommentForm extends Form {
+export default class AnswerForm extends Form {
 
-    templateURL = './templates/comment-form-template.html';
+    templateURL = './templates/answer-form-template.html';
     position = 'afterend';
 
     constructor(form, parentElement, element) {
@@ -15,19 +15,19 @@ export default class CommentForm extends Form {
     }
 
     async showCommentForm() {
-        await this.templateInited;
-        const commentBlock = document.querySelector('.comment_block');
+        const commentBlock = document.querySelector('.answer_block');
         if (commentBlock) {
+            if (commentBlock.closest('.tape_element').dataset.postId !== this.relatedElement.dataset.postId) {
+                await this.getTemplate(this.templateURL);
+                this.onSubmit();
+            }
             commentBlock.remove();
+        } else {
+            await this.getTemplate(this.templateURL);
+            this.onSubmit();
         }
 
-        await this.getTemplate(this.templateURL);
-
-        if (this.parentElement.classList.contains('comment')) {
-            await this.templateInited;
-            this.formElement.comment.value = `${this.parentElement.children[0].innerText},`;
-        }
-        this.onSubmit();
+        console.log(this.parentElement, this.relatedElement);
     }
 
     async onSubmit() {
@@ -40,14 +40,10 @@ export default class CommentForm extends Form {
                 postId: this.relatedElement.dataset.postId
             }
 
-            if (this.parentElement.classList.contains('comment')) {
-                commentObj.isAnswer = this.parentElement.dataset.commentId;
-            }
-
             const postComments = await commentsDataLayer.addComment(commentObj);
             const commentsElements = pageTape.renderComments(postComments.comments);
 
-            if (postComments.comments.length > 1 && !this.parentElement.classList.contains('comment')) {
+            if (postComments.comments.length > 1) {
                 const lastCommentId = commentsElements[postComments.comments.length - 2].dataset.commentId;
                 const lastComment = document.querySelector(`.comment[data-comment-id='${lastCommentId}']`);
                 lastComment.after(commentsElements[postComments.comments.length - 1]);
@@ -56,7 +52,6 @@ export default class CommentForm extends Form {
             }
             const commentBlock = document.querySelector('.comment_block');
             commentBlock.remove();
-            pageTape.setWidthForComments();
 
         });
     }

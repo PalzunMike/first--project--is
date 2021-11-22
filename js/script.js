@@ -3,6 +3,7 @@ import RegisterForm from './forms/Register-form.js';
 import EditForm from './forms/Edit-form.js';
 import PostForm from './forms/Post-form.js';
 import CommentForm from './forms/Comment-form.js';
+import AnswerForm from './forms/AnswerOnComment-form.js';
 import { popup } from './Popup.js';
 import { router } from './Router.js';
 import { pagePhotoGallery } from "./pages/PagePhotoGallery.js";
@@ -98,7 +99,7 @@ contentBlock.addEventListener('click', (event) => {
         }else if (btnAction === 'comment-delete'){
             pageTape.deleteComment(target.closest('.comment'));
         }else if (btnAction === 'comment-answer'){
-            console.log('answer comment');
+            const commentForm = new CommentForm('comment_form', target.closest('.comment'), tapeElement);
         }else if (btnAction === 'show_comments'){
             pageTape.showAllComments(target);
         }else if (btnAction === 'hide_comments'){

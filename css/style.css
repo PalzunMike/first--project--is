@@ -774,9 +774,7 @@ h1 a img{
 }
 
 .comment_block{
-    /*line-height: 30px;
-    *//*outline: 1px solid red;
-    */width: 90%;
+    width: 90%;
     margin: 1% auto 0;
 }
 
@@ -819,12 +817,18 @@ h1 a img{
     -webkit-border-radius: 7px;
     -moz-border-radius: 7px;
     -ms-border-radius: 7px;
-    -o-border-radius: 7px;
-    transition: all 400ms;
-    -webkit-transition: all 400ms;
-    -moz-transition: all 400ms;
-    -ms-transition: all 400ms;
-    -o-transition: all 400ms;
+    -o-border-radius: 7px;    
+}
+
+.answer{
+    margin-left: 2.5%;
+    margin-top: 0;
+    border-radius: 0 0 7px 7px;
+    margin-right: 2.5%;
+    -webkit-border-radius: 0 0 7px 7px;
+    -moz-border-radius: 0 0 7px 7px;
+    -ms-border-radius: 0 0 7px 7px;
+    -o-border-radius: 0 0 7px 7px;
 }
 .comment h4{
     margin: 0 0 0 5px;

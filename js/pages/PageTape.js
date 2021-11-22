@@ -10,9 +10,9 @@ class PageTape extends PageController {
     // writtingComment = false;
 
     async renderTapePage() {
-        this.renderWelcomeMsg(); 
+        this.renderWelcomeMsg();
         const limitPosts = 3;
-        let page = 0;   
+        let page = 0;
 
         const posts = await this.getPostElement(limitPosts, page);
 
@@ -21,7 +21,7 @@ class PageTape extends PageController {
             mainContent.textContent = 'Публикаций пока нет!'
             return this.renderContent(mainContent);
         }
-        
+
         const tape = document.createElement('div');
         tape.classList.add('tape_wrapper');
 
@@ -50,22 +50,24 @@ class PageTape extends PageController {
                         lastPosts = posts;
                     }
                     tapeLast = tape.lastElementChild;
+                    pageTape.setWidthForComments();
                 }
-
             });
+
             observer.observe(tapeLast);
         }
         const observer = new IntersectionObserver(handleIntersect, options);
 
         let tapeLast = tape.lastElementChild;
-        if (tapeLast){
+        if (tapeLast) {
             observer.observe(tapeLast);
         }
-        
+
+        this.setWidthForComments();
     }
 
     async getPostElement(limit, offset) {
-        const posts = await postsDataLayer.getAllPosts(limit, offset);   
+        const posts = await postsDataLayer.getAllPosts(limit, offset);
 
         const postsElements = await Promise.all(
             posts.map(async post => {
@@ -73,7 +75,7 @@ class PageTape extends PageController {
                 const tapeElement = tapeElementTempalte.content.cloneNode(true);
 
                 const divTapeEl = tapeElement.querySelector('.tape_element');
-                divTapeEl.dataset.postId = post._id;                
+                divTapeEl.dataset.postId = post._id;
 
                 const photoImg = tapeElement.querySelector('.photo');
                 photoImg.src = `data:image/jpeg;base64, ${post.photo}`;
@@ -109,17 +111,23 @@ class PageTape extends PageController {
 
                 const comments = this.renderComments(post.comments);
 
-                if (comments.length > 2) {
-                    for (let i = 2; i < comments.length; i++) {
-                        comments[i].classList.add('hide');
-                    }                    
-                }
-
                 for (let i = 0; i < comments.length; i++) {
-                   divTapeEl.append(comments[i]);
+                    if (comments[i].dataset.answerOn) {
+                        const parentElement = divTapeEl.querySelector(`.comment[data-comment-id='${comments[i].dataset.answerOn}']`);
+                        parentElement.after(comments[i]);
+                    } else {
+                        divTapeEl.append(comments[i]);
+                    }
+                }
+                const commentsEl = divTapeEl.querySelectorAll('.comment');
+
+                if (commentsEl.length > 2) {
+                    for (let i = 2; i < commentsEl.length; i++) {
+                        commentsEl[i].classList.add('hide');
+                    }
                 }
 
-                if (comments.length > 2){
+                if (commentsEl.length > 2) {
                     const showAllComments = document.createElement('button');
                     showAllComments.classList.add('show_all_comments');
                     showAllComments.textContent = '▼ показать все комментарии ▼';
@@ -133,30 +141,36 @@ class PageTape extends PageController {
         return postsElements;
     }
 
-    showAllComments(element){
+    showAllComments(element) {
         const mainElement = element.closest('.tape_element');
-        const hidedComments = mainElement.querySelectorAll('.hide');        
-            for (let i = 0; i < hidedComments.length; i++ ){
-                hidedComments[i].classList.remove('hide');
-            }
+        const hidedComments = mainElement.querySelectorAll('.hide');
+        for (let i = 0; i < hidedComments.length; i++) {
+            hidedComments[i].classList.remove('hide');
+        }
+        this.setWidthForComments();
         element.textContent = '▲ скрыть последнии комментарии ▲';
-        element.setAttribute('data-button-action', 'hide_comments'); 
+        element.setAttribute('data-button-action', 'hide_comments');
     }
 
-    hideComments(element){
+    hideComments(element) {
         const mainElement = element.closest('.tape_element');
-        const comments = mainElement.querySelectorAll('.comment');        
-            for (let i = 2; i < comments.length; i++ ){
-                comments[i].classList.add('hide');
-            }
+        const comments = mainElement.querySelectorAll('.comment');
+        for (let i = 2; i < comments.length; i++) {
+            comments[i].classList.add('hide');
+        }
+        this.setWidthForComments();
         element.textContent = '▼ показать все комментарии ▼';
-        element.setAttribute('data-button-action', 'show_comments'); 
+        element.setAttribute('data-button-action', 'show_comments');
     }
 
     renderComments(comments) {
         const commentElements = comments.map(comment => {
             const commentElement = document.createElement('div');
             commentElement.classList.add('comment');
+            if (comment.isAnswer) {
+                commentElement.classList.add('answer');
+                commentElement.setAttribute('data-answer-on', comment.isAnswer);
+            }
             commentElement.setAttribute('data-comment-id', comment._id);
 
             const commentAuthor = document.createElement('h4');
@@ -193,10 +207,10 @@ class PageTape extends PageController {
         const mainElement = commentElement.closest('.tape_element');
         commentElement.remove();
         const comments = mainElement.querySelectorAll('.comment');
-        if (comments.length >= 2){
+        if (comments.length >= 2) {
             const showBtn = mainElement.querySelector('.show_all_comments');
             showBtn.remove();
-        }        
+        }
     }
 
     async addOrDeleteLike(tapeElement) {
@@ -217,6 +231,34 @@ class PageTape extends PageController {
         const likes = tapeElement.querySelector('.count_likes');
         const post = await postsDataLayer.getOnePost(tapeElement.dataset.postId);
         likes.innerText = post.likesAuthor.length;
+    }
+
+    async answerComment(linkElement) {
+        console.log(linkElement);
+    }
+
+    setWidthForComments() {
+        const commentsElements = document.querySelectorAll('.comment');
+
+        for (let i = 0; i < commentsElements.length; i++) {
+            const post = commentsElements[i].closest('.tape_element');
+
+            // console.log(commentsElements[i].nextSibling);
+
+            if (commentsElements[i].nextElementSibling && commentsElements[i].nextElementSibling.classList.contains('answer') && !commentsElements[i].nextElementSibling.classList.contains('hide')) {
+                commentsElements[i].style.borderBottomRightRadius = '0';
+            } else {
+                commentsElements[i].style.borderBottomRightRadius = '7px';
+            }
+
+            if (commentsElements[i].classList.contains('answer')) {
+                const widthParent = commentsElements[i - 1].offsetWidth;
+                const postWidth = post.offsetWidth;
+                const width = Math.round((widthParent * 100) / postWidth);
+                commentsElements[i].style.width = `${width - 5}%`;
+                commentsElements[i].style.marginLeft = `${100 - width + 2.5}%`;
+            }
+        }
     }
 }
 

@@ -4,9 +4,9 @@ import Post from '../models/PostSchema.js';
 class CommentsController {
     async addComment(req, res) {
         try {
-            const { authorId, authorName, text, postId } = req.body;
+            const { authorId, authorName, text, postId, isAnswer } = req.body;
             const dateLike = new Date().toISOString();
-            const comment = await Comment.create({ authorId, authorName, text, date: dateLike });
+            const comment = await Comment.create({ authorId, authorName, text, date: dateLike, isAnswer });
             const post = await Post.findByIdAndUpdate(postId, {
                 $addToSet: { comments: comment._id }
             },
