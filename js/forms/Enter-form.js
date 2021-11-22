@@ -1,7 +1,6 @@
 import Form from './Form.js';
 import { usersDataLayer } from '../database/UsersDataLayer.js';
 
-
 export default class EnterForm extends Form {
 
     templateURL = './templates/enter-form-template.html';
@@ -28,7 +27,7 @@ export default class EnterForm extends Form {
         const userId = await auth.userId;
         localStorage.setItem('userData', JSON.stringify({ userId, token }));
         return true;
-    }    
+    }
     async submit() {
 
         if (!this.isValid()) {

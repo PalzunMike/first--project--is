@@ -16,13 +16,13 @@ export default class EditForm extends Form {
         this.setMaskForPhone();
     }
 
-    async deleteUser(userId, users) {        
+    async deleteUser(userId, users) {
         const delUser = await usersDataLayer.getOneUser(userId);
         const postsDelUser = delUser.posts;
         postsDelUser.forEach(post => {
             postsDataLayer.deletePost(post);
-        })        
-        authCheck.removeRelevantLink();       
+        })
+        authCheck.removeRelevantLink();
         await usersDataLayer.deleteUser(userId);
         localStorage.removeItem('userData');
         for (let i = 0; i < users.length; i++) {

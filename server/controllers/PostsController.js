@@ -9,14 +9,14 @@ class PostsController {
             const { title } = req.body;
             const { id } = req.params;
             const datePost = new Date().toISOString();
-            const post = await Post.create({ title, photo: req.file.path, date: datePost });           
+            const post = await Post.create({ title, photo: req.file.path, date: datePost });
 
             const user = await User.findByIdAndUpdate(id, {
                 $addToSet: { posts: post.id }
             },
-            { new: true }).populate('posts').sort({date:1});
+                { new: true }).populate('posts').sort({ date: 1 });
 
-            res.status(201).json({ post:id });
+            res.status(201).json({ post: id });
         } catch (e) {
             console.log(e);
         }
@@ -24,10 +24,9 @@ class PostsController {
 
     async getAll(req, res) {
         try {
-            // console.log(req.options);
             const { query } = req.params;
             const queryObj = JSON.parse(query);
-            const posts = await Post.find().skip(queryObj.page * queryObj.limit).limit(queryObj.limit).populate('comments').sort({date:-1});
+            const posts = await Post.find().skip(queryObj.page * queryObj.limit).limit(queryObj.limit).populate('comments').sort({ date: -1 });
 
             posts.forEach(post => {
                 const photo = fs.readFileSync(post.photo, { encoding: 'base64' });
@@ -115,8 +114,8 @@ class PostsController {
                 await Comment.findByIdAndDelete(comment._id);
             });
 
-            const user = await User.findOneAndUpdate({posts : id}, {
-                $pull : {posts: id}
+            const user = await User.findOneAndUpdate({ posts: id }, {
+                $pull: { posts: id }
             })
 
             fs.unlink(post.photo, function (err) {

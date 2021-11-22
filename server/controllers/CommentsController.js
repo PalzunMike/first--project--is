@@ -10,7 +10,7 @@ class CommentsController {
             const post = await Post.findByIdAndUpdate(postId, {
                 $addToSet: { comments: comment._id }
             },
-            { new: true }).populate('comments').sort({date:1});
+                { new: true }).populate('comments').sort({ date: 1 });
             res.status(201).json(post);
         } catch (e) {
             console.log(e);
@@ -21,8 +21,8 @@ class CommentsController {
         try {
             const { id } = req.params;
             const comment = await Comment.findByIdAndDelete(id);
-            const post = await Post.findOneAndUpdate({comments : id}, {
-                $pull : {comments: id}
+            const post = await Post.findOneAndUpdate({ comments: id }, {
+                $pull: { comments: id }
             })
             return res.json(post);
 

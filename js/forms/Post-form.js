@@ -1,5 +1,4 @@
 import Form from './Form.js';
-import { usersDataLayer } from '../database/UsersDataLayer.js';
 import { postsDataLayer } from '../database/PostsDataLayer.js';
 import { pagePhotoGallery } from '../pages/PagePhotoGallery.js';
 

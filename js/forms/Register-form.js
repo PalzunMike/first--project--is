@@ -24,7 +24,7 @@ export default class RegisterForm extends Form {
       return false;
     }
     return true;
-  }  
+  }
 
   async submit() {
     if (!(this.isValid())) {

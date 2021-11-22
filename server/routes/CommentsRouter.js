@@ -1,6 +1,6 @@
 import Router from "express";
 import CommentsController from "../controllers/CommentsController.js";
-import {checkToken} from "../middlewares/check-token.js";
+import { checkToken } from "../middlewares/check-token.js";
 
 const router = new Router();
 

@@ -3,7 +3,6 @@ import RegisterForm from './forms/Register-form.js';
 import EditForm from './forms/Edit-form.js';
 import PostForm from './forms/Post-form.js';
 import CommentForm from './forms/Comment-form.js';
-import AnswerForm from './forms/AnswerOnComment-form.js';
 import { popup } from './Popup.js';
 import { router } from './Router.js';
 import { pagePhotoGallery } from "./pages/PagePhotoGallery.js";
@@ -94,15 +93,15 @@ contentBlock.addEventListener('click', (event) => {
             modal.id = 'modalAddPhoto';
             const postForm = new PostForm('post_form', modal, pagePhotoGallery.authUserId, postElement.dataset.postId);
             postForm.editPost(postElement.dataset.postId);
-        } else if (btnAction === 'comment-post') { 
+        } else if (btnAction === 'comment-post') {
             const commentForm = new CommentForm('comment_form', target.closest('.caption'), tapeElement);
-        }else if (btnAction === 'comment-delete'){
+        } else if (btnAction === 'comment-delete') {
             pageTape.deleteComment(target.closest('.comment'));
-        }else if (btnAction === 'comment-answer'){
+        } else if (btnAction === 'comment-answer') {
             const commentForm = new CommentForm('comment_form', target.closest('.comment'), tapeElement);
-        }else if (btnAction === 'show_comments'){
+        } else if (btnAction === 'show_comments') {
             pageTape.showAllComments(target);
-        }else if (btnAction === 'hide_comments'){
+        } else if (btnAction === 'hide_comments') {
             pageTape.hideComments(target);
         }
     }

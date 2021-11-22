@@ -33,28 +33,28 @@ export default class PageController {
         };
     }
 
-    renderWelcomeMsg() {        
+    renderWelcomeMsg() {
         const autBlock = document.querySelector('.btn_block');
         const welcomeBlock = document.querySelector('.welcome_block');
         const welcomeMsg = document.querySelector('.welcome_message');
-                
-        if (authCheck.checkLoggedUser()){
+
+        if (authCheck.checkLoggedUser()) {
             this.authUserId = authCheck.loggedUser._id;
             autBlock.classList.add('hide');
             welcomeMsg.textContent = ` ${authCheck.loggedUser.firstName} ${authCheck.loggedUser.secondName}`;
             welcomeBlock.classList.remove('hide');
             authCheck.addRelevantLink();
-        }else {
+        } else {
             welcomeMsg.textContent = ' ';
             autBlock.classList.remove('hide');
             welcomeBlock.classList.add('hide');
-        }        
+        }
     }
 
     async quitUser() {
         const outgoing = {
-            _id : authCheck.loggedUser._id,
-            hasToken : ''
+            _id: authCheck.loggedUser._id,
+            hasToken: ''
         }
         await usersDataLayer.updateUser(outgoing);
         this.authUserId = '';

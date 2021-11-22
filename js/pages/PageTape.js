@@ -1,13 +1,10 @@
 import PageController from "./PageController.js";
-import { template } from "../TemplateEngine.js";
 import { postsDataLayer } from "../database/PostsDataLayer.js";
 import { usersDataLayer } from "../database/UsersDataLayer.js";
 import { authCheck } from "../AuthCheck.js";
 import { commentsDataLayer } from "../database/CommentsDataLayer.js";
 
 class PageTape extends PageController {
-
-    // writtingComment = false;
 
     async renderTapePage() {
         this.renderWelcomeMsg();
@@ -242,8 +239,6 @@ class PageTape extends PageController {
 
         for (let i = 0; i < commentsElements.length; i++) {
             const post = commentsElements[i].closest('.tape_element');
-
-            // console.log(commentsElements[i].nextSibling);
 
             if (commentsElements[i].nextElementSibling && commentsElements[i].nextElementSibling.classList.contains('answer') && !commentsElements[i].nextElementSibling.classList.contains('hide')) {
                 commentsElements[i].style.borderBottomRightRadius = '0';

@@ -1,8 +1,8 @@
 import PageController from "./PageController.js";
 import { usersDataLayer } from "../database/UsersDataLayer.js"
 
-class PageEditUsers extends PageController{
-    
+class PageEditUsers extends PageController {
+
     async renderEditUsersPage() {
         const dataUsers = await usersDataLayer.getAllUsers();
         const template = document.querySelector('#user_template');

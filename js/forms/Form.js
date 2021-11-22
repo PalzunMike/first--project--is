@@ -9,7 +9,7 @@ export default class Form {
   constructor(form, parentElement) {
     this.form = form;
     this.formElement;
-    this.parentElement = parentElement;    
+    this.parentElement = parentElement;
   }
 
   async getTemplate(templateURL) {
@@ -33,7 +33,7 @@ export default class Form {
       errors[i].remove();
     }
   }
-  
+
   static clearInput() {
     for (let i = 0; i < document.forms.length; i++) {
       document.forms[i].submit.disabled = 'disabled';
