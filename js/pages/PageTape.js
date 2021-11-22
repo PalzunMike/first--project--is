@@ -10,13 +10,20 @@ class PageTape extends PageController {
     // writtingComment = false;
 
     async renderTapePage() {
-        this.renderWelcomeMsg();
+        this.renderWelcomeMsg(); 
         const limitPosts = 3;
-        let page = 0;
-        const tape = document.createElement('div');
-        tape.classList.add('tape_wrapper');
+        let page = 0;   
 
         const posts = await this.getPostElement(limitPosts, page);
+
+        if (!posts.length) {
+            const mainContent = document.createElement('h3');
+            mainContent.textContent = 'Публикаций пока нет!'
+            return this.renderContent(mainContent);
+        }
+        
+        const tape = document.createElement('div');
+        tape.classList.add('tape_wrapper');
 
         for (let i = 0; i < posts.length; i++) {
             tape.append(posts[i]);
@@ -51,17 +58,14 @@ class PageTape extends PageController {
         const observer = new IntersectionObserver(handleIntersect, options);
 
         let tapeLast = tape.lastElementChild;
-        observer.observe(tapeLast);
+        if (tapeLast){
+            observer.observe(tapeLast);
+        }
+        
     }
 
     async getPostElement(limit, offset) {
-        const posts = await postsDataLayer.getAllPosts(limit, offset);
-
-        if (!posts) {
-            const mainContent = document.createElement('h3');
-            mainContent.textContent = 'Публикаций пока нет!'
-            this.renderContent(mainContent);
-        }
+        const posts = await postsDataLayer.getAllPosts(limit, offset);   
 
         const postsElements = await Promise.all(
             posts.map(async post => {
@@ -135,7 +139,7 @@ class PageTape extends PageController {
             for (let i = 0; i < hidedComments.length; i++ ){
                 hidedComments[i].classList.remove('hide');
             }
-        element.textContent = '▲ показать все комментарии ▲';
+        element.textContent = '▲ скрыть последнии комментарии ▲';
         element.setAttribute('data-button-action', 'hide_comments'); 
     }
 
@@ -189,12 +193,10 @@ class PageTape extends PageController {
         const mainElement = commentElement.closest('.tape_element');
         commentElement.remove();
         const comments = mainElement.querySelectorAll('.comment');
-        if (comments.length <= 2){
+        if (comments.length >= 2){
             const showBtn = mainElement.querySelector('.show_all_comments');
             showBtn.remove();
-        }
-        console.log(comments.length);
-        
+        }        
     }
 
     async addOrDeleteLike(tapeElement) {

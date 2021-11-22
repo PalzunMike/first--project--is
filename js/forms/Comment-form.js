@@ -38,8 +38,6 @@ export default class CommentForm extends Form {
                 postId: this.relatedElement.dataset.postId
             }
 
-            console.log(commentObj);
-
             const comments = await commentsDataLayer.addComment(commentObj);
             const commentsElements = pageTape.renderComments(comments.comments);
 

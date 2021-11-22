@@ -51,10 +51,12 @@ export default class PageController {
         }        
     }
 
-    async quitUser() {         
-        const loggedUser = await usersDataLayer.getOneUser(authCheck.loggedUser._id);
-        loggedUser.hasToken = "";
-        await usersDataLayer.updateUser(loggedUser);
+    async quitUser() {
+        const outgoing = {
+            _id : authCheck.loggedUser._id,
+            hasToken : ''
+        }
+        await usersDataLayer.updateUser(outgoing);
         this.authUserId = '';
         localStorage.removeItem('userData');
         authCheck.removeRelevantLink();

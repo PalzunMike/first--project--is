@@ -1,7 +1,9 @@
 import User from '../models/UserSchema.js';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import { JWT_SECRET, SALT_ROUND } from '../config.js'
+import fs from 'fs';
+import { JWT_SECRET, SALT_ROUND } from '../config.js';
+import Post from '../models/PostSchema.js';
 
 class UsersController {
 
@@ -75,7 +77,13 @@ class UsersController {
             if (!id) {
                 res.status(400).json({ message: 'ID не указан' })
             }
-            const user = await User.findById(id);
+            const user = await User.findById(id).populate('posts').sort({date:1});
+            if(user.posts){
+                user.posts.forEach(post =>{
+                    const photo = fs.readFileSync(post.photo, { encoding: 'base64' });
+                    post.photo = photo;
+                })            
+            }           
             return res.json(user);
         } catch {
             res.status(500).json(e);

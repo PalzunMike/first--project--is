@@ -16,13 +16,12 @@ class PagePhotoGallery extends PageController{
     }
 
     async renderPhotoArea() {
-        const authUserObj = await usersDataLayer.getOneUser(this.authUserId);       
+        const authUserObj = await usersDataLayer.getOneUser(this.authUserId); 
+              
         const postsArray = authUserObj.posts;
         const photoArea = document.querySelector('.photo_area');
-        
+
         postsArray.forEach( async post => {            
-            post = await postsDataLayer.getOnePost(post); 
-            
             const postElementTempalte = document.querySelector('#post_element_template');
             const photoElement = postElementTempalte.content.cloneNode(true);
             const divPostEl = photoElement.querySelector('.post_element');
@@ -38,12 +37,12 @@ class PagePhotoGallery extends PageController{
     } 
 
     async deletePhoto(postId) {
-        const authUserObj = await usersDataLayer.getOneUser(this.authUserId);       
-        const postsArray = authUserObj.posts;
-        const photoIndex = postsArray.indexOf(postId);
-        postsArray.splice(photoIndex, 1);
-        authUserObj.photo = postsArray;
-        await usersDataLayer.updateUser(authUserObj);
+        // const authUserObj = await usersDataLayer.getOneUser(this.authUserId);       
+        // const postsArray = authUserObj.posts;
+        // const photoIndex = postsArray.indexOf(postId);
+        // postsArray.splice(photoIndex, 1);
+        // authUserObj.photo = postsArray;
+        // await usersDataLayer.updateUser(authUserObj);
         await postsDataLayer.deletePost(postId);
     }
 
