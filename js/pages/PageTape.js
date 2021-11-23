@@ -59,7 +59,6 @@ class PageTape extends PageController {
         if (tapeLast) {
             observer.observe(tapeLast);
         }
-
         this.setWidthForComments();
     }
 
@@ -206,7 +205,9 @@ class PageTape extends PageController {
         const comments = mainElement.querySelectorAll('.comment');
         if (comments.length <= 2) {
             const showBtn = mainElement.querySelector('.show_all_comments');
-            showBtn.remove();
+            if (showBtn) {
+                showBtn.remove();
+            }
         }
     }
 
@@ -230,10 +231,6 @@ class PageTape extends PageController {
         likes.innerText = post.likesAuthor.length;
     }
 
-    async answerComment(linkElement) {
-        console.log(linkElement);
-    }
-
     setWidthForComments() {
         const commentsElements = document.querySelectorAll('.comment');
 
@@ -250,12 +247,27 @@ class PageTape extends PageController {
                 const widthParent = commentsElements[i - 1].offsetWidth;
                 const postWidth = post.offsetWidth;
                 const width = Math.round((widthParent * 100) / postWidth);
-                if (width >= 30) {
+
+                if (width >= 30 && commentsElements[i].dataset.answerOn === commentsElements[i].previousElementSibling.dataset.commentId) {
                     commentsElements[i].style.width = `${width - 5}%`;
                     commentsElements[i].style.marginLeft = `${100 - width + 2.5}%`;
+                } else if (commentsElements[i].dataset.answerOn !== commentsElements[i].previousElementSibling.dataset.commentId) {
+                    commentsElements[i].style.width = `${width}%`;
+                    commentsElements[i].style.marginLeft = `${100 - width - 2.5}%`;
+                    if (commentsElements[i].classList.contains('answer') && !commentsElements[i].nextElementSibling.classList.contains('hide')) {
+                        commentsElements[i].previousElementSibling.style.borderBottomLeftRadius = '0';
+                    } else {
+                        commentsElements[i].previousElementSibling.style.borderBottomLeftRadius = '7px';
+                    }
                 } else {
                     commentsElements[i].style.width = '25%';
                     commentsElements[i].style.marginLeft = '72.5%';
+                    if (commentsElements[i].nextElementSibling && commentsElements[i].nextElementSibling.classList.contains('answer') && !commentsElements[i].nextElementSibling.classList.contains('hide')) {
+                        commentsElements[i].style.borderBottomLeftRadius = '0';
+                        commentsElements[i].previousElementSibling.style.borderBottomLeftRadius = '0';
+                    } else {
+                        commentsElements[i].style.borderBottomLeftRadius = '7px';
+                    }
                 }
             }
         }

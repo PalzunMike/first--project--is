@@ -36,6 +36,21 @@ export default class CommentForm extends Form {
         this.onSubmit();
     }
 
+    showCommentAfterSubmit(postComments) {
+        const commentsElements = pageTape.renderComments(postComments.comments);
+
+        if (postComments.comments.length > 1 && !this.parentElement.classList.contains('comment')) {
+            const lastCommentId = commentsElements[postComments.comments.length - 2].dataset.commentId;
+            const lastComment = document.querySelector(`.comment[data-comment-id='${lastCommentId}']`);
+            lastComment.after(commentsElements[postComments.comments.length - 1]);
+        } else {
+            this.parentElement.after(commentsElements[postComments.comments.length - 1]);
+        }
+        const commentBlock = document.querySelector('.comment_block');
+        commentBlock.remove();
+        pageTape.setWidthForComments();
+    }
+
     async onSubmit() {
         this.addEventListenerOnSubmit(async (e) => {
             e.preventDefault();
@@ -51,19 +66,7 @@ export default class CommentForm extends Form {
             }
 
             const postComments = await commentsDataLayer.addComment(commentObj);
-            const commentsElements = pageTape.renderComments(postComments.comments);
-
-            if (postComments.comments.length > 1 && !this.parentElement.classList.contains('comment')) {
-                const lastCommentId = commentsElements[postComments.comments.length - 2].dataset.commentId;
-                const lastComment = document.querySelector(`.comment[data-comment-id='${lastCommentId}']`);
-                lastComment.after(commentsElements[postComments.comments.length - 1]);
-            } else {
-                this.parentElement.after(commentsElements[postComments.comments.length - 1]);
-            }
-            const commentBlock = document.querySelector('.comment_block');
-            commentBlock.remove();
-            pageTape.setWidthForComments();
-
+            this.showCommentAfterSubmit(postComments);
         });
     }
 }
