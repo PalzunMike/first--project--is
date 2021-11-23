@@ -18,11 +18,17 @@ export default class CommentForm extends Form {
         await this.templateInited;
         const commentBlock = document.querySelector('.comment_block');
         if (commentBlock) {
+            if (commentBlock.closest('.tape_element').dataset.postId !== this.relatedElement.dataset.postId || commentBlock.previousElementSibling !== this.parentElement) {
+                this.renderCommentForm();
+            }
             commentBlock.remove();
+        } else {
+            this.renderCommentForm();
         }
+    }
 
+    async renderCommentForm() {
         await this.getTemplate(this.templateURL);
-
         if (this.parentElement.classList.contains('comment')) {
             await this.templateInited;
             this.formElement.comment.value = `${this.parentElement.children[0].innerText},`;
