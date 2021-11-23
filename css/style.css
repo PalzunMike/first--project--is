@@ -829,6 +829,7 @@ h1 a img{
     -moz-border-radius: 0 0 7px 7px;
     -ms-border-radius: 0 0 7px 7px;
     -o-border-radius: 0 0 7px 7px;
+    overflow-x: hidden ;
 }
 .comment h4{
     margin: 0 0 0 5px;

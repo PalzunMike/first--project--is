@@ -204,7 +204,7 @@ class PageTape extends PageController {
         const mainElement = commentElement.closest('.tape_element');
         commentElement.remove();
         const comments = mainElement.querySelectorAll('.comment');
-        if (comments.length >= 2) {
+        if (comments.length <= 2) {
             const showBtn = mainElement.querySelector('.show_all_comments');
             showBtn.remove();
         }
@@ -250,8 +250,13 @@ class PageTape extends PageController {
                 const widthParent = commentsElements[i - 1].offsetWidth;
                 const postWidth = post.offsetWidth;
                 const width = Math.round((widthParent * 100) / postWidth);
-                commentsElements[i].style.width = `${width - 5}%`;
-                commentsElements[i].style.marginLeft = `${100 - width + 2.5}%`;
+                if (width >= 30) {
+                    commentsElements[i].style.width = `${width - 5}%`;
+                    commentsElements[i].style.marginLeft = `${100 - width + 2.5}%`;
+                } else {
+                    commentsElements[i].style.width = '25%';
+                    commentsElements[i].style.marginLeft = '72.5%';
+                }
             }
         }
     }
