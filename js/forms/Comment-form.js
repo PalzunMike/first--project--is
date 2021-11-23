@@ -37,7 +37,7 @@ export default class CommentForm extends Form {
     }
 
     showCommentAfterSubmit(postComments) {
-        const commentsElements = pageTape.renderComments(postComments.comments);
+        const commentsElements = pageTape.createComments(postComments.comments);
 
         if (postComments.comments.length > 1 && !this.parentElement.classList.contains('comment')) {
             const lastCommentId = commentsElements[postComments.comments.length - 2].dataset.commentId;

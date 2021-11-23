@@ -21,6 +21,7 @@ class CommentsController {
         try {
             const { id } = req.params;
             const comment = await Comment.findByIdAndDelete(id);
+            const answer = await Comment.deleteMany({isAnswer: id});
             const post = await Post.findOneAndUpdate({ comments: id }, {
                 $pull: { comments: id }
             })

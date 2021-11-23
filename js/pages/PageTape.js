@@ -5,136 +5,144 @@ import { authCheck } from "../AuthCheck.js";
 import { commentsDataLayer } from "../database/CommentsDataLayer.js";
 
 class PageTape extends PageController {
+    limitPosts = 3;
+    page = 0;
+    optionsForScroll = {
+        root: null,
+        rootMargin: "0px",
+        threshold: 0.25
+    };
 
     async renderTapePage() {
         this.renderWelcomeMsg();
-        const limitPosts = 3;
-        let page = 0;
+        this.limitPosts = 3;
+        this.page = 0;
+        const posts = await this.getPostElement(this.limitPosts, this.page);
+        this.renderPageIfNonePosts(posts);
+        const tape = document.createElement('div');
+        tape.classList.add('tape_wrapper');
+        this.renderPostElement(posts, tape);
+        await this.renderContent(tape);
+        this.setInfiniteScroll(posts, tape);
+        this.setWidthForComments();
+    }
 
-        const posts = await this.getPostElement(limitPosts, page);
-
+    renderPageIfNonePosts(posts) {  //вынесенно      
         if (!posts.length) {
             const mainContent = document.createElement('h3');
             mainContent.textContent = 'Публикаций пока нет!'
             return this.renderContent(mainContent);
         }
+    }
 
-        const tape = document.createElement('div');
-        tape.classList.add('tape_wrapper');
-
+    renderPostElement(posts, tape) { //вынесено
         for (let i = 0; i < posts.length; i++) {
             tape.append(posts[i]);
         }
-        await this.renderContent(tape);
+    }
 
+    async setInfiniteScroll(posts, tape) { //вынесено
         let lastPosts = posts;
-
-        const options = {
-            root: null,
-            rootMargin: "0px",
-            threshold: 0.5
-        };
-
         function handleIntersect(entries, observer) {
             entries.forEach(async (entry) => {
                 if (lastPosts.length !== 0) {
                     if (entry.isIntersecting) {
-                        page += 1;
-                        const posts = await pageTape.getPostElement(limitPosts, page);
-                        for (let i = 0; i < posts.length; i++) {
-                            tape.append(posts[i]);
-                        }
+                        pageTape.page += 1;
+                        const posts = await pageTape.getPostElement(pageTape.limitPosts, pageTape.page);
+                        pageTape.renderPostElement(posts, tape);
                         lastPosts = posts;
                     }
-                    tapeLast = tape.lastElementChild;
+                    tapeElementLast = tape.lastElementChild;
                     pageTape.setWidthForComments();
                 }
             });
-
-            observer.observe(tapeLast);
+            observer.observe(tapeElementLast);
         }
-        const observer = new IntersectionObserver(handleIntersect, options);
+        const observer = new IntersectionObserver(handleIntersect, this.optionsForScroll);
 
-        let tapeLast = tape.lastElementChild;
-        if (tapeLast) {
-            observer.observe(tapeLast);
+        let tapeElementLast = tape.lastElementChild;
+        if (tapeElementLast) {
+            observer.observe(tapeElementLast);
         }
-        this.setWidthForComments();
     }
 
     async getPostElement(limit, offset) {
         const posts = await postsDataLayer.getAllPosts(limit, offset);
 
         const postsElements = await Promise.all(
-            posts.map(async post => {
-                const tapeElementTempalte = document.querySelector('#tape_element_template');
-                const tapeElement = tapeElementTempalte.content.cloneNode(true);
+            posts.map(async post => { //TODO: ??
+                const tapeWrapper = this.setTemplateForPost();
+                const tapeElement = tapeWrapper.querySelector('.tape_element');
+                tapeElement.dataset.postId = post._id;
 
-                const divTapeEl = tapeElement.querySelector('.tape_element');
-                divTapeEl.dataset.postId = post._id;
-
-                const photoImg = tapeElement.querySelector('.photo');
-                photoImg.src = `data:image/jpeg;base64, ${post.photo}`;
-
-                const title = tapeElement.querySelector('.title');
-                if (post.title) {
-                    title.innerText = post.title;
-                }
-
-                const timePost = tapeElement.querySelector('.time-post');
-                const optionsDate = { year: 'numeric', month: 'long', day: 'numeric' };
-                const date = new Date(post.date);
-                timePost.innerText = date.toLocaleDateString('ru-RU', optionsDate);
-
-                const author = tapeElement.querySelector('.author');
-                const nameAuthor = await usersDataLayer.getAuthor(post._id);
-                author.innerText = `Автор: ${nameAuthor.firstName} ${nameAuthor.secondName}`;
-
-                const imgLike = tapeElement.querySelector('.like_img');
-                if (post.likesAuthor.includes(this.authUserId)) {
-                    imgLike.src = "/assets/img/liked.png";
-                } else {
-                    imgLike.src = "/assets/img/like.png";
-                }
-                const likes = tapeElement.querySelector('.count_likes');
-                likes.innerText = post.likesAuthor.length;
-
-                const commentBtn = tapeElement.querySelector('.comment_add_btn');
-
-                if (!authCheck.checkLoggedUser()) {
-                    commentBtn.classList.add('comment_btn_hide');
-                }
-
-                const comments = this.renderComments(post.comments);
-
-                for (let i = 0; i < comments.length; i++) {
-                    if (comments[i].dataset.answerOn) {
-                        const parentElement = divTapeEl.querySelector(`.comment[data-comment-id='${comments[i].dataset.answerOn}']`);
-                        parentElement.after(comments[i]);
-                    } else {
-                        divTapeEl.append(comments[i]);
-                    }
-                }
-                const commentsEl = divTapeEl.querySelectorAll('.comment');
-
-                if (commentsEl.length > 2) {
-                    for (let i = 2; i < commentsEl.length; i++) {
-                        commentsEl[i].classList.add('hide');
-                    }
-                }
-
-                if (commentsEl.length > 2) {
-                    const showAllComments = document.createElement('button');
-                    showAllComments.classList.add('show_all_comments');
-                    showAllComments.textContent = '▼ показать все комментарии ▼';
-                    showAllComments.setAttribute('data-button-action', 'show_comments');
-                    divTapeEl.append(showAllComments);
-                }
-
-                return tapeElement;
+                this.setImgAndTitleForPost(post, tapeWrapper);
+                await this.setCaptionForPost(post, tapeWrapper);
+                this.setColorLike(post.likesAuthor.includes(this.authUserId), tapeElement);
+                this.renderCommentsForPost(post, tapeElement);
+                return tapeWrapper;
             })
         )
         return postsElements;
+    }
+
+    setTemplateForPost() { //вынесенно
+        const tapeElementTempalte = document.querySelector('#tape_element_template');
+        const tapeWrapper = tapeElementTempalte.content.cloneNode(true);
+        return tapeWrapper;
+    }
+
+    setImgAndTitleForPost(post, tapeWrapper) { //вынесенно
+        const photoImg = tapeWrapper.querySelector('.photo');
+        photoImg.src = `data:image/jpeg;base64, ${post.photo}`;
+
+        const title = tapeWrapper.querySelector('.title');
+        if (post.title) {
+            title.innerText = post.title;
+        }
+    }
+
+    async setCaptionForPost(post, tapeWrapper) { //вынесенно
+        const timePost = tapeWrapper.querySelector('.time-post');
+        const optionsDate = { year: 'numeric', month: 'long', day: 'numeric' };
+        const date = new Date(post.date);
+        timePost.innerText = date.toLocaleDateString('ru-RU', optionsDate);
+
+        const author = tapeWrapper.querySelector('.author');
+        const nameAuthor = await usersDataLayer.getAuthor(post._id);
+        author.innerText = `Автор: ${nameAuthor.firstName} ${nameAuthor.secondName}`;
+
+        const likes = tapeWrapper.querySelector('.count_likes');
+        likes.innerText = post.likesAuthor.length;
+
+        const commentBtn = tapeWrapper.querySelector('.comment_add_btn');
+
+        if (!authCheck.checkLoggedUser()) {
+            commentBtn.classList.add('comment_btn_hide');
+        }
+    }
+
+    renderCommentsForPost(post, tapeElement) { //вынесенно
+        const comments = this.createComments(post.comments);
+        for (let i = 0; i < comments.length; i++) {
+            if (comments[i].dataset.answerOn) {
+                const parentElement = tapeElement.querySelector(`.comment[data-comment-id='${comments[i].dataset.answerOn}']`);
+                parentElement.after(comments[i]);
+            } else {
+                tapeElement.append(comments[i]);
+            }
+        }
+        this.addHideButtonForComments(tapeElement);
+    }
+
+    addHideButtonForComments(tapeElement) { //вынесенно
+        const commentsEl = tapeElement.querySelectorAll('.comment');
+        if (commentsEl.length > 2) {
+            for (let i = 2; i < commentsEl.length; i++) {
+                commentsEl[i].classList.add('hide');
+            }
+            const showAllComments = this.createButtonInComment('show', '▼ показать все комментарии ▼');
+            tapeElement.append(showAllComments);
+        }
     }
 
     showAllComments(element) {
@@ -145,7 +153,7 @@ class PageTape extends PageController {
         }
         this.setWidthForComments();
         element.textContent = '▲ скрыть последнии комментарии ▲';
-        element.setAttribute('data-button-action', 'hide_comments');
+        element.setAttribute('data-button-action', 'comment-hide');
     }
 
     hideComments(element) {
@@ -156,10 +164,10 @@ class PageTape extends PageController {
         }
         this.setWidthForComments();
         element.textContent = '▼ показать все комментарии ▼';
-        element.setAttribute('data-button-action', 'show_comments');
+        element.setAttribute('data-button-action', 'comment-show');
     }
 
-    renderComments(comments) {
+    createComments(comments) {
         const commentElements = comments.map(comment => {
             const commentElement = document.createElement('div');
             commentElement.classList.add('comment');
@@ -169,24 +177,13 @@ class PageTape extends PageController {
             }
             commentElement.setAttribute('data-comment-id', comment._id);
 
-            const commentAuthor = document.createElement('h4');
-            commentAuthor.textContent = comment.authorName;
+            const commentAuthor = this.createContentForComment('h4', comment.authorName);
+            const commentText = this.createContentForComment('p', comment.text);
+            const answerCommentBtn = this.createButtonInComment('answer', 'ответить');
+            const deleteCommentBtn = this.createButtonInComment('delete', 'удалить');
 
-            const commentText = document.createElement('p');
-            commentText.textContent = comment.text;
+            commentElement.append(commentAuthor, commentText);
 
-            const answerCommentBtn = document.createElement('button');
-            answerCommentBtn.classList.add('comment_answer_btn');
-            answerCommentBtn.textContent = 'ответить';
-            answerCommentBtn.setAttribute('data-button-action', 'comment-answer');
-
-            const deleteCommentBtn = document.createElement('button');
-            deleteCommentBtn.classList.add('comment_delete_btn');
-            deleteCommentBtn.textContent = 'удалить';
-            deleteCommentBtn.setAttribute('data-button-action', 'comment-delete');
-
-            commentElement.append(commentAuthor);
-            commentElement.append(commentText);
             if (this.authUserId === comment.authorId) {
                 commentElement.append(deleteCommentBtn);
             }
@@ -198,13 +195,27 @@ class PageTape extends PageController {
         return commentElements;
     }
 
+    createContentForComment(teg, textContent) { //вынесено
+        const element = document.createElement(teg);
+        element.textContent = textContent;
+        return element;
+    }
+
+    createButtonInComment(action, textContent) { //вынес из renderComments();
+        const button = document.createElement('button');
+        button.classList.add(`comment_${action}_btn`);
+        button.textContent = textContent;
+        button.setAttribute('data-button-action', `comment-${action}`);
+        return button;
+    }
+
     async deleteComment(commentElement) {
         const deletedComment = await commentsDataLayer.deleteComment(commentElement.dataset.commentId);
         const mainElement = commentElement.closest('.tape_element');
         commentElement.remove();
         const comments = mainElement.querySelectorAll('.comment');
         if (comments.length <= 2) {
-            const showBtn = mainElement.querySelector('.show_all_comments');
+            const showBtn = mainElement.querySelector('.comment_show_btn');
             if (showBtn) {
                 showBtn.remove();
             }
@@ -212,17 +223,21 @@ class PageTape extends PageController {
     }
 
     async addOrDeleteLike(tapeElement) {
-        const imgLike = tapeElement.querySelector('.like_img');
         const fakePost = {
             likesAuthor: this.authUserId
         }
         const hasLike = await postsDataLayer.updatePostForLike(tapeElement.dataset.postId, fakePost);
-        if (hasLike) {
+        this.setColorLike(hasLike, tapeElement);
+        await this.renderCountLikes(tapeElement);
+    }
+
+    setColorLike(condition, tapeElement) { //вынес из addOrDeleteLike & getPostElement;
+        const imgLike = tapeElement.querySelector('.like_img');
+        if (condition) {
             imgLike.src = "/assets/img/liked.png";
         } else {
             imgLike.src = "/assets/img/like.png";
         }
-        await this.renderCountLikes(tapeElement);
     }
 
     async renderCountLikes(tapeElement) {
@@ -237,40 +252,49 @@ class PageTape extends PageController {
         for (let i = 0; i < commentsElements.length; i++) {
             const post = commentsElements[i].closest('.tape_element');
 
-            if (commentsElements[i].nextElementSibling && commentsElements[i].nextElementSibling.classList.contains('answer') && !commentsElements[i].nextElementSibling.classList.contains('hide')) {
-                commentsElements[i].style.borderBottomRightRadius = '0';
-            } else {
-                commentsElements[i].style.borderBottomRightRadius = '7px';
-            }
-
             if (commentsElements[i].classList.contains('answer')) {
                 const widthParent = commentsElements[i - 1].offsetWidth;
                 const postWidth = post.offsetWidth;
                 const width = Math.round((widthParent * 100) / postWidth);
 
                 if (width >= 30 && commentsElements[i].dataset.answerOn === commentsElements[i].previousElementSibling.dataset.commentId) {
-                    commentsElements[i].style.width = `${width - 5}%`;
-                    commentsElements[i].style.marginLeft = `${100 - width + 2.5}%`;
+                    this.setWidthAndMarginForPost(commentsElements[i], `${width - 5}%`, `${100 - width + 2.5}%`);
+                    this.setBorderRadiusForCommnet(commentsElements[i]);
                 } else if (commentsElements[i].dataset.answerOn !== commentsElements[i].previousElementSibling.dataset.commentId) {
-                    commentsElements[i].style.width = `${width}%`;
-                    commentsElements[i].style.marginLeft = `${100 - width - 2.5}%`;
-                    if (commentsElements[i].classList.contains('answer') && !commentsElements[i].nextElementSibling.classList.contains('hide')) {
-                        commentsElements[i].previousElementSibling.style.borderBottomLeftRadius = '0';
-                    } else {
-                        commentsElements[i].previousElementSibling.style.borderBottomLeftRadius = '7px';
-                    }
+                    this.setWidthAndMarginForPost(commentsElements[i], `${width}%`, `${100 - width - 2.5}%`);
+                    this.setBorderRadiusForCommnet(commentsElements[i]);
                 } else {
-                    commentsElements[i].style.width = '25%';
-                    commentsElements[i].style.marginLeft = '72.5%';
-                    if (commentsElements[i].nextElementSibling && commentsElements[i].nextElementSibling.classList.contains('answer') && !commentsElements[i].nextElementSibling.classList.contains('hide')) {
-                        commentsElements[i].style.borderBottomLeftRadius = '0';
-                        commentsElements[i].previousElementSibling.style.borderBottomLeftRadius = '0';
-                    } else {
-                        commentsElements[i].style.borderBottomLeftRadius = '7px';
-                    }
+                    this.setWidthAndMarginForPost(commentsElements[i], '25%', '72.5%');
+
                 }
             }
         }
+    }
+
+    setBorderRadiusForCommnet(commentElement) {
+        if (commentElement.nextElementSibling && commentElement.nextElementSibling.classList.contains('answer') && !commentElement.nextElementSibling.classList.contains('hide')) {
+            commentElement.style.borderBottomRightRadius = '0';
+        } else {
+            commentElement.style.borderBottomRightRadius = '7px';
+        }
+
+        // if (commentElement[i].classList.contains('answer') && !commentElement[i].nextElementSibling.classList.contains('hide')) {
+        //     commentElement[i].previousElementSibling.style.borderBottomLeftRadius = '0';
+        // } else {
+        //     commentElement[i].previousElementSibling.style.borderBottomLeftRadius = '7px';
+        // }
+
+        // if (commentsElements[i].nextElementSibling && commentsElements[i].nextElementSibling.classList.contains('answer') && !commentsElements[i].nextElementSibling.classList.contains('hide')) {
+        //     commentsElements[i].style.borderBottomLeftRadius = '0';
+        //     commentsElements[i].previousElementSibling.style.borderBottomLeftRadius = '0';
+        // } else {
+        //     commentsElements[i].style.borderBottomLeftRadius = '7px';
+        // }
+    }
+
+    setWidthAndMarginForPost(commentElement, width, margin) {
+        commentElement.style.width = width;
+        commentElement.style.marginLeft = margin;
     }
 }
 

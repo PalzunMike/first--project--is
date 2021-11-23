@@ -99,9 +99,9 @@ contentBlock.addEventListener('click', (event) => {
             pageTape.deleteComment(target.closest('.comment'));
         } else if (btnAction === 'comment-answer') {
             const commentForm = new CommentForm('comment_form', target.closest('.comment'), tapeElement);
-        } else if (btnAction === 'show_comments') {
+        } else if (btnAction === 'comment-show') {
             pageTape.showAllComments(target);
-        } else if (btnAction === 'hide_comments') {
+        } else if (btnAction === 'comment-hide') {
             pageTape.hideComments(target);
         }
     }
