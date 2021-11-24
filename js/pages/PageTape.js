@@ -79,6 +79,8 @@ class PageTape extends PageController {
                 await this.setCaptionForPost(post, tapeWrapper);
                 this.setColorLike(post.likesAuthor.includes(this.authUserId), tapeElement);
                 this.renderCommentsForPost(post, tapeElement);
+
+                this.addHideButtonForComments(tapeElement);
                 return tapeWrapper;
             })
         )
@@ -122,16 +124,16 @@ class PageTape extends PageController {
     }
 
     renderCommentsForPost(post, tapeElement) { //вынесенно
+
         const comments = this.createComments(post.comments);
-        for (let i = 0; i < comments.length; i++) {
-            if (comments[i].dataset.answerOn) {
-                const parentElement = tapeElement.querySelector(`.comment[data-comment-id='${comments[i].dataset.answerOn}']`);
-                parentElement.after(comments[i]);
+        for (let comment of comments) {
+            if (comment.dataset.answerOn) {
+                const parentElement = tapeElement.querySelector(`.comment[data-comment-id='${comment.dataset.answerOn}']`);
+                parentElement.after(comment);
             } else {
-                tapeElement.append(comments[i]);
+                tapeElement.append(comment);
             }
         }
-        this.addHideButtonForComments(tapeElement);
     }
 
     addHideButtonForComments(tapeElement) { //вынесенно
@@ -168,31 +170,57 @@ class PageTape extends PageController {
     }
 
     createComments(comments) {
-        const commentElements = comments.map(comment => {
-            const commentElement = document.createElement('div');
-            commentElement.classList.add('comment');
-            if (comment.isAnswer) {
-                commentElement.classList.add('answer');
-                commentElement.setAttribute('data-answer-on', comment.isAnswer);
-            }
-            commentElement.setAttribute('data-comment-id', comment._id);
+        let commentElementsArr = [];
+        let answerArray = [];
 
-            const commentAuthor = this.createContentForComment('h4', comment.authorName);
-            const commentText = this.createContentForComment('p', comment.text);
-            const answerCommentBtn = this.createButtonInComment('answer', 'ответить');
-            const deleteCommentBtn = this.createButtonInComment('delete', 'удалить');
-
-            commentElement.append(commentAuthor, commentText);
-
-            if (this.authUserId === comment.authorId) {
-                commentElement.append(deleteCommentBtn);
+        for (let comment of comments) {
+            if (!comment.isAnswer) {
+                const commentElement = this.formationComment(comment);
+                commentElementsArr.push(commentElement);
             }
-            if (authCheck.checkLoggedUser()) {
-                commentElement.append(answerCommentBtn);
+            if (comment.hasAnswer.length) {
+                answerArray = [];
+                for (let i = 0; i < comment.hasAnswer.length; i++) {
+                    for (let element of comments) {
+                        if (comment.hasAnswer[i] === element._id) {
+                            const answer = element;
+                            const answerElement = this.formationComment(answer);
+                            answerArray.push(answerElement);
+                        }
+                    }
+                }
+                if (answerArray.length) {
+                    commentElementsArr = commentElementsArr.concat(answerArray.reverse());
+
+                }
             }
-            return commentElement;
-        })
-        return commentElements;
+        }
+        return commentElementsArr;
+    }
+
+    formationComment(comment) {
+        const commentElement = document.createElement('div');
+        commentElement.classList.add('comment');
+        if (comment.isAnswer) {
+            commentElement.classList.add('answer');
+            commentElement.setAttribute('data-answer-on', comment.isAnswer);
+        }
+        commentElement.setAttribute('data-comment-id', comment._id);
+
+        const commentAuthor = this.createContentForComment('h4', comment.authorName);
+        const commentText = this.createContentForComment('p', comment.text);
+        const answerCommentBtn = this.createButtonInComment('answer', 'ответить');
+        const deleteCommentBtn = this.createButtonInComment('delete', 'удалить');
+
+        commentElement.append(commentAuthor, commentText);
+
+        if (this.authUserId === comment.authorId) {
+            commentElement.append(deleteCommentBtn);
+        }
+        if (authCheck.checkLoggedUser()) {
+            commentElement.append(answerCommentBtn);
+        }
+        return commentElement;
     }
 
     createContentForComment(teg, textContent) { //вынесено
@@ -220,6 +248,7 @@ class PageTape extends PageController {
                 showBtn.remove();
             }
         }
+        this.setWidthForComments();
     }
 
     async addOrDeleteLike(tapeElement) {
@@ -251,6 +280,7 @@ class PageTape extends PageController {
 
         for (let i = 0; i < commentsElements.length; i++) {
             const post = commentsElements[i].closest('.tape_element');
+            this.setBorderRadiusForCommnet(commentsElements[i], 1);
 
             if (commentsElements[i].classList.contains('answer')) {
                 const widthParent = commentsElements[i - 1].offsetWidth;
@@ -259,36 +289,44 @@ class PageTape extends PageController {
 
                 if (width >= 30 && commentsElements[i].dataset.answerOn === commentsElements[i].previousElementSibling.dataset.commentId) {
                     this.setWidthAndMarginForPost(commentsElements[i], `${width - 5}%`, `${100 - width + 2.5}%`);
-                    this.setBorderRadiusForCommnet(commentsElements[i]);
+                    this.setBorderRadiusForCommnet(commentsElements[i], 1);
                 } else if (commentsElements[i].dataset.answerOn !== commentsElements[i].previousElementSibling.dataset.commentId) {
                     this.setWidthAndMarginForPost(commentsElements[i], `${width}%`, `${100 - width - 2.5}%`);
-                    this.setBorderRadiusForCommnet(commentsElements[i]);
+                    this.setBorderRadiusForCommnet(commentsElements[i], 2);
                 } else {
                     this.setWidthAndMarginForPost(commentsElements[i], '25%', '72.5%');
+                    this.setBorderRadiusForCommnet(commentsElements[i], 2);
 
                 }
             }
         }
     }
 
-    setBorderRadiusForCommnet(commentElement) {
-        if (commentElement.nextElementSibling && commentElement.nextElementSibling.classList.contains('answer') && !commentElement.nextElementSibling.classList.contains('hide')) {
-            commentElement.style.borderBottomRightRadius = '0';
-        } else {
-            commentElement.style.borderBottomRightRadius = '7px';
+    setBorderRadiusForCommnet(commentElement, condition) {
+
+        if (condition === 1) {
+            if (commentElement.nextElementSibling && commentElement.nextElementSibling.classList.contains('answer') && !commentElement.nextElementSibling.classList.contains('hide')) {
+                commentElement.style.borderBottomRightRadius = '0';
+            } else {
+                commentElement.style.borderBottomRightRadius = '7px';
+            }
+        } else if (condition === 2) {
+            if (commentElement.classList.contains('answer') && !commentElement.nextElementSibling.classList.contains('hide')) {
+                commentElement.previousElementSibling.style.borderBottomLeftRadius = '0';
+                commentElement.previousElementSibling.style.borderBottomRightRadius = '0';
+            } else {
+                commentElement.previousElementSibling.style.borderBottomLeftRadius = '7px';
+                commentElement.previousElementSibling.style.borderBottomRightRadius = '7px';
+            }
         }
-
-        // if (commentElement[i].classList.contains('answer') && !commentElement[i].nextElementSibling.classList.contains('hide')) {
-        //     commentElement[i].previousElementSibling.style.borderBottomLeftRadius = '0';
-        // } else {
-        //     commentElement[i].previousElementSibling.style.borderBottomLeftRadius = '7px';
-        // }
-
-        // if (commentsElements[i].nextElementSibling && commentsElements[i].nextElementSibling.classList.contains('answer') && !commentsElements[i].nextElementSibling.classList.contains('hide')) {
-        //     commentsElements[i].style.borderBottomLeftRadius = '0';
-        //     commentsElements[i].previousElementSibling.style.borderBottomLeftRadius = '0';
-        // } else {
-        //     commentsElements[i].style.borderBottomLeftRadius = '7px';
+        
+        // else if (condition === 3) {
+        //     if (commentElement.nextElementSibling && commentElement.nextElementSibling.classList.contains('answer') && !commentElement.nextElementSibling.classList.contains('hide')) {
+        //         commentElement.style.borderBottomLeftRadius = '0';
+        //         commentElement.previousElementSibling.style.borderBottomLeftRadius = '0';
+        //     } else {
+        //         commentElement.style.borderBottomLeftRadius = '7px';
+        //     }
         // }
     }
 

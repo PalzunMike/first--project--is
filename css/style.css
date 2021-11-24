@@ -675,6 +675,7 @@ h1 a img{
 }
 .main_post{
     position: relative;
+    margin: 0;
     /* outline: 1px solid red; */
 }
 

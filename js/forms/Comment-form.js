@@ -37,17 +37,24 @@ export default class CommentForm extends Form {
     }
 
     showCommentAfterSubmit(postComments) {
-        const commentsElements = pageTape.createComments(postComments.comments);
-
-        if (postComments.comments.length > 1 && !this.parentElement.classList.contains('comment')) {
-            const lastCommentId = commentsElements[postComments.comments.length - 2].dataset.commentId;
-            const lastComment = document.querySelector(`.comment[data-comment-id='${lastCommentId}']`);
-            lastComment.after(commentsElements[postComments.comments.length - 1]);
-        } else {
-            this.parentElement.after(commentsElements[postComments.comments.length - 1]);
+        const commentOnPost = this.relatedElement.querySelectorAll('.comment');
+        if (commentOnPost) {
+            for (let i = 0; i < commentOnPost.length; i++) {
+                commentOnPost[i].remove();
+            }
         }
         const commentBlock = document.querySelector('.comment_block');
+        const buttonForShow = this.relatedElement.querySelector('.comment_show_btn');
         commentBlock.remove();
+        if (buttonForShow){
+            buttonForShow.remove();            
+        } 
+        pageTape.renderCommentsForPost(postComments, this.relatedElement);        
+        pageTape.addHideButtonForComments(this.relatedElement);
+        const buttonForShowNew = this.relatedElement.querySelector('.comment_show_btn');
+        if (buttonForShowNew){
+            pageTape.showAllComments(buttonForShowNew); 
+        }                     
         pageTape.setWidthForComments();
     }
 
