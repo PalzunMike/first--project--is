@@ -1,13 +1,22 @@
 import fs from 'fs';
 import Post from '../models/PostSchema.js';
+import Comment from '../models/CommentSchema.js';
+import User from '../models/UserSchema.js';
 
 class PostsController {
     async add(req, res) {
         try {
             const { title } = req.body;
+            const { id } = req.params;
             const datePost = new Date().toISOString();
             const post = await Post.create({ title, photo: req.file.path, date: datePost });
-            res.status(201).json({ postId: post.id });
+
+            const user = await User.findByIdAndUpdate(id, {
+                $addToSet: { posts: post.id }
+            },
+                { new: true }).populate('posts').sort({ date: 1 });
+
+            res.status(201).json({ post: id });
         } catch (e) {
             console.log(e);
         }
@@ -15,18 +24,14 @@ class PostsController {
 
     async getAll(req, res) {
         try {
-            // console.log(req.options);
             const { query } = req.params;
             const queryObj = JSON.parse(query);
-            const posts = await Post.find().sort({ date: 1 }).skip(queryObj.page * queryObj.limit).limit(queryObj.limit);
+            const posts = await Post.find().skip(queryObj.page * queryObj.limit).limit(queryObj.limit).populate('comments').sort({ date: -1 });
 
             posts.forEach(post => {
                 const photo = fs.readFileSync(post.photo, { encoding: 'base64' });
                 post.photo = photo;
             })
-            // const sortPosts = posts.sort(function (a, b) {
-            //     return new Date(a.date) - new Date(b.date);
-            // })
             return res.json(posts);
         } catch (e) {
             console.log(e.message);
@@ -104,6 +109,14 @@ class PostsController {
                 res.status(400).json({ message: 'ID не указан' })
             }
             const post = await Post.findByIdAndDelete(id);
+
+            post.comments.forEach(async comment => {
+                await Comment.findByIdAndDelete(comment._id);
+            });
+
+            const user = await User.findOneAndUpdate({ posts: id }, {
+                $pull: { posts: id }
+            })
 
             fs.unlink(post.photo, function (err) {
                 if (err) return console.log(err);

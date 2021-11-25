@@ -56,7 +56,7 @@ class Popup {
         overlay.classList.remove('visible');
         const closeBtn = photo.querySelector('.close-btn');
         const deleteBtn = photo.querySelector('.delete-post');
-        const editBtn = photo.querySelector('.edit-post');        
+        const editBtn = photo.querySelector('.edit-post');
         editBtn.style.zIndex = '-1';
         deleteBtn.style.zIndex = '-1';
         closeBtn.style.zIndex = '-1';

@@ -3,8 +3,9 @@ import DataLayer from "./DataLayer.js";
 class PostsDataLayer extends DataLayer {
     basicURL = '/posts';
 
-    async addPost(body) {
-        const response = await this.requestWithFormData(this.basicURL, body, 'POST');
+    async addPost(body, userId) {
+        const URL = `${this.basicURL}/${userId}`;
+        const response = await this.requestWithFormData(URL, body, 'POST');
         return response;
     }
 

@@ -6,10 +6,6 @@
 	align-items: center;
 }
 
-/* .container_for_main::-webkit-scrollbar { width: 8px;}
-.container_for_main::-webkit-scrollbar-button {  background-color: #172936; height: 10px;}
-.container_for_main::-webkit-scrollbar-track-piece { background-color: #172936;}
-.container_for_main::-webkit-scrollbar-thumb { background-color: #d3d3d3; border-radius: 8px;} */
 .content_foto_profile{
 	margin: 0 5% ;
 }
@@ -135,8 +131,4 @@
 }
 .text_skills span{
 	float: right;
-}
-
-@media screen and (max-width: 720px){
-	
 }

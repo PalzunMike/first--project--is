@@ -4,6 +4,7 @@ import { usersDataLayer } from '../database/UsersDataLayer.js';
 export default class RegisterForm extends Form {
 
   templateURL = './templates/register-form-template.html';
+  position = 'beforeend';
 
   constructor(...args) {
     super(...args);
@@ -23,7 +24,7 @@ export default class RegisterForm extends Form {
       return false;
     }
     return true;
-  }  
+  }
 
   async submit() {
     if (!(this.isValid())) {

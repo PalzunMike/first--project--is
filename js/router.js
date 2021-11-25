@@ -1,5 +1,4 @@
 import { authCheck } from "../js/AuthCheck.js";
-import { pageHome } from "./pages/PageHome.js";
 import { pageEditUsers } from "./pages/PageEditUsers.js";
 import { pageAbout } from "./pages/PageAbout.js";
 import { pagePhotoGallery } from "./pages/PagePhotoGallery.js";
@@ -13,7 +12,7 @@ class Router {
         '/#': () => pageTape.renderTapePage(),
         '/#tape': () => pageTape.renderTapePage(),
         '/#admin': () => pageEditUsers.renderEditUsersPage(),
-        '/#about_me': () => pageAbout.renderAboutPage(),      
+        '/#about_me': () => pageAbout.renderAboutPage(),
         '/#posts': () => pagePhotoGallery.renderPhotoGalleryPage()
     };
     root = '/';

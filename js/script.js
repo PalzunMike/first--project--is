@@ -2,6 +2,7 @@ import EnterForm from './forms/Enter-form.js';
 import RegisterForm from './forms/Register-form.js';
 import EditForm from './forms/Edit-form.js';
 import PostForm from './forms/Post-form.js';
+import CommentForm from './forms/Comment-form.js';
 import { popup } from './Popup.js';
 import { router } from './Router.js';
 import { pagePhotoGallery } from "./pages/PagePhotoGallery.js";
@@ -37,7 +38,7 @@ header.addEventListener('click', async (e) => {
         });
 
     } else if (e.target.dataset.quitButton === 'quit') {
-        await pagePhotoGallery.quitUser();
+        await pageTape.quitUser();
         router.navigate('/');
     }
 });
@@ -46,15 +47,16 @@ const contentBlock = document.querySelector('.content');
 
 contentBlock.addEventListener('click', (event) => {
     const users = document.querySelectorAll('.user');
-    const target = event.target.closest('.user') || event.target.closest('button');
+    const target = event.target.closest('.user') || event.target.closest('button') || event.target.closest('.comment_add_btn');
     const gallery = event.target.closest('.post_element');
     const tapeElement = event.target.closest('.tape_element');
+    const fieldForLike = event.target.closest('.main_post');
 
     if (gallery) {
         popup.openGallery(gallery);
     }
 
-    if (tapeElement && authCheck.checkLoggedUser()){
+    if (fieldForLike && authCheck.checkLoggedUser() && !target) {
         pageTape.addOrDeleteLike(tapeElement);
     }
 
@@ -87,11 +89,20 @@ contentBlock.addEventListener('click', (event) => {
         } else if (btnAction === 'edit-post') {
             const postElement = target.closest('div');
             popup.closeGallery(postElement);
-
             popup.openModal(modal);
             modal.id = 'modalAddPhoto';
             const postForm = new PostForm('post_form', modal, pagePhotoGallery.authUserId, postElement.dataset.postId);
             postForm.editPost(postElement.dataset.postId);
+        } else if (btnAction === 'comment-post') {
+            const commentForm = new CommentForm('comment_form', target.closest('.caption'), tapeElement);
+        } else if (btnAction === 'comment-delete') {
+            pageTape.deleteComment(target.closest('.comment'));
+        } else if (btnAction === 'comment-answer') {
+            const commentForm = new CommentForm('comment_form', target.closest('.comment'), tapeElement);
+        } else if (btnAction === 'comment-show') {
+            pageTape.showAllComments(target);
+        } else if (btnAction === 'comment-hide') {
+            pageTape.hideComments(target);
         }
     }
 });

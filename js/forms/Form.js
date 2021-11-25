@@ -4,11 +4,12 @@ export default class Form {
   userObj = {};
   template;
   templateInited;
+  position = '';
 
   constructor(form, parentElement) {
     this.form = form;
     this.formElement;
-    this.parentElement = parentElement;    
+    this.parentElement = parentElement;
   }
 
   async getTemplate(templateURL) {
@@ -20,7 +21,7 @@ export default class Form {
   }
 
   renderForm(modal) {
-    modal.insertAdjacentHTML('beforeend', this.template);
+    modal.insertAdjacentHTML(this.position, this.template);
     this.formElement = document.getElementById(this.form);
   }
 
@@ -32,7 +33,7 @@ export default class Form {
       errors[i].remove();
     }
   }
-  
+
   static clearInput() {
     for (let i = 0; i < document.forms.length; i++) {
       document.forms[i].submit.disabled = 'disabled';

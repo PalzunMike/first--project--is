@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+const Schema = mongoose.Schema;
 
 const User = new mongoose.Schema(
     {
@@ -10,7 +11,7 @@ const User = new mongoose.Schema(
         phone: { type: String, required: true },
         secondName: { type: String, required: true },
         sex: { type: String, required: false },
-        posts: { type: Array, required: false },
+        posts: [{ type: Schema.Types.ObjectId, ref: 'Post' }],
         hasToken: { type: String, required: false }
     },
     { versionKey: false }

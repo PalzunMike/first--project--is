@@ -1,11 +1,11 @@
 import Form from './Form.js';
-import { usersDataLayer } from '../database/UsersDataLayer.js';
 import { postsDataLayer } from '../database/PostsDataLayer.js';
 import { pagePhotoGallery } from '../pages/PagePhotoGallery.js';
 
 export default class PostForm extends Form {
 
     templateURL = './templates/post-form-template.html';
+    position = 'beforeend';
 
     constructor(form, parentElement, authUserId, postId) {
         super(form, parentElement);
@@ -45,37 +45,15 @@ export default class PostForm extends Form {
     }
 
     async editPost(postId) {
-        await this.templateInited;
-        const authUserObj = await usersDataLayer.getOneUser(this.authUserId);
-        const postArray = authUserObj.posts;
-        const photoIndex = postArray.indexOf(postId);
-        if (photoIndex >= 0) {
-            const post = await postsDataLayer.getOnePost(postId);
-            this.formElement.title.value = post.title;
-            const preview = this.formElement.querySelector('.photo_field_fake');
-            preview.innerText = '';
-            const img = document.createElement('img');
-            img.src = `data:image/jpeg;base64, ${post.photo}`;
-            preview.append(img);
-            this.formElement.photo.required = false;
-            this.formElement.submit.innerText = 'Изменить';
-            return true;
-        }
-        return false;
-    }
-
-    async addPhotoToUser(postId) {
-        const authUserObj = await usersDataLayer.getOneUser(this.authUserId);
-        const postArray = authUserObj.posts;
-
-        if (postArray) {
-            postArray.push(postId);
-        } else {
-            postArray = [];
-            postArray.push(postId);
-        }
-        authUserObj.posts = postArray;
-        await usersDataLayer.updateUser(authUserObj);
+        const post = await postsDataLayer.getOnePost(postId);
+        this.formElement.title.value = post.title;
+        const preview = this.formElement.querySelector('.photo_field_fake');
+        preview.innerText = '';
+        const img = document.createElement('img');
+        img.src = `data:image/jpeg;base64, ${post.photo}`;
+        preview.append(img);
+        this.formElement.photo.required = false;
+        this.formElement.submit.innerText = 'Изменить';
     }
 
     async onSubmit() {
@@ -87,8 +65,7 @@ export default class PostForm extends Form {
             if (this.postId) {
                 await postsDataLayer.updatePost(this.postId, formData);
             } else {
-                const photoId = await postsDataLayer.addPost(formData);
-                await this.addPhotoToUser(photoId.postId);
+                await postsDataLayer.addPost(formData, this.authUserId);
             }
             pagePhotoGallery.renderPhotoGalleryPage();
         });
