@@ -24,7 +24,6 @@ class PageTape extends PageController {
         this.renderPostElement(posts, tape);
         await this.renderContent(tape);
         this.setInfiniteScroll(posts, tape);
-        this.setWidthForComments();
     }
 
     renderPageIfNonePosts(posts) {  //вынесенно      
@@ -53,7 +52,7 @@ class PageTape extends PageController {
                         lastPosts = posts;
                     }
                     tapeElementLast = tape.lastElementChild;
-                    pageTape.setWidthForComments();
+                    pageTape.findAnswersForComments();
                 }
             });
             observer.observe(tapeElementLast);
@@ -74,12 +73,10 @@ class PageTape extends PageController {
                 const tapeWrapper = this.setTemplateForPost();
                 const tapeElement = tapeWrapper.querySelector('.tape_element');
                 tapeElement.dataset.postId = post._id;
-
                 this.setImgAndTitleForPost(post, tapeWrapper);
                 await this.setCaptionForPost(post, tapeWrapper);
                 this.setColorLike(post.likesAuthor.includes(this.authUserId), tapeElement);
                 this.renderCommentsForPost(post, tapeElement);
-
                 this.addHideButtonForComments(tapeElement);
                 return tapeWrapper;
             })
@@ -124,7 +121,6 @@ class PageTape extends PageController {
     }
 
     renderCommentsForPost(post, tapeElement) { //вынесенно
-
         const comments = this.createComments(post.comments);
         for (let comment of comments) {
             if (comment.dataset.answerOn) {
@@ -153,7 +149,7 @@ class PageTape extends PageController {
         for (let i = 0; i < hidedComments.length; i++) {
             hidedComments[i].classList.remove('hide');
         }
-        this.setWidthForComments();
+        this.findAnswersForComments();
         element.textContent = '▲ скрыть последнии комментарии ▲';
         element.setAttribute('data-button-action', 'comment-hide');
     }
@@ -164,7 +160,7 @@ class PageTape extends PageController {
         for (let i = 2; i < comments.length; i++) {
             comments[i].classList.add('hide');
         }
-        this.setWidthForComments();
+        this.findAnswersForComments();
         element.textContent = '▼ показать все комментарии ▼';
         element.setAttribute('data-button-action', 'comment-show');
     }
@@ -191,7 +187,6 @@ class PageTape extends PageController {
                 }
                 if (answerArray.length) {
                     commentElementsArr = commentElementsArr.concat(answerArray.reverse());
-
                 }
             }
         }
@@ -211,7 +206,6 @@ class PageTape extends PageController {
         const commentText = this.createContentForComment('p', comment.text);
         const answerCommentBtn = this.createButtonInComment('answer', 'ответить');
         const deleteCommentBtn = this.createButtonInComment('delete', 'удалить');
-
         commentElement.append(commentAuthor, commentText);
 
         if (this.authUserId === comment.authorId) {
@@ -240,15 +234,22 @@ class PageTape extends PageController {
     async deleteComment(commentElement) {
         const deletedComment = await commentsDataLayer.deleteComment(commentElement.dataset.commentId);
         const mainElement = commentElement.closest('.tape_element');
-        commentElement.remove();
-        const comments = mainElement.querySelectorAll('.comment');
-        if (comments.length <= 2) {
-            const showBtn = mainElement.querySelector('.comment_show_btn');
-            if (showBtn) {
-                showBtn.remove();
+        const buttonForShow = mainElement.querySelector('.comment_show_btn');
+        if (buttonForShow){
+            buttonForShow.remove();            
+        } 
+        const olderComments = mainElement.querySelectorAll('.comment');
+        if (olderComments) {
+            for (let i = 0; i < olderComments.length; i++) {
+                olderComments[i].remove();
             }
         }
-        this.setWidthForComments();
+        this.renderCommentsForPost(deletedComment, mainElement);
+        this.addHideButtonForComments(mainElement);
+        const buttonForShowNew = mainElement.querySelector('.comment_show_btn');
+        if (buttonForShowNew){
+            pageTape.showAllComments(buttonForShowNew); 
+        }  
     }
 
     async addOrDeleteLike(tapeElement) {
@@ -275,64 +276,23 @@ class PageTape extends PageController {
         likes.innerText = post.likesAuthor.length;
     }
 
-    setWidthForComments() {
+    findAnswersForComments() { //вынес
         const commentsElements = document.querySelectorAll('.comment');
-
         for (let i = 0; i < commentsElements.length; i++) {
             const post = commentsElements[i].closest('.tape_element');
-            this.setBorderRadiusForCommnet(commentsElements[i], 1);
-
-            if (commentsElements[i].classList.contains('answer')) {
-                const widthParent = commentsElements[i - 1].offsetWidth;
-                const postWidth = post.offsetWidth;
-                const width = Math.round((widthParent * 100) / postWidth);
-
-                if (width >= 30 && commentsElements[i].dataset.answerOn === commentsElements[i].previousElementSibling.dataset.commentId) {
-                    this.setWidthAndMarginForPost(commentsElements[i], `${width - 5}%`, `${100 - width + 2.5}%`);
-                    this.setBorderRadiusForCommnet(commentsElements[i], 1);
-                } else if (commentsElements[i].dataset.answerOn !== commentsElements[i].previousElementSibling.dataset.commentId) {
-                    this.setWidthAndMarginForPost(commentsElements[i], `${width}%`, `${100 - width - 2.5}%`);
-                    this.setBorderRadiusForCommnet(commentsElements[i], 2);
-                } else {
-                    this.setWidthAndMarginForPost(commentsElements[i], '25%', '72.5%');
-                    this.setBorderRadiusForCommnet(commentsElements[i], 2);
-
-                }
+            if (commentsElements[i].dataset.answerOn) {
+                const parentElement = document.querySelector(`.comment[data-comment-id='${commentsElements[i].dataset.answerOn}']`);
+                this.setWidthAndMarginForComment(parentElement, post, commentsElements[i]);
             }
         }
     }
 
-    setBorderRadiusForCommnet(commentElement, condition) {
-
-        if (condition === 1) {
-            if (commentElement.nextElementSibling && commentElement.nextElementSibling.classList.contains('answer') && !commentElement.nextElementSibling.classList.contains('hide')) {
-                commentElement.style.borderBottomRightRadius = '0';
-            } else {
-                commentElement.style.borderBottomRightRadius = '7px';
-            }
-        } else if (condition === 2) {
-            if (commentElement.classList.contains('answer') && !commentElement.nextElementSibling.classList.contains('hide')) {
-                commentElement.previousElementSibling.style.borderBottomLeftRadius = '0';
-                commentElement.previousElementSibling.style.borderBottomRightRadius = '0';
-            } else {
-                commentElement.previousElementSibling.style.borderBottomLeftRadius = '7px';
-                commentElement.previousElementSibling.style.borderBottomRightRadius = '7px';
-            }
-        }
-        
-        // else if (condition === 3) {
-        //     if (commentElement.nextElementSibling && commentElement.nextElementSibling.classList.contains('answer') && !commentElement.nextElementSibling.classList.contains('hide')) {
-        //         commentElement.style.borderBottomLeftRadius = '0';
-        //         commentElement.previousElementSibling.style.borderBottomLeftRadius = '0';
-        //     } else {
-        //         commentElement.style.borderBottomLeftRadius = '7px';
-        //     }
-        // }
-    }
-
-    setWidthAndMarginForPost(commentElement, width, margin) {
-        commentElement.style.width = width;
-        commentElement.style.marginLeft = margin;
+    setWidthAndMarginForComment(parent, post, commentElement) { //вынес
+        const widthParent = parent.offsetWidth;
+        const postWidth = post.offsetWidth;
+        const width = Math.round((widthParent * 100) / postWidth);
+        commentElement.style.width = `${width - 5}%`;
+        commentElement.style.marginLeft = `${100 - width + 2.5}%`;
     }
 }
 

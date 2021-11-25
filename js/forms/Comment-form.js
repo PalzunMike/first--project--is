@@ -55,7 +55,7 @@ export default class CommentForm extends Form {
         if (buttonForShowNew){
             pageTape.showAllComments(buttonForShowNew); 
         }                     
-        pageTape.setWidthForComments();
+        pageTape.findAnswersForComments();
     }
 
     async onSubmit() {

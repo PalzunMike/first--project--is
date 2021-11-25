@@ -812,24 +812,14 @@ h1 a img{
 .comment{
     background-color: rgba(255, 255, 255, 0.61);
     width: 95%;
-    border-radius: 7px;
     margin: 2px auto 0;
-    font-size: .7em;
-    -webkit-border-radius: 7px;
-    -moz-border-radius: 7px;
-    -ms-border-radius: 7px;
-    -o-border-radius: 7px;    
+    font-size: .7em;  
 }
 
 .answer{
     margin-left: 2.5%;
     margin-top: 0;
-    border-radius: 0 0 7px 7px;
     margin-right: 2.5%;
-    -webkit-border-radius: 0 0 7px 7px;
-    -moz-border-radius: 0 0 7px 7px;
-    -ms-border-radius: 0 0 7px 7px;
-    -o-border-radius: 0 0 7px 7px;
     overflow-x: hidden ;
 }
 .comment h4{

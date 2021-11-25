@@ -14,8 +14,7 @@ class CommentsController {
             }
             const post = await Post.findByIdAndUpdate(postId, {
                 $addToSet: { comments: comment._id }
-            },
-                { new: true }).populate('comments');
+            }, { new: true }).populate('comments');
             res.status(201).json(post);
         } catch (e) {
             console.log(e);
@@ -32,7 +31,7 @@ class CommentsController {
             const answer = await Comment.deleteMany({ isAnswer: id });
             const post = await Post.findOneAndUpdate({ comments: id }, {
                 $pull: { comments: id }
-            })
+            }, { new: true }).populate('comments');
             return res.json(post);
 
         } catch (e) {
