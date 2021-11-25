@@ -125,7 +125,9 @@ class PageTape extends PageController {
         for (let comment of comments) {
             if (comment.dataset.answerOn) {
                 const parentElement = tapeElement.querySelector(`.comment[data-comment-id='${comment.dataset.answerOn}']`);
-                parentElement.after(comment);
+                if (parentElement){
+                    parentElement.after(comment);
+                }                
             } else {
                 tapeElement.append(comment);
             }
@@ -291,6 +293,9 @@ class PageTape extends PageController {
         const widthParent = parent.offsetWidth;
         const postWidth = post.offsetWidth;
         const width = Math.round((widthParent * 100) / postWidth);
+        if (width <= 30){
+            width = 30;
+        }
         commentElement.style.width = `${width - 5}%`;
         commentElement.style.marginLeft = `${100 - width + 2.5}%`;
     }
